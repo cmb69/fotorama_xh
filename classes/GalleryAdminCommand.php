@@ -94,7 +94,6 @@ class GalleryAdminCommand
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
-        $messages = '';
         $name = $request->post("fotorama_gallery");
         $path = $request->post("fotorama_folder");
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
@@ -108,25 +107,25 @@ class GalleryAdminCommand
             }
         } else {
             $foldername = $this->galleryService->getImageFoldername($path);
-            $messages .= $this->view->message("warning", "message_no_folder", $foldername);
+            $error = $this->view->message("warning", "message_no_folder", $foldername);
+            return Response::create($error . $this->renderOverview($request));
         }
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
-            $messages .= $this->view->message("fail", "message_invalid_name", $name);
+            $error = $this->view->message("fail", "message_invalid_name", $name);
+            return Response::create($error . $this->renderOverview($request));
         } else {
             $filename = $this->galleryService->getImageFoldername($path);
             if ($this->galleryService->hasGallery($name)) {
-                $messages .= $this->view->message("fail", "message_exists", $filename);
+                $error = $this->view->message("fail", "message_exists", $filename);
+                return Response::create($error . $this->renderOverview($request));
             } elseif (!$this->galleryService->saveGalleryXML($name, $xml)) {
-                $messages .= $this->view->message("fail", "message_cant_save", $filename);
+                $error = $this->view->message("fail", "message_cant_save", $filename);
+                return Response::create($error . $this->renderOverview($request));
             }
         }
-        if (!$messages) {
-            $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
-            return Response::redirect($url->absolute());
-        } else {
-            return Response::create($messages . $this->renderOverview($request));
-        }
+        $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
+        return Response::redirect($url->absolute());
     }
 
     private function isValidName(string $name): bool
@@ -155,21 +154,18 @@ class GalleryAdminCommand
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
-        $messages = '';
         $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
         $text = $request->post("fotorama_text") ?? "";
         if ($this->conf["xml_auto_validate"] && !$this->validate($text)) {
-            $messages .= $this->view->message("warning", "message_invalid_xml");
+            $error = $this->view->message("warning", "message_invalid_xml");
+            return Response::create($error . $this->renderOverview($request));
         }
         if (!$this->galleryService->saveGalleryXML($name, $text)) {
             $filename = $this->galleryService->getGalleryFilename($name);
-            $messages .= $this->view->message("fail", "message_cant_save", $filename);
+            $error = $this->view->message("fail", "message_cant_save", $filename);
+            return Response::create($error . $this->renderOverview($request));
         }
-        if (!$messages) {
-            return Response::redirect($request->url()->without("action")->absolute());
-        } else {
-            return Response::create($messages . $this->renderEditor($request));
-        }
+        return Response::redirect($request->url()->without("action")->absolute());
     }
 
     private function validate(string $xml): bool
