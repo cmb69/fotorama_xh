@@ -36,7 +36,8 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->galleryService->method("findAllGalleries")->willReturn(["gallery1", "gallery2"]);
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
-        $response = $this->sut()->overview();
+        $request = new FakeRequest();
+        $response = $this->sut()($request);
         Approvals::verifyHtml($response->output());
     }
 
@@ -46,27 +47,29 @@ class GalleryAdminCommandTest extends TestCase
         $this->galleryService->method("saveGalleryXML")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
+            "url" => "http://example.com/?&action=create",
             "post" => [
                 "fotorama_gallery" => "gallery",
                 "fotorama_folder" => "folder",
             ],
         ]);
-        $response = $this->sut()->create($request);
+        $response = $this->sut()($request);
         $this->assertSame("http://example.com/?&action=edit&fotorama_gallery=gallery", $response->location());
     }
 
     public function testCreatingIsCsrfProtected(): void
     {
         $this->csrfProtector->method("check")->willReturn(false);
-        $request = new FakeRequest();
-        $response = $this->sut()->create($request);
+        $request = new FakeRequest(["url" => "http://example.com/?&action=create"]);
+        $response = $this->sut()($request);
         $this->assertSame(403, $response->status());
     }
 
     public function testRendersEditor(): void
     {
         $_GET = ["fotorama_gallery" => "test"];
-        $response = $this->sut()->edit();
+        $request = new FakeRequest(["url" => "http://example.com/?&action=edit"]);
+        $response = $this->sut()($request);
         Approvals::verifyHtml($response->output());
     }
 
@@ -74,16 +77,16 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->galleryService->method("saveGalleryXML")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
-        $request = new FakeRequest();
-        $response = $this->sut()->save($request);
+        $request = new FakeRequest(["url" => "http://example.com/?&action=save"]);
+        $response = $this->sut()($request);
         $this->assertSame("http://example.com/", $response->location());
     }
 
     public function testSavingIsCsrfProtected(): void
     {
         $this->csrfProtector->method("check")->willReturn(false);
-        $request = new FakeRequest();
-        $response = $this->sut()->save($request);
+        $request = new FakeRequest(["url" => "http://example.com/?&action=save"]);
+        $response = $this->sut()($request);
         $this->assertSame(403, $response->status());
     }
 }

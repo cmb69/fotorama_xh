@@ -57,7 +57,7 @@ class GalleryAdminCommand
         }
     }
 
-    public function overview(): Response
+    private function overview(): Response
     {
         return Response::create($this->renderOverview());
     }
@@ -74,7 +74,7 @@ class GalleryAdminCommand
         ]);
     }
 
-    public function create(Request $request): Response
+    private function create(Request $request): Response
     {
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
@@ -119,7 +119,7 @@ class GalleryAdminCommand
         return preg_match('/^[a-z0-9-]+$/', $name);
     }
 
-    public function edit(): Response
+    private function edit(): Response
     {
         return Response::create($this->renderEditor());
     }
@@ -140,7 +140,7 @@ class GalleryAdminCommand
         ]);
     }
 
-    public function save(Request $request): Response
+    private function save(Request $request): Response
     {
         global $plugin_cf;
 
