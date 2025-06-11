@@ -13,14 +13,11 @@ require_once "../plib/classes/Url.php";
 require_once "../plib/classes/View.php";
 require_once "../plib/classes/FakeRequest.php";
 
-require_once "./classes/CreateGalleryCommand.php";
-require_once "./classes/GalleryEditorCommand.php";
-require_once "./classes/GalleryListCommand.php";
+require_once "./classes/GalleryAdminCommand.php";
 require_once "./classes/GalleryService.php";
 require_once "./classes/GalleryView.php";
 require_once "./classes/Plugin.php";
 require_once "./classes/PluginInfoCommand.php";
-require_once "./classes/SaveGalleryCommand.php";
 require_once "./classes/ThumbnailService.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.6";

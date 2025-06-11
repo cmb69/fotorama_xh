@@ -8,8 +8,9 @@ class PluginTest extends TestCase
 {
     protected function setUp(): void
     {
-        global $pth, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
         $pth = ["folder" => ["images" => "", "plugins" => ""]];
+        $plugin_cf = ["fotorama" => []];
         $plugin_tx = ["fotorama" => []];
     }
 
@@ -18,24 +19,9 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(GalleryView::class, Plugin::galleryView());
     }
 
-    public function testMakesGalleryListCommand(): void
+    public function testMakesGalleryAdminCommand(): void
     {
-        $this->assertInstanceOf(GalleryListCommand::class, Plugin::galleryListCommand());
-    }
-
-    public function testMakesCreateGalleryCommand(): void
-    {
-        $this->assertInstanceOf(CreateGalleryCommand::class, Plugin::createGalleryCommand());
-    }
-
-    public function testMakesGalleryEditorCommand(): void
-    {
-        $this->assertInstanceOf(GalleryEditorCommand::class, Plugin::galleryEditorCommand());
-    }
-
-    public function testMakesSaveGalleryCommand(): void
-    {
-        $this->assertInstanceOf(SaveGalleryCommand::class, Plugin::saveGalleryCommand());
+        $this->assertInstanceOf(GalleryAdminCommand::class, Plugin::galleryAdminCommand());
     }
 
     public function testMakesPluginInfoCommand(): void

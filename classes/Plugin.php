@@ -47,36 +47,11 @@ class Plugin
         return self::$galleryView;
     }
 
-    public static function galleryListCommand(): GalleryListCommand
+    public static function galleryAdminCommand(): GalleryAdminCommand
     {
-        return new GalleryListCommand(
-            new GalleryService(),
-            new CsrfProtector(),
-            self::view()
-        );
-    }
-
-    public static function createGalleryCommand(): CreateGalleryCommand
-    {
-        return new CreateGalleryCommand(
-            new GalleryService(),
-            new CsrfProtector(),
-            self::view()
-        );
-    }
-
-    public static function galleryEditorCommand(): GalleryEditorCommand
-    {
-        return new GalleryEditorCommand(
-            new GalleryService(),
-            new CsrfProtector(),
-            self::view()
-        );
-    }
-
-    public static function saveGalleryCommand(): SaveGalleryCommand
-    {
-        return new SaveGalleryCommand(
+        global $plugin_cf;
+        return new GalleryAdminCommand(
+            $plugin_cf["fotorama"],
             new GalleryService(),
             new CsrfProtector(),
             self::view()
