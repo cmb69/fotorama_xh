@@ -36,28 +36,28 @@ class GalleryListCommand
 
         $url = $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=';
         $html = '<h1>Fotorama &ndash; ' . $plugin_tx['fotorama']['menu_main']
-            . '</h1>'
-            . '<ul>';
+            . '</h1>' . "\n"
+            . '<ul>' . "\n";
         foreach ($this->galleryService->findAllGalleries() as $gallery) {
             $html .= '<li><a href="' . XH_hsc($url . $gallery) . '">'
                 . $gallery . '</a></li>';
         }
-        $html .= '</ul>'
-            . '<form action="' . $sn . '?&amp;fotorama" method="post">'
+        $html .= '</ul>' . "\n"
+            . '<form action="' . $sn . '?&amp;fotorama" method="post">' . "\n"
             . $_XH_csrfProtection->tokenInput()
-            . '<input type="hidden" name="admin" value="plugin_main">'
-            . '<fieldset><legend>' . $plugin_tx['fotorama']['label_create_gallery']
-            . '</legend>'
+            . '<input type="hidden" name="admin" value="plugin_main">' . "\n"
+            . '<fieldset>' . "\n" . '<legend>' . $plugin_tx['fotorama']['label_create_gallery']
+            . '</legend>' . "\n"
             . '<p><label>' . $plugin_tx['fotorama']['label_name'] . ' '
             . '<input type="text" name="fotorama_gallery">'
-            . '</label></p>'
+            . '</label></p>' . "\n"
             . '<p><label>' . $plugin_tx['fotorama']['label_folder'] . ' '
             . $this->renderImageFolderSelect()
-            . '</label></p>'
+            . '</label></p>' . "\n"
             . '<p><button class="submit" name="action" value="create">'
-            . $plugin_tx['fotorama']['label_create'] . '</button></p>'
-            . '</fieldset>'
-            . '</form>';
+            . $plugin_tx['fotorama']['label_create'] . '</button></p>' . "\n"
+            . '</fieldset>' . "\n"
+            . '</form>' . "\n";
         echo $html;
     }
 

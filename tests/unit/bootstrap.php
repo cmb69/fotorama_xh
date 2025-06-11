@@ -2,6 +2,7 @@
 
 require_once "./vendor/autoload.php";
 
+require_once "../../cmsimple/classes/CSRFProtection.php";
 require_once "../../cmsimple/functions.php";
 
 require_once "../plib/classes/Jquery.php";
