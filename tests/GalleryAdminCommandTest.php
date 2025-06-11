@@ -36,10 +36,8 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->galleryService->method("findAllGalleries")->willReturn(["gallery1", "gallery2"]);
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
-        ob_start();
-        $this->sut()->execute();
-        $output = ob_get_clean();
-        Approvals::verifyHtml($output);
+        $response = $this->sut()->execute();
+        Approvals::verifyHtml($response->output());
     }
 
     public function testRedirectsAfterCreating(): void
@@ -68,10 +66,8 @@ class GalleryAdminCommandTest extends TestCase
     public function testRendersEditor(): void
     {
         $_GET = ["fotorama_gallery" => "test"];
-        ob_start();
-        $this->sut()->edit();
-        $output = ob_get_clean();
-        Approvals::verifyHtml($output);
+        $response = $this->sut()->edit();
+        Approvals::verifyHtml($response->output());
     }
 
     public function testRedirectsAfterSaving(): void

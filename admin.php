@@ -40,20 +40,16 @@ if (XH_wantsPluginAdministration("fotorama")) {
         case "plugin_main":
             switch ($action) {
                 case "create":
-                    Plugin::galleryAdminCommand()->create(Request::current());
+                    $o .= Plugin::galleryAdminCommand()->create(Request::current())();
                     break;
                 case "edit":
-                    ob_start();
-                    Plugin::galleryAdminCommand()->edit();
-                    $o .= ob_get_clean();
+                    $o .= Plugin::galleryAdminCommand()->edit()();
                     break;
                 case "save":
                     $o .= Plugin::galleryAdminCommand()->save(Request::current())();
                     break;
                 default:
-                    ob_start();
-                    Plugin::galleryAdminCommand()->execute();
-                    $o .= ob_get_clean();
+                    $o .= Plugin::galleryAdminCommand()->execute()();
             }
             break;
         default:

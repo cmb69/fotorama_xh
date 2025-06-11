@@ -43,23 +43,21 @@ class GalleryAdminCommand
         $this->view = $view;
     }
 
-    public function execute(): void
+    public function execute(): Response
     {
         global $sn;
 
-        echo $this->view->render("overview", [
+        return Response::create($this->view->render("overview", [
             "url" => $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=',
             "galleries" => $this->galleryService->findAllGalleries(),
             "action" => $sn . '?&fotorama',
             "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
-        ]);
+        ]));
     }
 
     public function create(Request $request): Response
     {
-        global $o;
-
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
@@ -94,10 +92,7 @@ class GalleryAdminCommand
             $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
             return Response::redirect($url->absolute());
         } else {
-            $o .= $messages;
-            ob_start();
-            $this->execute();
-            return Response::create(ob_get_clean());
+            return Response::create($messages . $this->execute()->output());
         }
     }
 
@@ -106,7 +101,7 @@ class GalleryAdminCommand
         return preg_match('/^[a-z0-9-]+$/', $name);
     }
 
-    public function edit(): void
+    public function edit(): Response
     {
         global $sn;
 
@@ -115,17 +110,17 @@ class GalleryAdminCommand
         } else {
             $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
-        echo $this->view->render("editor", [
+        return Response::create($this->view->render("editor", [
             "name" => $name,
             "action" => $sn . '?&fotorama',
             "token" => $this->csrfProtector->token(),
             "xml" => $this->galleryService->findGalleryXML($name),
-        ]);
+        ]));
     }
 
     public function save(Request $request): Response
     {
-        global $plugin_cf, $o;
+        global $plugin_cf;
 
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
@@ -143,10 +138,7 @@ class GalleryAdminCommand
         if (!$messages) {
             return Response::redirect($request->url()->without("action")->absolute());
         } else {
-            $o .= $messages;
-            ob_start();
-            $this->edit();
-            return Response::create(ob_get_clean());
+            return Response::create($messages . $this->edit()->output());
         }
     }
 
