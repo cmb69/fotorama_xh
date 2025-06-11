@@ -39,6 +39,11 @@ class Plugin
         );
     }
 
+    public static function pluginInfoCommand(): PluginInfoCommand
+    {
+        return new PluginInfoCommand();
+    }
+
     private static function view(): View
     {
         global $pth, $plugin_tx;

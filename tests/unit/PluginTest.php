@@ -22,4 +22,9 @@ class PluginTest extends TestCase
     {
         $this->assertInstanceOf(SaveGalleryCommand::class, Plugin::saveGalleryCommand());
     }
+
+    public function testMakesPluginInfoCommand(): void
+    {
+        $this->assertInstanceOf(PluginInfoCommand::class, Plugin::pluginInfoCommand());
+    }
 }

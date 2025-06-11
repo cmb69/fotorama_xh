@@ -22,7 +22,6 @@
 use Fotorama\GalleryEditorCommand;
 use Fotorama\GalleryListCommand;
 use Fotorama\Plugin;
-use Fotorama\PluginInfoCommand;
 
 /**
  * @var string $action
@@ -36,7 +35,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
     switch ($admin) {
         case "":
             ob_start();
-            (new PluginInfoCommand())->execute();
+            Plugin::pluginInfoCommand()->execute();
             $o .= ob_get_clean();
             break;
         case "plugin_main":
