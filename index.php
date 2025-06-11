@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-use Fotorama\Controller;
 use Fotorama\GalleryView;
 use Plib\View;
 
@@ -31,6 +30,3 @@ function fotorama(string $name): string
     $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
     return (new GalleryView($view, $name))->render();
 }
-
-$temp = new Controller();
-$temp->dispatch();
