@@ -26,10 +26,14 @@ use Plib\View;
 
 class SaveGalleryCommand
 {
+    private GalleryService $galleryService;
     private View $view;
 
-    public function __construct(View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        View $view
+    ) {
+        $this->galleryService = $galleryService;
         $this->view = $view;
     }
 
@@ -44,9 +48,9 @@ class SaveGalleryCommand
         if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
             $messages .= $this->view->message("warning", "message_invalid_xml");
         }
-        $service = new GalleryService();
-        if (!$service->saveGalleryXML($name, $text)) {
-            $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
+        if (!$this->galleryService->saveGalleryXML($name, $text)) {
+            $filename = $this->galleryService->getGalleryFilename($name);
+            $messages .= $this->view->message("fail", "message_cant_save", $filename);
         }
         if (!$messages) {
             $this->relocate('?&fotorama&admin=plugin_main&action=plugin_text');
