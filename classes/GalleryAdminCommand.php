@@ -47,7 +47,7 @@ class GalleryAdminCommand
     {
         switch ($request->get("action") ?? $request->post("action")) {
             default:
-                return $this->execute();
+                return $this->overview();
             case "create":
                 return $this->create($request);
             case "edit":
@@ -57,7 +57,7 @@ class GalleryAdminCommand
         }
     }
 
-    public function execute(): Response
+    public function overview(): Response
     {
         return Response::create($this->renderOverview());
     }

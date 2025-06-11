@@ -36,7 +36,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->galleryService->method("findAllGalleries")->willReturn(["gallery1", "gallery2"]);
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
-        $response = $this->sut()->execute();
+        $response = $this->sut()->overview();
         Approvals::verifyHtml($response->output());
     }
 
