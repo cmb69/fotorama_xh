@@ -1,9 +1,9 @@
-# Fotorama\_XH
+# Fotorama_XH
 
-Fotorama\_XH ermöglicht das Einbetten von [Fotorama](https://fotorama.io/)
-Galerien auf CMSimple\_XH Seiten.
+Fotorama_XH ermöglicht das Einbetten von [Fotorama](https://fotorama.io/)
+Galerien auf CMSimple_XH Seiten.
 Das Plugin bietet keinerlei Bild-Upload-Möglichkeit,
-sondern verwendet statt dessen Bilder aus dem Bilderordner von CMSimple\_XH
+sondern verwendet statt dessen Bilder aus dem Bilderordner von CMSimple_XH
 oder von irgendwo im World Wide Web (bislang wird nur JPEG unterstützt).
 Jede Galerie kann individuell konfiguriert werden,
 und jedes Bild kann eine zusätzliche Beschriftung erhalten.
@@ -22,7 +22,7 @@ und jedes Bild kann eine zusätzliche Beschriftung erhalten.
 
 ## Voraussetzungen
 
-Fotorama\_XH ist ein Plugin für CMSimple\_XH ≥ 1.7.0.
+Fotorama_XH ist ein Plugin für CMSimple_XH ≥ 1.7.0.
 Es benötigt PHP ≥ 7.4.0 mit den dom, fileinfo, gd und SimpleXML Extensions.
 
 ## Download
@@ -32,22 +32,22 @@ kann von Github herunter geladen werden.
 
 ## Installation
 
-Die Installation erfolgt wie bei vielen anderen CMSimple\_XH-Plugins auch.
+Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
 
 1. Sichern Sie die Daten auf Ihrem Server.
 1. Entpacken Sie die ZIP-Datei auf Ihrem Rechner.
 1. Laden Sie das ganze Verzeichnis `fotorama/` auf Ihren Server
-   in das Plugin-Verzeichnis von CMSimple\_XH hoch.
+   in das Plugin-Verzeichnis von CMSimple_XH hoch.
 1. Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse
    `cache/`, `config/`, `css/` und `languages/`.
 
 ## Einstellungen
 
 Die Plugin-Konfiguration erfolgt wie bei vielen anderen
-CMSimple\_XH-Plugins auch im Administrationsbereich der Website.
+CMSimple_XH-Plugins auch im Administrationsbereich der Website.
 Gehen Sie zu `Plugins` → `Fotorama`.
 
-Sie können die Voreinstellungen von Fotorama\_XH unter `Konfiguration` ändern.
+Sie können die Voreinstellungen von Fotorama_XH unter `Konfiguration` ändern.
 Beim Überfahren der Hilfe-Icons mit der Maus
 werden Hinweise zu den Einstellungen angezeigt.
 
@@ -56,15 +56,15 @@ Sie können die Sprachtexte in Ihre eigene Sprache übersetzen,
 falls keine entsprechende Sprachdatei zur Verfügung steht,
 oder diese Ihren Wünschen gemäß anpassen.
 
-Das Aussehen von Fotorama\_XH kann unter `Stylesheet` angepasst werden.
+Das Aussehen von Fotorama_XH kann unter `Stylesheet` angepasst werden.
 
 ## Verwendung
 
 ### Vorbereiten einer Galerie
 
 Zunächst müssen Sie einige Bilder in einen Unterordner
-des Bilderordners von CMSimple\_XH hoch laden.
-Sie können entweder den Dateibrowser von CMSimple\_XH
+des Bilderordners von CMSimple_XH hoch laden.
+Sie können entweder den Dateibrowser von CMSimple_XH
 oder Ihren bevorzugten FTP-Client verwenden.
 Dann müssen Sie die XML-Datei mit der Galerie-Definition im Backend erstellen.
 Navigieren Sie zu `Plugins` → `Fotorama` → `Galerien`,
@@ -74,7 +74,7 @@ Der Name der Galerie darf nur römische Kleinbuchstaben (`a`-`z`),
 arabische Ziffern (`0`-`9`) und Bindestriche (`-`) enthalten.
 Der Name der Galerie wird als Dateiname verwendet
 (wobei `.xml` angehängt wird),
-und die Datei wird im `content/` Ordner von CMSimple\_XH gespeichert.
+und die Datei wird im `content/` Ordner von CMSimple_XH gespeichert.
 Jede Sprache hat ihren eigenen Satz von Galerie-Definitionsdateien,
 so dass Sie die Bildbeschriftungen übersetzen können.
 
@@ -171,22 +171,22 @@ muss JavaScript im Browser des Besuchers aktiviert sein.
 
 Melden Sie Programmfehler und stellen Sie Supportanfragen entweder auf
 [Github](https://github.com/cmb69/fotorama_xh/issues)
-oder im [CMSimple\_XH Forum](https://cmsimpleforum.com/).
+oder im [CMSimple_XH Forum](https://cmsimpleforum.com/).
 
 ## Lizenz
 
-Fotorama\_XH ist freie Software. Sie können es unter den Bedingungen
+Fotorama_XH ist freie Software. Sie können es unter den Bedingungen
 der GNU General Public License, wie von der Free Software Foundation
 veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß
 Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.
 
-Die Veröffentlichung von Fotorama\_XH erfolgt in der Hoffnung, daß es
+Die Veröffentlichung von Fotorama_XH erfolgt in der Hoffnung, daß es
 Ihnen von Nutzen sein wird, aber *ohne irgendeine Garantie*, sogar ohne
 die implizite Garantie der *Marktreife* oder der *Verwendbarkeit für einen
 bestimmten Zweck*. Details finden Sie in der GNU General Public License.
 
 Sie sollten ein Exemplar der GNU General Public License zusammen mit
-Fotorama\_XH erhalten haben. Falls nicht, siehe
+Fotorama_XH erhalten haben. Falls nicht, siehe
 <https://www.gnu.org/licenses/>.
 
 Copyright 2015-2021 Christoph M. Becker
@@ -205,12 +205,12 @@ Das Plugin verwendet ebenfalls Icons aus dem
 Vielen Dank für die Veröffentlichung dieses Icon-Sets unter GPL.
 
 Vielen Dank an die Community im
-[CMSimple\_XH Forum](https://www.cmsimpleforum.com/)
+[CMSimple_XH Forum](https://www.cmsimpleforum.com/)
 für Hinweise, Anregungen und das Testen.
 Besonders möchte ich *Traktorist* für das frühe und wertvolle
 Feedback zur ersten Beta-Version danken.
 
 Und zu guter letzt vielen Dank an
 [Peter Harteg](https://www.harteg.dk/), den „Vater“ von CMSimple,
-und allen Entwicklern von [CMSimple\_XH](https://www.cmsimple-xh.org/de/)
+und allen Entwicklern von [CMSimple_XH](https://www.cmsimple-xh.org/de/)
 ohne die es dieses phantastische CMS nicht gäbe.
