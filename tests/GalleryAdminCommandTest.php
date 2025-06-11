@@ -112,6 +112,22 @@ class GalleryAdminCommandTest extends TestCase
         $this->assertStringContainsString("The gallery &quot;&quot; does already exist!", $response->output());
     }
 
+    public function testReportsFailureToSaveWhenCreating(): void
+    {
+        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->galleryService->method("saveGalleryXML")->willReturn(false);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=create",
+            "post" => [
+                "fotorama_gallery" => "gallery",
+                "fotorama_folder" => "folder",
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Can't save &quot;&quot;!", $response->output());
+    }
+
     public function testRendersEditor(): void
     {
         $request = new FakeRequest(["url" => "http://example.com/?&action=edit&fotorama_gallery=test"]);
