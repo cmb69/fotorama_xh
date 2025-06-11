@@ -23,6 +23,7 @@ namespace Fotorama;
 
 use Plib\CsrfProtector;
 use Plib\Jquery;
+use Plib\SystemChecker;
 use Plib\View;
 
 class Plugin
@@ -60,7 +61,12 @@ class Plugin
 
     public static function pluginInfoCommand(): PluginInfoCommand
     {
-        return new PluginInfoCommand(self::view());
+        global $pth;
+        return new PluginInfoCommand(
+            $pth["folder"]["plugins"] . "fotorama/",
+            new SystemChecker(),
+            self::view()
+        );
     }
 
     private static function view(): View
