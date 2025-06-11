@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\CsrfProtector;
 use Plib\Jquery;
 use Plib\View;
 
@@ -48,7 +49,11 @@ class Plugin
 
     public static function galleryListCommand(): GalleryListCommand
     {
-        return new GalleryListCommand();
+        return new GalleryListCommand(
+            new GalleryService(),
+            new CsrfProtector(),
+            self::view()
+        );
     }
 
     public static function createGalleryCommand(): CreateGalleryCommand
