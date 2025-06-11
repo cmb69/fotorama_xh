@@ -10,4 +10,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<h1>Fotorama <?=$this->esc($version)?></h1>
+<article class="fotorama_pluginfo">
+  <h1>Fotorama <?=$this->esc($version)?></h1>
+</article>
