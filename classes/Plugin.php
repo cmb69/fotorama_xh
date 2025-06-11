@@ -67,6 +67,7 @@ class Plugin
     {
         return new GalleryEditorCommand(
             new GalleryService(),
+            new CsrfProtector(),
             self::view()
         );
     }
