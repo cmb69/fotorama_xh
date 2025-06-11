@@ -28,5 +28,5 @@ function fotorama(string $name): string
 {
     global $pth, $plugin_tx;
     $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-    return (new GalleryView($view, $name))->render();
+    return (new GalleryView($view))->render($name);
 }
