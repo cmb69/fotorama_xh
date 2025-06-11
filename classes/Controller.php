@@ -43,15 +43,10 @@ class Controller
     {
         if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(true);
-            if ($this->isAdministrationRequested()) {
+            if (XH_wantsPluginAdministration('fotorama')) {
                 $this->handleAdministration();
             }
         }
-    }
-
-    protected function isAdministrationRequested(): bool
-    {
-        return XH_wantsPluginAdministration('fotorama');
     }
 
     protected function handleAdministration(): void
