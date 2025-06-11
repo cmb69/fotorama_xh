@@ -26,7 +26,7 @@ class CreateGalleryCommand extends Command
     /**
      * Creates a gallery.
      */
-    public function execute()
+    public function execute(): void
     {
         global $plugin_tx, $o, $_XH_csrfProtection;
 

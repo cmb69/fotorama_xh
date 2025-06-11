@@ -23,9 +23,9 @@ namespace Fotorama;
 
 class Controller
 {
-    public function dispatch()
+    public function dispatch(): void
     {
-        if (XH_ADM) {
+        if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(true);
             if ($this->isAdministrationRequested()) {
                 $this->handleAdministration();
@@ -41,9 +41,9 @@ class Controller
         return XH_wantsPluginAdministration('fotorama');
     }
 
-    protected function handleAdministration()
+    protected function handleAdministration(): void
     {
-        global $admin, $action, $o;
+        global $admin, $o;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
@@ -54,11 +54,11 @@ class Controller
                 $this->handleMainAction();
                 break;
             default:
-                $o .= plugin_admin_common($action, $admin, 'fotorama');
+                $o .= plugin_admin_common();
         }
     }
 
-    protected function handleMainAction()
+    protected function handleMainAction(): void
     {
         global $action, $o;
         
@@ -87,13 +87,13 @@ class Controller
         return ob_get_clean();
     }
 
-    protected function createGallery()
+    protected function createGallery(): void
     {
         $command = new CreateGalleryCommand();
         $command->execute();
     }
 
-    protected function saveGallery()
+    protected function saveGallery(): void
     {
         $command = new SaveGalleryCommand();
         $command->execute();

@@ -23,10 +23,8 @@ namespace Fotorama;
 
 class GalleryService
 {
-    /**
-     * @return array
-     */
-    public function findAllGalleries()
+    /** @return list<string> */
+    public function findAllGalleries(): array
     {
         $result = array();
         $files = new \DirectoryIterator($this->findContentFolder());
@@ -130,10 +128,11 @@ class GalleryService
     }
 
     /**
+     * @param list<string> $folders
      * @param string $prefix
-     * @return array
+     * @return list<string>
      */
-    private function appendTo(array $folders, \SplFileInfo $file, $prefix)
+    private function appendTo(array $folders, \SplFileInfo $file, $prefix): array
     {
         $folders[] = $prefix . $file->getFilename();
         return array_merge(

@@ -21,6 +21,8 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use SimpleXMLElement;
+
 class GalleryView
 {
     /**
@@ -66,7 +68,7 @@ class GalleryView
         return $html;
     }
 
-    protected function emitJS()
+    protected function emitJS(): void
     {
         global $hjs, $pth;
 
@@ -109,7 +111,7 @@ class GalleryView
         return $html;
     }
 
-    private function renderPictures(\SimpleXMLElement $gallery)
+    private function renderPictures(\SimpleXMLElement $gallery): string
     {
         global $pth;
     
@@ -143,7 +145,7 @@ class GalleryView
         return $html;
     }
 
-    private function isAbsoluteUrl($url)
+    private function isAbsoluteUrl(string $url): bool
     {
         return strpos($url, '://') !== false;
     }

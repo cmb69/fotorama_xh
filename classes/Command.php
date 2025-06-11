@@ -23,10 +23,12 @@ namespace Fotorama;
 
 abstract class Command
 {
+    abstract public function execute(): void;
+
     /**
      * @param string $url
      */
-    protected function relocate($url)
+    protected function relocate($url): void
     {
         header('Location: ' . CMSIMPLE_URL . $url);
         exit();

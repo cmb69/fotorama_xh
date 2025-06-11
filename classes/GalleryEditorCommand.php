@@ -26,7 +26,7 @@ class GalleryEditorCommand extends Command
     /**
      * Renders a gallery editor.
      */
-    public function execute()
+    public function execute(): void
     {
         global $sn, $plugin_tx, $_XH_csrfProtection;
 

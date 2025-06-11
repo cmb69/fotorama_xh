@@ -26,7 +26,7 @@ class SaveGalleryCommand extends Command
     /**
      * Saves a gallery.
      */
-    public function execute()
+    public function execute(): void
     {
         global $plugin_cf, $plugin_tx, $_XH_csrfProtection, $o;
 
