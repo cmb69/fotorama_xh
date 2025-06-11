@@ -23,6 +23,13 @@ namespace Fotorama;
 
 class GalleryListCommand
 {
+    private GalleryService $galleryService;
+
+    public function __construct(GalleryService $galleryService)
+    {
+        $this->galleryService = $galleryService;
+    }
+
     public function execute(): void
     {
         global $sn, $plugin_tx, $_XH_csrfProtection;
@@ -31,8 +38,7 @@ class GalleryListCommand
         $html = '<h1>Fotorama &ndash; ' . $plugin_tx['fotorama']['menu_main']
             . '</h1>'
             . '<ul>';
-        $service = new GalleryService();
-        foreach ($service->findAllGalleries() as $gallery) {
+        foreach ($this->galleryService->findAllGalleries() as $gallery) {
             $html .= '<li><a href="' . XH_hsc($url . $gallery) . '">'
                 . $gallery . '</a></li>';
         }
@@ -65,8 +71,7 @@ class GalleryListCommand
     protected function renderImageFolderSelectOptions(): string
     {
         $html = '';
-        $service = new GalleryService();
-        foreach ($service->findImageFolders() as $folder) {
+        foreach ($this->galleryService->findImageFolders() as $folder) {
             $html .= '<option>' . $folder . '</option>';
         }
         return $html;

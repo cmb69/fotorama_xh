@@ -48,7 +48,9 @@ class Plugin
 
     public static function galleryListCommand(): GalleryListCommand
     {
-        return new GalleryListCommand();
+        return new GalleryListCommand(
+            new GalleryService(),
+        );
     }
 
     public static function createGalleryCommand(): CreateGalleryCommand

@@ -70,7 +70,7 @@ class CreateGalleryCommand
         } else {
             $o .= $messages;
             ob_start();
-            (new GalleryListCommand())->execute();
+            (new GalleryListCommand(new GalleryService()))->execute();
             $o .= ob_get_clean();
         }
     }
