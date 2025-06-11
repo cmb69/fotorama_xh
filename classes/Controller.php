@@ -25,6 +25,20 @@ use Plib\View;
 
 class Controller
 {
+    public static function createGalleryCommand(): CreateGalleryCommand
+    {
+        global $pth, $plugin_tx;
+        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
+        return new CreateGalleryCommand($view);
+    }
+
+    public static function saveGalleryCommand(): SaveGalleryCommand
+    {
+        global $pth, $plugin_tx;
+        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
+        return new SaveGalleryCommand($view);
+    }
+
     public function dispatch(): void
     {
         if (XH_ADM) { // @phpstan-ignore-line
@@ -84,17 +98,11 @@ class Controller
 
     protected function createGallery(): void
     {
-        global $pth, $plugin_tx;
-        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-        $command = new CreateGalleryCommand($view);
-        $command->execute();
+        self::createGalleryCommand()->execute();
     }
 
     protected function saveGallery(): void
     {
-        global $pth, $plugin_tx;
-        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-        $command = new SaveGalleryCommand($view);
-        $command->execute();
+        self::saveGalleryCommand()->execute();
     }
 }
