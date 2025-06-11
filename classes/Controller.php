@@ -41,46 +41,40 @@ class Controller
 
     public function dispatch(): void
     {
+        global $admin, $action, $o;
         if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(true);
             if (XH_wantsPluginAdministration('fotorama')) {
-                $this->handleAdministration();
-            }
-        }
-    }
-
-    protected function handleAdministration(): void
-    {
-        global $admin, $action, $o;
-
-        $o .= print_plugin_admin('on');
-        switch ($admin) {
-            case '':
-                ob_start();
-                (new PluginInfoCommand())->execute();
-                $o .= ob_get_clean();
-                break;
-            case 'plugin_main':
-                switch ($action) {
-                    case 'create':
-                        self::createGalleryCommand()->execute();
-                        break;
-                    case 'edit':
+                $o .= print_plugin_admin('on');
+                switch ($admin) {
+                    case '':
                         ob_start();
-                        (new GalleryEditorCommand())->execute();
+                        (new PluginInfoCommand())->execute();
                         $o .= ob_get_clean();
                         break;
-                    case 'save':
-                        self::saveGalleryCommand()->execute();
+                    case 'plugin_main':
+                        switch ($action) {
+                            case 'create':
+                                self::createGalleryCommand()->execute();
+                                break;
+                            case 'edit':
+                                ob_start();
+                                (new GalleryEditorCommand())->execute();
+                                $o .= ob_get_clean();
+                                break;
+                            case 'save':
+                                self::saveGalleryCommand()->execute();
+                                break;
+                            default:
+                                ob_start();
+                                (new GalleryListCommand())->execute();
+                                $o .= ob_get_clean();
+                        }
                         break;
                     default:
-                        ob_start();
-                        (new GalleryListCommand())->execute();
-                        $o .= ob_get_clean();
+                        $o .= plugin_admin_common();
                 }
-                break;
-            default:
-                $o .= plugin_admin_common();
+            }
         }
     }
 }
