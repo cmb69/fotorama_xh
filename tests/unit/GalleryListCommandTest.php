@@ -19,14 +19,10 @@ class GalleryListCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        global $plugin_tx, $_XH_csrfProtection;
-        $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
-        $_XH_csrfProtection = $this->createStub(CSRFProtection::class);
-        $_XH_csrfProtection->method("tokenInput")->willReturn('<input type="hidden" name="csrf_token" value="1234">');
         $this->galleryService = $this->createStub(GalleryService::class);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
-        $this->view = new View("./views/", $plugin_tx["fotorama"]);
+        $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
     }
 
     private function sut(): GalleryListCommand
