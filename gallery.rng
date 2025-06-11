@@ -3,18 +3,26 @@
   <attribute name="path"/>
   <optional>
     <attribute name="width"/>
+  </optional>
+  <optional>
     <attribute name="ratio"/>
+  </optional>
+  <optional>
     <attribute name="nav">
       <choice>
         <value>thumbs</value>
       </choice>
     </attribute>
+  </optional>
+  <optional>
     <attribute name="fullscreen">
       <choice>
         <value>true</value>
         <value>native</value>
       </choice>
     </attribute>
+  </optional>
+  <optional>
     <attribute name="transition">
       <choice>
         <value>slide</value>
