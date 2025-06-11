@@ -7,7 +7,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $url
- * @var list<string> $galleries
+ * @var list<object{name:string,url:string}> $galleries
  * @var string $action
  * @var string $token
  * @var list<string> $folders
@@ -17,7 +17,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <h1>Fotorama – <?=$this->text("menu_main")?></h1>
 <ul>
 <?foreach ($galleries as $gallery):?>
-  <li><a href="<?=$this->esc($url . $gallery)?>"><?=$this->esc($gallery)?></a></li>
+  <li><a href="<?=$this->esc($gallery->url)?>"><?=$this->esc($gallery->name)?></a></li>
 <?endforeach?>
 </ul>
 <form action="<?=$this->esc($action)?>" method="post">

@@ -47,7 +47,7 @@ class GalleryAdminCommand
     {
         switch ($request->get("action") ?? $request->post("action")) {
             default:
-                return $this->overview();
+                return $this->overview($request);
             case "create":
                 return $this->create($request);
             case "edit":
@@ -57,21 +57,31 @@ class GalleryAdminCommand
         }
     }
 
-    private function overview(): Response
+    private function overview(Request $request): Response
     {
-        return Response::create($this->renderOverview());
+        return Response::create($this->renderOverview($request));
     }
 
-    private function renderOverview(): string
+    private function renderOverview(Request $request): string
     {
-        global $sn;
         return $this->view->render("overview", [
-            "url" => $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=',
-            "galleries" => $this->galleryService->findAllGalleries(),
-            "action" => $sn . '?&fotorama',
+            "galleries" => $this->galleryDtos($request),
+            "action" => $request->url()->page("fotorama")->relative(),
             "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
         ]);
+    }
+
+    /** @return iterable<object{name:string,url:string}> */
+    private function galleryDtos(Request $request): iterable
+    {
+        $url = $request->url()->page("fotorama")->with("admin", "plugin_main")->with("action", "edit");
+        foreach ($this->galleryService->findAllGalleries() as $gallery) {
+            yield (object) [
+                "name" => $gallery,
+                "url" => $url->with("fotorama_gallery", $gallery)->relative(),
+            ];
+        }
     }
 
     private function create(Request $request): Response
@@ -110,7 +120,7 @@ class GalleryAdminCommand
             $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
             return Response::redirect($url->absolute());
         } else {
-            return Response::create($messages . $this->renderOverview());
+            return Response::create($messages . $this->renderOverview($request));
         }
     }
 
@@ -126,11 +136,10 @@ class GalleryAdminCommand
 
     private function renderEditor(Request $request): string
     {
-        global $sn;
         $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
         return $this->view->render("editor", [
             "name" => $name,
-            "action" => $sn . '?&fotorama',
+            "action" => $request->url()->page("fotorama")->relative(),
             "token" => $this->csrfProtector->token(),
             "xml" => $this->galleryService->findGalleryXML($name),
         ]);
