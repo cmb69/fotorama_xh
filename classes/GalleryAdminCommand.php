@@ -153,7 +153,7 @@ class GalleryAdminCommand
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
-        $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
+        $name = $this->sanitizeName($request->post("fotorama_gallery") ?? "");
         $text = $request->post("fotorama_text") ?? "";
         if ($this->conf["xml_auto_validate"] && !$this->validate($text)) {
             $error = $this->view->message("warning", "message_invalid_xml");
