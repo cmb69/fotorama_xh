@@ -24,6 +24,7 @@ namespace Fotorama;
 use DOMDocument;
 use Plib\CsrfProtector;
 use Plib\Request;
+use Plib\Response;
 use Plib\View;
 
 class SaveGalleryCommand
@@ -42,12 +43,12 @@ class SaveGalleryCommand
         $this->view = $view;
     }
 
-    public function execute(Request $request): void
+    public function execute(Request $request): Response
     {
         global $plugin_cf, $o;
 
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
-            return;
+            return Response::error(403);
         }
         $messages = '';
         $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
@@ -60,12 +61,12 @@ class SaveGalleryCommand
             $messages .= $this->view->message("fail", "message_cant_save", $filename);
         }
         if (!$messages) {
-            $this->relocate('?&fotorama&admin=plugin_main&action=plugin_text');
+            return Response::redirect($request->url()->without("action")->absolute());
         } else {
             $o .= $messages;
             ob_start();
             Plugin::galleryEditorCommand()->execute();
-            $o .= ob_get_clean();
+            return Response::create(ob_get_clean());
         }
     }
 
@@ -78,11 +79,5 @@ class SaveGalleryCommand
     private function sanitizeName(string $name): string
     {
         return preg_replace('/[^a-z0-9-]/', '', $name);
-    }
-
-    private function relocate(string $url): void
-    {
-        header('Location: ' . CMSIMPLE_URL . $url);
-        exit();
     }
 }
