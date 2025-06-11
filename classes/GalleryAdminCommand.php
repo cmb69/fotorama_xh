@@ -45,15 +45,19 @@ class GalleryAdminCommand
 
     public function execute(): Response
     {
-        global $sn;
+        return Response::create($this->renderOverview());
+    }
 
-        return Response::create($this->view->render("overview", [
+    private function renderOverview(): string
+    {
+        global $sn;
+        return $this->view->render("overview", [
             "url" => $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=',
             "galleries" => $this->galleryService->findAllGalleries(),
             "action" => $sn . '?&fotorama',
             "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
-        ]));
+        ]);
     }
 
     public function create(Request $request): Response
@@ -92,7 +96,7 @@ class GalleryAdminCommand
             $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
             return Response::redirect($url->absolute());
         } else {
-            return Response::create($messages . $this->execute()->output());
+            return Response::create($messages . $this->renderOverview());
         }
     }
 
@@ -103,19 +107,23 @@ class GalleryAdminCommand
 
     public function edit(): Response
     {
-        global $sn;
+        return Response::create($this->renderEditor());
+    }
 
+    private function renderEditor(): string
+    {
+        global $sn;
         if (isset($_GET['fotorama_gallery'])) {
             $name = $this->sanitizeName($_GET['fotorama_gallery']);
         } else {
             $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
-        return Response::create($this->view->render("editor", [
+        return $this->view->render("editor", [
             "name" => $name,
             "action" => $sn . '?&fotorama',
             "token" => $this->csrfProtector->token(),
             "xml" => $this->galleryService->findGalleryXML($name),
-        ]));
+        ]);
     }
 
     public function save(Request $request): Response
@@ -138,7 +146,7 @@ class GalleryAdminCommand
         if (!$messages) {
             return Response::redirect($request->url()->without("action")->absolute());
         } else {
-            return Response::create($messages . $this->edit()->output());
+            return Response::create($messages . $this->renderEditor());
         }
     }
 
