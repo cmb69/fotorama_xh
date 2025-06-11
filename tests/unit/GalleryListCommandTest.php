@@ -5,6 +5,7 @@ namespace Fotorama;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
+use Plib\CsrfProtector;
 use Plib\View;
 use XH\CSRFProtection;
 
@@ -12,6 +13,8 @@ class GalleryListCommandTest extends TestCase
 {
     /** @var GalleryService&Stub */
     private $galleryService;
+    /** @var CsrfProtector&Stub */
+    private $csrfProtector;
     private View $view;
 
     protected function setUp(): void
@@ -21,12 +24,14 @@ class GalleryListCommandTest extends TestCase
         $_XH_csrfProtection = $this->createStub(CSRFProtection::class);
         $_XH_csrfProtection->method("tokenInput")->willReturn('<input type="hidden" name="csrf_token" value="1234">');
         $this->galleryService = $this->createStub(GalleryService::class);
+        $this->csrfProtector = $this->createStub(CsrfProtector::class);
+        $this->csrfProtector->method("token")->willReturn("1234");
         $this->view = new View("./views/", $plugin_tx["fotorama"]);
     }
 
     private function sut(): GalleryListCommand
     {
-        return new GalleryListCommand($this->galleryService, $this->view);
+        return new GalleryListCommand($this->galleryService, $this->csrfProtector, $this->view);
     }
 
     public function testRendersOverview(): void

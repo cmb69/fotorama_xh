@@ -21,28 +21,34 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\CsrfProtector;
 use Plib\View;
 
 class GalleryListCommand
 {
     private GalleryService $galleryService;
+    private CsrfProtector $csrfProtector;
     private View $view;
 
-    public function __construct(GalleryService $galleryService, View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        CsrfProtector $csrfProtector,
+        View $view
+    ) {
         $this->galleryService = $galleryService;
+        $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
 
     public function execute(): void
     {
-        global $sn, $_XH_csrfProtection;
+        global $sn;
 
         echo $this->view->render("overview", [
             "url" => $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=',
             "galleries" => $this->galleryService->findAllGalleries(),
             "action" => $sn . '?&fotorama',
-            "token_input" => $_XH_csrfProtection->tokenInput(),
+            "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
         ]);
     }

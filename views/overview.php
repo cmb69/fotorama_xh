@@ -7,7 +7,7 @@ use Plib\View;
  * @var string $url
  * @var list<string> $galleries
  * @var string $action
- * @var string $token_input
+ * @var string $token
  * @var list<string> $folders
  */
 ?>
@@ -19,7 +19,7 @@ use Plib\View;
 <?endforeach?>
 </ul>
 <form action="<?=$this->esc($action)?>" method="post">
-<?=$this->raw($token_input)?>
+<input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
 <input type="hidden" name="admin" value="plugin_main">
 <fieldset>
   <legend><?=$this->text("label_create_gallery")?></legend>
