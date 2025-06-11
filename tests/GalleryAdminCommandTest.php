@@ -11,7 +11,6 @@ use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
 {
-    private array $conf;
     /** @var GalleryService&Stub */
     private $galleryService;
     /** @var CsrfProtector&Stub */
@@ -20,8 +19,6 @@ class GalleryAdminCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
-        $this->conf["xml_auto_validate"] = "";
         $this->galleryService = $this->createStub(GalleryService::class);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
@@ -30,7 +27,7 @@ class GalleryAdminCommandTest extends TestCase
 
     private function sut(): GalleryAdminCommand
     {
-        return new GalleryAdminCommand($this->conf, $this->galleryService, $this->csrfProtector, $this->view);
+        return new GalleryAdminCommand($this->galleryService, $this->csrfProtector, $this->view);
     }
 
     public function testRendersOverview(): void
@@ -139,7 +136,12 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->galleryService->method("saveGalleryXML")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
-        $request = new FakeRequest(["url" => "http://example.com/?&action=save"]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=save",
+            "post" => [
+                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
+            ],
+        ]);
         $response = $this->sut()($request);
         $this->assertSame("http://example.com/", $response->location());
     }
@@ -152,12 +154,28 @@ class GalleryAdminCommandTest extends TestCase
         $this->assertSame(403, $response->status());
     }
 
+    public function testReportsInvalidXML(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
+            "post" => [
+                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
+            ]
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Invalid XML!", $response->output());
+    }
+
     public function testReportsFailureToSave(): void
     {
         $this->galleryService->method("saveGalleryXML")->willReturn(false);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
+            "post" => [
+                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
+            ]
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Can't save &quot;&quot;!", $response->output());

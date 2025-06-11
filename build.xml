@@ -14,7 +14,7 @@
             <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --colors classes admin.php index.php tests"/>
         </exec>
         <exec executable="phpcs" passthru="true" checkreturn="true">
-            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --exclude=Generic.Files.LineLength config languages"/>
+            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --exclude=Generic.Files.LineLength languages"/>
         </exec>
     </target>
 
@@ -82,7 +82,7 @@
             </fileset>
         </move>
         <delete dir="export"/>
-        <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
+        <!-- <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/> -->
         <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
         <zip destfile="Fotorama_XH-1.0beta2.zip" basedir="dist" prefix="fotorama/"/>
         <delete dir="dist"/>

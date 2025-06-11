@@ -46,7 +46,7 @@ The installation is done as with many other CMSimple_XH plugins.
 1. Unzip the distribution on your computer.
 1. Upload the whole directory `fotorama/` to your server into
    the `plugins/` directory of CMSimple_XH.
-1. Set write permissions for the subdirectories `cache/`, `config/`, `css/` and
+1. Set write permissions for the subdirectories `cache/`, <!-- `config/`, --> `css/` and
    `languages/`.
 
 ## Settings
@@ -55,9 +55,11 @@ The configuration of the plugin is done as with many other CMSimple_XH
 plugins in the back-end of the Website.
 Go to `Plugins` → `Fotorama`.
 
+<!--
 You can change the default settings of Fotorama_XH under `Config`.
 Hints for the options will be displayed
 when hovering over the help icon with your mouse.
+-->
 
 Localization is done under `Language`.
 You can translate the character strings to your own language,
@@ -134,9 +136,8 @@ The following attributes are supported:
   that differ only slightly;
   otherwise `crossfade` is preferable.
 
-When the file is saved, it is automatically validated against the DTD.
-That does not work if your working offline;
-in this case you can disable the automatic validation in the plugin configuration.
+When the file is saved, it is automatically validated against the RelaxNG schema
+(`gallery.rng`).
 
 ### External images
 

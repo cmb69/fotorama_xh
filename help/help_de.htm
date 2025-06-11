@@ -56,11 +56,15 @@
 <li>Sichern Sie die Daten auf Ihrem Server.</li>
 <li>Entpacken Sie die ZIP-Datei auf Ihrem Rechner.</li>
 <li>Laden Sie das ganze Verzeichnis <code>fotorama/</code> auf Ihren Server in das Plugin-Verzeichnis von CMSimple_XH hoch.</li>
-<li>Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse <code>cache/</code>, <code>config/</code>, <code>css/</code> und <code>languages/</code>.</li>
+<li>Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse <code>cache/</code>, <!-- `config/`, --> <code>css/</code> und <code>languages/</code>.</li>
 </ol>
 <h2 id="einstellungen">Einstellungen</h2>
 <p>Die Plugin-Konfiguration erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch im Administrationsbereich der Website. Gehen Sie zu <code>Plugins</code> → <code>Fotorama</code>.</p>
-<p>Sie können die Voreinstellungen von Fotorama_XH unter <code>Konfiguration</code> ändern. Beim Überfahren der Hilfe-Icons mit der Maus werden Hinweise zu den Einstellungen angezeigt.</p>
+<!--
+Sie können die Voreinstellungen von Fotorama_XH unter `Konfiguration` ändern.
+Beim Überfahren der Hilfe-Icons mit der Maus
+werden Hinweise zu den Einstellungen angezeigt.
+-->
 <p>Die Lokalisierung wird unter <code>Sprache</code> vorgenommen. Sie können die Sprachtexte in Ihre eigene Sprache übersetzen, falls keine entsprechende Sprachdatei zur Verfügung steht, oder diese Ihren Wünschen gemäß anpassen.</p>
 <p>Das Aussehen von Fotorama_XH kann unter <code>Stylesheet</code> angepasst werden.</p>
 <h2 id="verwendung">Verwendung</h2>
@@ -74,7 +78,7 @@
 <li><code>fullscreen</code>: Dies erlaubt dem Besucher in die Vollbildansicht zu wechseln. Wählen Sie entweder <code>true</code>, was die Vollbildansicht auf das Browserfenster beschränkt, aber auch in älteren Browsern funktioniert, oder <code>native</code>, was den gesamten Bildschirm verwendet, wenn vom Browser unterstützt.</li>
 <li><code>transition</code>: Entweder <code>slide</code> (die Voreinstellung, wenn das Attribut ausgelassen wird), <code>crossfade</code> oder <code>dissolve</code>. Letzteres ist vermutlich nur dann sinnvoll, wenn Sie Bilder haben, die sich nur leicht unterscheiden; ansonsten ist <code>crossfade</code> vorzuziehen.</li>
 </ul>
-<p>Wird die Datei gespeichert, wird sie automatisch gegen die DTD validiert. Das funktioniert nicht, wenn Sie offline arbeiten. In diesem Fall können Sie die automatische Validierung in der Konfiguration des Plugins deaktivieren.</p>
+<p>Wird die Datei gespeichert, wird sie automatisch gegen das RelaxNG Schema validiert (<code>gallery.rng</code>).</p>
 <h3 id="externe-bilder">Externe Bilder</h3>
 <p>Es ist ebenfalls möglich externe Bilder (d.h. Bilder außerhalb von Ihrem Bilderordner) durch Angabe der vollständig qualifizierten URL des Bildes als <code>path</code> des <code>&lt;pic&gt;</code> Elements anzuzeigen. Wie in diesem Fall üblich ist zu beachten, dass beispielsweise das Bild nicht verfügbar ist, und unter Umständen rechtliche Einschränkungen gelten. Beachten Sie, dass für externe Bilder keine Vorschaubilder generiert werden, sondern statt dessen ein Standard-Vorschaubild angezeigt wird, das Sie durch Ersetzen von <code>plugins/fotorama/images/external.jpg</code> mit einem Bild Ihrer Wahl ändern können.</p>
 <p>Sie können externe Bilder und Bilder im Gallerieordner beliebig mischen.</p>

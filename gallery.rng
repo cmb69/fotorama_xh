@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element name="gallery" xmlns="http://relaxng.org/ns/structure/1.0">
+  <attribute name="path"/>
+  <optional>
+    <attribute name="width"/>
+    <attribute name="ratio"/>
+    <attribute name="nav">
+      <choice>
+        <value>thumbs</value>
+      </choice>
+    </attribute>
+    <attribute name="fullscreen">
+      <choice>
+        <value>true</value>
+        <value>native</value>
+      </choice>
+    </attribute>
+    <attribute name="transition">
+      <choice>
+        <value>slide</value>
+        <value>crossfade</value>
+        <value>dissolve</value>
+      </choice>
+    </attribute>
+  </optional>
+  <zeroOrMore>
+    <element name="pic">
+      <attribute name="path"/>
+      <optional>
+        <attribute name="caption"/>
+      </optional>
+    </element>
+  </zeroOrMore>
+</element>

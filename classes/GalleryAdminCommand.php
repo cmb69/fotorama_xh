@@ -29,20 +29,15 @@ use Plib\View;
 
 class GalleryAdminCommand
 {
-    /** @var array<string,string> */
-    private array $conf;
     private GalleryService $galleryService;
     private CsrfProtector $csrfProtector;
     private View $view;
 
-    /** @param array<string,string> $conf */
     public function __construct(
-        array $conf,
         GalleryService $galleryService,
         CsrfProtector $csrfProtector,
         View $view
     ) {
-        $this->conf = $conf;
         $this->galleryService = $galleryService;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
@@ -97,9 +92,6 @@ class GalleryAdminCommand
         $name = $request->post("fotorama_gallery");
         $path = $request->post("fotorama_folder");
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
-            . '<!DOCTYPE gallery SYSTEM' . PHP_EOL
-            . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
-            . PHP_EOL
             . '<gallery path="' . $path . '">' . PHP_EOL;
         if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
@@ -155,7 +147,7 @@ class GalleryAdminCommand
         }
         $name = $this->sanitizeName($request->post("fotorama_gallery") ?? "");
         $text = $request->post("fotorama_text") ?? "";
-        if ($this->conf["xml_auto_validate"] && !$this->validate($text)) {
+        if (!$this->validate($text)) {
             $error = $this->view->message("warning", "message_invalid_xml");
             return Response::create($error . $this->renderOverview($request));
         }
@@ -170,7 +162,7 @@ class GalleryAdminCommand
     private function validate(string $xml): bool
     {
         $doc = new DOMDocument();
-        return $doc->loadXML($xml) && $doc->validate();
+        return @$doc->loadXML($xml) && @$doc->relaxNGValidate(__DIR__ . "/../gallery.rng");
     }
 
     private function sanitizeName(string $name): string
