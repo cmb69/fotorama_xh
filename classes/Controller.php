@@ -45,7 +45,9 @@ class Controller
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $o .= $this->render(new PluginInfoCommand());
+                ob_start();
+                (new PluginInfoCommand())->execute();
+                $o .= ob_get_clean();
                 break;
             case 'plugin_main':
                 $this->handleMainAction();
@@ -64,21 +66,18 @@ class Controller
                 $this->createGallery();
                 break;
             case 'edit':
-                $o .= $this->render(new GalleryEditorCommand());
+                ob_start();
+                (new GalleryEditorCommand())->execute();
+                $o .= ob_get_clean();
                 break;
             case 'save':
                 $this->saveGallery();
                 break;
             default:
-                $o .= $this->render(new GalleryListCommand());
+                ob_start();
+                (new GalleryListCommand())->execute();
+                $o .= ob_get_clean();
         }
-    }
-
-    protected function render(Command $command): string
-    {
-        ob_start();
-        $command->execute();
-        return ob_get_clean();
     }
 
     protected function createGallery(): void

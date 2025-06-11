@@ -21,7 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
-class GalleryEditorCommand extends Command
+class GalleryEditorCommand
 {
     public function execute(): void
     {
@@ -44,5 +44,10 @@ class GalleryEditorCommand extends Command
             . '<button name="action" value="save">'
             . $plugin_tx['fotorama']['label_save'] . '</button>'
             . '</form>';
+    }
+
+    private function sanitizeName(string $name): string
+    {
+        return preg_replace('/[^a-z0-9-]/', '', $name);
     }
 }

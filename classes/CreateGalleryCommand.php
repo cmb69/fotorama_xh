@@ -21,7 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
-class CreateGalleryCommand extends Command
+class CreateGalleryCommand
 {
     public function execute(): void
     {
@@ -75,12 +75,21 @@ class CreateGalleryCommand extends Command
                 '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=' . $name
             );
         } else {
-            $o .= $messages . $this->render(new GalleryListCommand());
+            $o .= $messages;
+            ob_start();
+            (new GalleryListCommand())->execute();
+            $o .= ob_get_clean();
         }
     }
 
     protected function isValidName(string $name): bool
     {
         return preg_match('/^[a-z0-9-]+$/', $name);
+    }
+
+    private function relocate(string $url): void
+    {
+        header('Location: ' . CMSIMPLE_URL . $url);
+        exit();
     }
 }

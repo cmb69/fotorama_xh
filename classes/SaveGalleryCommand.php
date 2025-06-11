@@ -23,7 +23,7 @@ namespace Fotorama;
 
 use DOMDocument;
 
-class SaveGalleryCommand extends Command
+class SaveGalleryCommand
 {
     public function execute(): void
     {
@@ -50,7 +50,10 @@ class SaveGalleryCommand extends Command
         if (!$messages) {
             $this->relocate('?&fotorama&admin=plugin_main&action=plugin_text');
         } else {
-            $o .= $messages . $this->render(new GalleryEditorCommand());
+            $o .= $messages;
+            ob_start();
+            (new GalleryEditorCommand())->execute();
+            $o .= ob_get_clean();
         }
     }
 
@@ -58,5 +61,16 @@ class SaveGalleryCommand extends Command
     {
         $doc = new DOMDocument();
         return $doc->loadXML($xml) && $doc->validate();
+    }
+
+    private function sanitizeName(string $name): string
+    {
+        return preg_replace('/[^a-z0-9-]/', '', $name);
+    }
+
+    private function relocate(string $url): void
+    {
+        header('Location: ' . CMSIMPLE_URL . $url);
+        exit();
     }
 }
