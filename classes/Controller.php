@@ -56,7 +56,7 @@ class Controller
 
     protected function handleAdministration(): void
     {
-        global $admin, $o;
+        global $admin, $action, $o;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
@@ -66,33 +66,26 @@ class Controller
                 $o .= ob_get_clean();
                 break;
             case 'plugin_main':
-                $this->handleMainAction();
+                switch ($action) {
+                    case 'create':
+                        self::createGalleryCommand()->execute();
+                        break;
+                    case 'edit':
+                        ob_start();
+                        (new GalleryEditorCommand())->execute();
+                        $o .= ob_get_clean();
+                        break;
+                    case 'save':
+                        self::saveGalleryCommand()->execute();
+                        break;
+                    default:
+                        ob_start();
+                        (new GalleryListCommand())->execute();
+                        $o .= ob_get_clean();
+                }
                 break;
             default:
                 $o .= plugin_admin_common();
-        }
-    }
-
-    protected function handleMainAction(): void
-    {
-        global $action, $o;
-
-        switch ($action) {
-            case 'create':
-                self::createGalleryCommand()->execute();
-                break;
-            case 'edit':
-                ob_start();
-                (new GalleryEditorCommand())->execute();
-                $o .= ob_get_clean();
-                break;
-            case 'save':
-                self::saveGalleryCommand()->execute();
-                break;
-            default:
-                ob_start();
-                (new GalleryListCommand())->execute();
-                $o .= ob_get_clean();
         }
     }
 }
