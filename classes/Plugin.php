@@ -76,6 +76,7 @@ class Plugin
     {
         return new SaveGalleryCommand(
             new GalleryService(),
+            new CsrfProtector(),
             self::view()
         );
     }

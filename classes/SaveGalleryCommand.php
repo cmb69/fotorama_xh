@@ -22,27 +22,33 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use DOMDocument;
+use Plib\CsrfProtector;
 use Plib\Request;
 use Plib\View;
 
 class SaveGalleryCommand
 {
     private GalleryService $galleryService;
+    private CsrfProtector $csrfProtector;
     private View $view;
 
     public function __construct(
         GalleryService $galleryService,
+        CsrfProtector $csrfProtector,
         View $view
     ) {
         $this->galleryService = $galleryService;
+        $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
 
     public function execute(Request $request): void
     {
-        global $plugin_cf, $_XH_csrfProtection, $o;
+        global $plugin_cf, $o;
 
-        $_XH_csrfProtection->check();
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return;
+        }
         $messages = '';
         $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
         $text = $request->post("fotorama_text") ?? "";
