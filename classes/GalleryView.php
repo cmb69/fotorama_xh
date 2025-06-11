@@ -28,6 +28,7 @@ use SimpleXMLElement;
 class GalleryView
 {
     private string $pluginFolder;
+    private string $imageFolder;
     private GalleryService $galleryService;
     private Jquery $jquery;
     private View $view;
@@ -35,11 +36,13 @@ class GalleryView
 
     public function __construct(
         string $pluginFolder,
+        string $imageFolder,
         GalleryService $galleryService,
         Jquery $jquery,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
+        $this->imageFolder = $imageFolder;
         $this->galleryService = $galleryService;
         $this->jquery = $jquery;
         $this->view = $view;
@@ -98,15 +101,13 @@ class GalleryView
 
     private function renderPictures(SimpleXMLElement $gallery): string
     {
-        global $pth;
-
         $html = '';
         foreach ($gallery->pic as $pic) {
             $caption = XH_hsc(isset($pic['caption']) ? $pic['caption'] : '');
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic['path'])) {
                 $filename = $pic['path'];
             } else {
-                $filename = $pth['folder']['images'] . $gallery['path'] . '/'
+                $filename = $this->imageFolder . $gallery['path'] . '/'
                     . $pic['path'];
             }
             if (isset($gallery['nav'])) {

@@ -33,6 +33,7 @@ class Plugin
         global $pth;
         return new GalleryView(
             $pth["folder"]["plugins"] . "fotorama/",
+            $pth["folder"]["images"],
             new GalleryService(),
             new Jquery($pth["folder"]["plugins"] . "jquery/"),
             self::view()
