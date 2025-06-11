@@ -32,8 +32,8 @@ class CreateGalleryCommand extends Command
 
         $_XH_csrfProtection->check();
         $messages = '';
-        $name = stsl($_POST['fotorama_gallery']);
-        $path = stsl($_POST['fotorama_folder']);
+        $name = $_POST['fotorama_gallery'];
+        $path = $_POST['fotorama_folder'];
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
             . '<!DOCTYPE gallery SYSTEM' . PHP_EOL
             . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'

@@ -31,19 +31,17 @@ class GalleryEditorCommand extends Command
         global $sn, $plugin_tx, $_XH_csrfProtection;
 
         if (isset($_GET['fotorama_gallery'])) {
-            $name = $this->sanitizeName(stsl($_GET['fotorama_gallery']));
+            $name = $this->sanitizeName($_GET['fotorama_gallery']);
         } else {
-            $name = $this->sanitizeName(stsl($_POST['fotorama_gallery']));
+            $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
         $service = new GalleryService();
         $contents = $service->findGalleryXML($name);
         echo '<h1>Fotorama &ndash; "' . $name . '"</h1>'
             . '<form action="' . $sn . '?&amp;fotorama" method="post">'
             . $_XH_csrfProtection->tokenInput()
-            . tag('input type="hidden" name="admin" value="plugin_main"')
-            . tag(
-                'input type="hidden" name="fotorama_gallery" value="' . $name . '"'
-            )
+            . '<input type="hidden" name="admin" value="plugin_main">'
+            . '<input type="hidden" name="fotorama_gallery" value="' . $name . '">'
             . '<textarea rows="25" cols="80" class="xh_file_edit"'
             . ' name="fotorama_text">' . XH_hsc($contents) . '</textarea>'
             . '<button name="action" value="save">'

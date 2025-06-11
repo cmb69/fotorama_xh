@@ -31,11 +31,9 @@ class PluginInfoCommand extends Command
         global $pth, $plugin_tx;
 
         echo '<h1>Fotorama</h1>'
-            . tag(
-                'img src="' . $pth['folder']['plugins'] . 'fotorama/fotorama.png"'
+            . '<img src="' . $pth['folder']['plugins'] . 'fotorama/fotorama.png"'
                 . ' class="fotorama_logo" alt="'
-                . $plugin_tx['fotorama']['alt_logo'] . '"'
-            )
+                . $plugin_tx['fotorama']['alt_logo'] . '">'
             . '<p>Version: ' . FOTORAMA_VERSION . '</p>'
             . '<p>Codeeditor_XH is powered by <a href="http://fotorama.io/">'
             . 'Fotorama</a>.</p>'

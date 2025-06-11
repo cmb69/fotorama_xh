@@ -42,11 +42,11 @@ class GalleryListCommand extends Command
         $html .= '</ul>'
             . '<form action="' . $sn . '?&amp;fotorama" method="post">'
             . $_XH_csrfProtection->tokenInput()
-            . tag('input type="hidden" name="admin" value="plugin_main"')
+            . '<input type="hidden" name="admin" value="plugin_main">'
             . '<fieldset><legend>' . $plugin_tx['fotorama']['label_create_gallery']
             . '</legend>'
             . '<p><label>' . $plugin_tx['fotorama']['label_name'] . ' '
-            . tag('input type="text" name="fotorama_gallery"')
+            . '<input type="text" name="fotorama_gallery">'
             . '</label></p>'
             . '<p><label>' . $plugin_tx['fotorama']['label_folder'] . ' '
             . $this->renderImageFolderSelect()

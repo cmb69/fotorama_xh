@@ -74,10 +74,8 @@ class GalleryView
 
         include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
         include_jquery();
-        $hjs .= tag(
-            'link rel="stylesheet" type="text/css" href="'
-            . $pth['folder']['plugins'] . 'fotorama/lib/fotorama.css"'
-        );
+        $hjs .= '<link rel="stylesheet" type="text/css" href="'
+            . $pth['folder']['plugins'] . 'fotorama/lib/fotorama.css">';
         include_jqueryplugin(
             'fotorama',
             $pth['folder']['plugins'] . 'fotorama/lib/fotorama.js'
@@ -134,10 +132,8 @@ class GalleryView
             } else {
                 $thumbnail = $filename;
             }
-            $html .= tag(
-                'img src="' . $thumbnail . '" data-caption="' . $caption
-                . '" alt="' . $caption . '"'
-            );
+            $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
+                . '" alt="' . $caption . '">';
             if (isset($gallery['nav'])) {
                 $html .= '</a>';
             }
