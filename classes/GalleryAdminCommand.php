@@ -22,6 +22,8 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Plib\CsrfProtector;
+use Plib\Request;
+use Plib\Response;
 use Plib\View;
 
 class GalleryAdminCommand
@@ -51,5 +53,55 @@ class GalleryAdminCommand
             "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
         ]);
+    }
+
+    public function create(Request $request): Response
+    {
+        global $o;
+
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
+        $messages = '';
+        $name = $request->post("fotorama_gallery");
+        $path = $request->post("fotorama_folder");
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
+            . '<!DOCTYPE gallery SYSTEM' . PHP_EOL
+            . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
+            . PHP_EOL
+            . '<gallery path="' . $path . '">' . PHP_EOL;
+        if ($this->galleryService->hasImageFolder($path)) {
+            foreach ($this->galleryService->findImagesIn($path) as $image) {
+                $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
+            }
+        } else {
+            $foldername = $this->galleryService->getImageFoldername($path);
+            $messages .= $this->view->message("warning", "message_no_folder", $foldername);
+        }
+        $xml .= '</gallery>' . PHP_EOL;
+        if (!$this->isValidName($name)) {
+            $messages .= $this->view->message("fail", "message_invalid_name", $name);
+        } else {
+            $filename = $this->galleryService->getImageFoldername($path);
+            if ($this->galleryService->hasGallery($name)) {
+                $messages .= $this->view->message("fail", "message_exists", $filename);
+            } elseif (!$this->galleryService->saveGalleryXML($name, $xml)) {
+                $messages .= $this->view->message("fail", "message_cant_save", $filename);
+            }
+        }
+        if (!$messages) {
+            $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
+            return Response::redirect($url->absolute());
+        } else {
+            $o .= $messages;
+            ob_start();
+            $this->execute();
+            return Response::create(ob_get_clean());
+        }
+    }
+
+    private function isValidName(string $name): bool
+    {
+        return preg_match('/^[a-z0-9-]+$/', $name);
     }
 }

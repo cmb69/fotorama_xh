@@ -6,6 +6,7 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
+use Plib\FakeRequest;
 use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
@@ -37,5 +38,28 @@ class GalleryAdminCommandTest extends TestCase
         $this->sut()->execute();
         $output = ob_get_clean();
         Approvals::verifyHtml($output);
+    }
+
+    public function testRedirectsAfterCreating(): void
+    {
+        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->galleryService->method("saveGalleryXML")->willReturn(true);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "post" => [
+                "fotorama_gallery" => "gallery",
+                "fotorama_folder" => "folder",
+            ],
+        ]);
+        $response = $this->sut()->create($request);
+        $this->assertSame("http://example.com/?&action=edit&fotorama_gallery=gallery", $response->location());
+    }
+
+    public function testCreatingIsCsrfProtected(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(false);
+        $request = new FakeRequest();
+        $response = $this->sut()->create($request);
+        $this->assertSame(403, $response->status());
     }
 }
