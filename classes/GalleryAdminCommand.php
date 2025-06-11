@@ -101,28 +101,27 @@ class GalleryAdminCommand
             . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
             . PHP_EOL
             . '<gallery path="' . $path . '">' . PHP_EOL;
-        if ($this->galleryService->hasImageFolder($path)) {
-            foreach ($this->galleryService->findImagesIn($path) as $image) {
-                $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
-            }
-        } else {
+        if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
             $error = $this->view->message("warning", "message_no_folder", $foldername);
             return Response::create($error . $this->renderOverview($request));
+        }
+        foreach ($this->galleryService->findImagesIn($path) as $image) {
+            $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
         }
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
             $error = $this->view->message("fail", "message_invalid_name", $name);
             return Response::create($error . $this->renderOverview($request));
-        } else {
-            $filename = $this->galleryService->getImageFoldername($path);
-            if ($this->galleryService->hasGallery($name)) {
-                $error = $this->view->message("fail", "message_exists", $filename);
-                return Response::create($error . $this->renderOverview($request));
-            } elseif (!$this->galleryService->saveGalleryXML($name, $xml)) {
-                $error = $this->view->message("fail", "message_cant_save", $filename);
-                return Response::create($error . $this->renderOverview($request));
-            }
+        }
+        $filename = $this->galleryService->getImageFoldername($path);
+        if ($this->galleryService->hasGallery($name)) {
+            $error = $this->view->message("fail", "message_exists", $filename);
+            return Response::create($error . $this->renderOverview($request));
+        }
+        if (!$this->galleryService->saveGalleryXML($name, $xml)) {
+            $error = $this->view->message("fail", "message_cant_save", $filename);
+            return Response::create($error . $this->renderOverview($request));
         }
         $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
         return Response::redirect($url->absolute());
