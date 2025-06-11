@@ -22,30 +22,31 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use DOMDocument;
+use Plib\View;
 
 class SaveGalleryCommand
 {
+    private View $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     public function execute(): void
     {
-        global $plugin_cf, $plugin_tx, $_XH_csrfProtection, $o;
+        global $plugin_cf, $_XH_csrfProtection, $o;
 
         $_XH_csrfProtection->check();
         $messages = '';
         $name = $this->sanitizeName($_POST['fotorama_gallery']);
         $text = $_POST['fotorama_text'];
         if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
-            $messages .= XH_message(
-                'warning',
-                $plugin_tx['fotorama']['message_invalid_xml']
-            );
+            $messages .= $this->view->message("warning", "message_invalid_xml");
         }
         $service = new GalleryService();
         if (!$service->saveGalleryXML($name, $text)) {
-            $messages .= XH_message(
-                'fail',
-                $plugin_tx['fotorama']['message_cant_save'],
-                $service->getGalleryFilename($name)
-            );
+            $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
         }
         if (!$messages) {
             $this->relocate('?&fotorama&admin=plugin_main&action=plugin_text');

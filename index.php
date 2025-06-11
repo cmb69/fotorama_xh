@@ -21,13 +21,15 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 use Fotorama\Controller;
 use Fotorama\GalleryView;
+use Plib\View;
 
 define('FOTORAMA_VERSION', '1.0beta2');
 
 function fotorama(string $name): string
 {
-    $view = new GalleryView($name);
-    return $view->render();
+    global $pth, $plugin_tx;
+    $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
+    return (new GalleryView($view, $name))->render();
 }
 
 $temp = new Controller();

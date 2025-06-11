@@ -21,6 +21,8 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\View;
+
 class Controller
 {
     public function dispatch(): void
@@ -82,13 +84,17 @@ class Controller
 
     protected function createGallery(): void
     {
-        $command = new CreateGalleryCommand();
+        global $pth, $plugin_tx;
+        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
+        $command = new CreateGalleryCommand($view);
         $command->execute();
     }
 
     protected function saveGallery(): void
     {
-        $command = new SaveGalleryCommand();
+        global $pth, $plugin_tx;
+        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
+        $command = new SaveGalleryCommand($view);
         $command->execute();
     }
 }

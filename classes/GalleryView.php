@@ -21,29 +21,26 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\View;
 use SimpleXMLElement;
 
 class GalleryView
 {
+    private View $view;
     protected string $name;
     private static bool $jsEmitted = false;
 
-    public function __construct(string $name)
+    public function __construct(View $view, string $name)
     {
+        $this->view = $view;
         $this->name = $name;
     }
 
     public function render(): string
     {
-        global $plugin_tx;
-
         $service = new GalleryService();
         if (!$service->hasGallery($this->name)) {
-            return XH_message(
-                'fail',
-                $plugin_tx['fotorama']['message_no_gallery'],
-                $this->name
-            );
+            return $this->view->message("fail", "message_no_gallery", $this->name);
         }
         $gallery = $service->findGallery($this->name);
         if (!self::$jsEmitted) {

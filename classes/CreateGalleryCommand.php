@@ -21,11 +21,20 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\View;
+
 class CreateGalleryCommand
 {
+    private View $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     public function execute(): void
     {
-        global $plugin_tx, $o, $_XH_csrfProtection;
+        global $o, $_XH_csrfProtection;
 
         $_XH_csrfProtection->check();
         $messages = '';
@@ -42,32 +51,16 @@ class CreateGalleryCommand
                 $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
             }
         } else {
-            $messages .= XH_message(
-                'warning',
-                $plugin_tx['fotorama']['message_no_folder'],
-                $service->getImageFoldername($path)
-            );
+            $messages .= $this->view->message("warning", "message_no_folder", $service->getImageFoldername($path));
         }
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
-            $messages .= XH_message(
-                'fail',
-                $plugin_tx['fotorama']['message_invalid_name'],
-                $name
-            );
+            $messages .= $this->view->message("fail", "message_invalid_name", $name);
         } else {
             if ($service->hasGallery($name)) {
-                $messages .= XH_message(
-                    'fail',
-                    $plugin_tx['fotorama']['message_exists'],
-                    $service->getGalleryFilename($name)
-                );
+                $messages .= $this->view->message("fail", "message_exists", $service->getGalleryFilename($name));
             } elseif (!$service->saveGalleryXML($name, $xml)) {
-                $messages .= XH_message(
-                    'fail',
-                    $plugin_tx['fotorama']['message_cant_save'],
-                    $service->getGalleryFilename($name)
-                );
+                $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
             }
         }
         if (!$messages) {
