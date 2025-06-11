@@ -2,5 +2,4 @@
 <phive xmlns="https://phar.io/phive">
   <phar name="phing" version="^3.0" installed="3.0.1" location="./tools/phing" copy="false"/>
   <phar name="phpcs" version="^3.5.8" installed="3.13.0" location="./tools/phpcs" copy="false"/>
-  <phar name="phpunit" version="^8.5.14" installed="8.5.42" location="./tools/phpunit" copy="false"/>
 </phive>
