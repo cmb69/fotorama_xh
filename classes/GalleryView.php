@@ -30,6 +30,7 @@ class GalleryView
     private string $pluginFolder;
     private string $imageFolder;
     private GalleryService $galleryService;
+    private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
     private bool $jsEmitted = false;
@@ -38,12 +39,14 @@ class GalleryView
         string $pluginFolder,
         string $imageFolder,
         GalleryService $galleryService,
+        ThumbnailService $thumbnailService,
         Jquery $jquery,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->imageFolder = $imageFolder;
         $this->galleryService = $galleryService;
+        $this->thumbnailService = $thumbnailService;
         $this->jquery = $jquery;
         $this->view = $view;
     }
@@ -114,7 +117,7 @@ class GalleryView
                 if ($isAbsoluteUrl) {
                     $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
-                    $thumbnail = $this->makeThumbnail($filename, 64);
+                    $thumbnail = $this->thumbnailService->makeThumbnail($filename, 64);
                 }
                 $html .= "<a href=\"$filename\" data-caption=\"$caption\">";
             } else {
@@ -132,38 +135,5 @@ class GalleryView
     private function isAbsoluteUrl(string $url): bool
     {
         return strpos($url, '://') !== false;
-    }
-
-    protected function makeThumbnail(string $path, int $size): string
-    {
-        global $pth;
-
-        $md5 = md5($path);
-        $thumb = $pth['folder']['plugins'] . 'fotorama/cache/'
-            . "{$md5}_{$size}.jpg";
-        if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
-            if (($source = imagecreatefromjpeg($path)) === false) {
-                return $path;
-            }
-            $w1 = imagesx($source);
-            $h1 = imagesy($source);
-            if ($w1 < $h1) {
-                $w2 = $size;
-                $h2 = $w2 / $w1 * $h1;
-            } else {
-                $h2 = $size;
-                $w2 = $h2 / $h1 * $w1;
-            }
-            if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
-                return $path;
-            }
-            imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
-            if (!imagejpeg($dest, $thumb)) {
-                return $path;
-            }
-            imagedestroy($source);
-            imagedestroy($dest);
-        }
-        return $thumb;
     }
 }

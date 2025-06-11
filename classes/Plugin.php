@@ -38,6 +38,7 @@ class Plugin
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
                 new GalleryService(),
+                new ThumbnailService(),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()
             );
