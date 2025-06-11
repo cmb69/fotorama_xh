@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Plib\Request;
+use Plib\Response;
 use Plib\View;
 
 class CreateGalleryCommand
@@ -37,7 +38,7 @@ class CreateGalleryCommand
         $this->view = $view;
     }
 
-    public function execute(Request $request): void
+    public function execute(Request $request): Response
     {
         global $o, $_XH_csrfProtection;
 
@@ -70,25 +71,18 @@ class CreateGalleryCommand
             }
         }
         if (!$messages) {
-            $this->relocate(
-                '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=' . $name
-            );
+            $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
+            return Response::redirect($url->absolute());
         } else {
             $o .= $messages;
             ob_start();
             Plugin::galleryListCommand()->execute();
-            $o .= ob_get_clean();
+            return Response::create(ob_get_clean());
         }
     }
 
     protected function isValidName(string $name): bool
     {
         return preg_match('/^[a-z0-9-]+$/', $name);
-    }
-
-    private function relocate(string $url): void
-    {
-        header('Location: ' . CMSIMPLE_URL . $url);
-        exit();
     }
 }
