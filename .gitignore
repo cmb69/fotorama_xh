@@ -1,6 +1,6 @@
 /cache/*.jpg
-/tests/coverage
 /vendor
 /tools
 /.phpunit.result.cache
 /composer.lock
+/coverage

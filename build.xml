@@ -22,9 +22,7 @@
 
     <target name="unit-tests" description="runs all unit tests">
         <exec executable="phpunit" passthru="true" checkreturn="true">
-            <arg value="--bootstrap"/>
-            <arg file="tests/unit/bootstrap.php"/>
-            <arg file="tests/unit"/>
+            <arg line="--colors=always"/>
         </exec>
     </target>
 
@@ -38,8 +36,8 @@
     </target>
 
     <target name="coverage" description="generates coverage report">
-        <exec executable="phpunit" logoutput="true">
-            <arg line="--configuration coverage.xml"/>
+        <exec executable="phpunit" passthru="true" checkreturn="true">
+            <arg line="--colors=always --coverage-html coverage"/>
         </exec>
     </target>
 
@@ -81,7 +79,7 @@
                 <exclude name="build.xml"/>
                 <exclude name="composer.json"/>
                 <exclude name="composer.lock"/>
-                <exclude name="coverage.xml"/>
+                <exclude name="phpunit.xml"/>
                 <exclude name="teplad.xml"/>
             </fileset>
         </move>
