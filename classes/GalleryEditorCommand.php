@@ -23,6 +23,13 @@ namespace Fotorama;
 
 class GalleryEditorCommand
 {
+    private GalleryService $galleryService;
+
+    public function __construct(GalleryService $galleryService)
+    {
+        $this->galleryService = $galleryService;
+    }
+
     public function execute(): void
     {
         global $sn, $plugin_tx, $_XH_csrfProtection;
@@ -32,8 +39,7 @@ class GalleryEditorCommand
         } else {
             $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
-        $service = new GalleryService();
-        $contents = $service->findGalleryXML($name);
+        $contents = $this->galleryService->findGalleryXML($name);
         echo '<h1>Fotorama &ndash; "' . $name . '"</h1>'
             . '<form action="' . $sn . '?&amp;fotorama" method="post">'
             . $_XH_csrfProtection->tokenInput()

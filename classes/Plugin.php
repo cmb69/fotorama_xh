@@ -65,7 +65,9 @@ class Plugin
 
     public static function galleryEditorCommand(): GalleryEditorCommand
     {
-        return new GalleryEditorCommand();
+        return new GalleryEditorCommand(
+            new GalleryService(),
+        );
     }
 
     public static function saveGalleryCommand(): SaveGalleryCommand
