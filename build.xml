@@ -11,12 +11,10 @@
 
     <target name="sniff" description="checks adherence to PSR-2">
         <exec executable="phpcs" passthru="true" checkreturn="true">
-            <arg value="--standard=PSR12"/>
-            <arg line="--runtime-set ignore_warnings_on_exit true --colors"/>
-            <arg file="classes"/>
-            <arg file="index.php"/>
-            <arg file="tests/attack"/>
-            <arg file="tests/unit"/>
+            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --colors classes index.php tests/attack tests/unit"/>
+        </exec>
+        <exec executable="phpcs" passthru="true" checkreturn="true">
+            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --exclude=Generic.Files.LineLength config languages"/>
         </exec>
     </target>
 
