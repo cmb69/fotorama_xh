@@ -51,7 +51,7 @@ class GalleryAdminCommand
             case "create":
                 return $this->create($request);
             case "edit":
-                return $this->edit();
+                return $this->edit($request);
             case "save":
                 return $this->save($request);
         }
@@ -119,19 +119,15 @@ class GalleryAdminCommand
         return preg_match('/^[a-z0-9-]+$/', $name);
     }
 
-    private function edit(): Response
+    private function edit(Request $request): Response
     {
-        return Response::create($this->renderEditor());
+        return Response::create($this->renderEditor($request));
     }
 
-    private function renderEditor(): string
+    private function renderEditor(Request $request): string
     {
         global $sn;
-        if (isset($_GET['fotorama_gallery'])) {
-            $name = $this->sanitizeName($_GET['fotorama_gallery']);
-        } else {
-            $name = $this->sanitizeName($_POST['fotorama_gallery']);
-        }
+        $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
         return $this->view->render("editor", [
             "name" => $name,
             "action" => $sn . '?&fotorama',
@@ -160,7 +156,7 @@ class GalleryAdminCommand
         if (!$messages) {
             return Response::redirect($request->url()->without("action")->absolute());
         } else {
-            return Response::create($messages . $this->renderEditor());
+            return Response::create($messages . $this->renderEditor($request));
         }
     }
 

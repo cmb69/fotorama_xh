@@ -113,8 +113,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRendersEditor(): void
     {
-        $_GET = ["fotorama_gallery" => "test"];
-        $request = new FakeRequest(["url" => "http://example.com/?&action=edit"]);
+        $request = new FakeRequest(["url" => "http://example.com/?&action=edit&fotorama_gallery=test"]);
         $response = $this->sut()($request);
         Approvals::verifyHtml($response->output());
     }
@@ -138,11 +137,10 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsFailureToSave(): void
     {
-        $_GET = ["fotorama_gallery" => "test"];
         $this->galleryService->method("saveGalleryXML")->willReturn(false);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save",
+            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Can't save &quot;&quot;!", $response->output());
