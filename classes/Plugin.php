@@ -27,15 +27,21 @@ class Plugin
 {
     public static function createGalleryCommand(): CreateGalleryCommand
     {
-        global $pth, $plugin_tx;
-        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-        return new CreateGalleryCommand($view);
+        return new CreateGalleryCommand(
+            self::view()
+        );
     }
 
     public static function saveGalleryCommand(): SaveGalleryCommand
     {
+        return new SaveGalleryCommand(
+            self::view()
+        );
+    }
+
+    private static function view(): View
+    {
         global $pth, $plugin_tx;
-        $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-        return new SaveGalleryCommand($view);
+        return new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
     }
 }
