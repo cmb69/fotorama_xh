@@ -13,6 +13,11 @@ class PluginTest extends TestCase
         $plugin_tx = ["fotorama" => []];
     }
 
+    public function testMakesGalleryView(): void
+    {
+        $this->assertInstanceOf(GalleryView::class, Plugin::galleryView());
+    }
+
     public function testMakesGalleryListCommand(): void
     {
         $this->assertInstanceOf(GalleryListCommand::class, Plugin::galleryListCommand());

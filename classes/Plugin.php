@@ -25,6 +25,13 @@ use Plib\View;
 
 class Plugin
 {
+    public static function galleryView(): GalleryView
+    {
+        return new GalleryView(
+            self::view()
+        );
+    }
+
     public static function galleryListCommand(): GalleryListCommand
     {
         return new GalleryListCommand();
