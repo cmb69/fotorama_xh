@@ -15,3 +15,12 @@ $plugin_tx['fotorama']['message_cant_save'] = "Kann \"%s\" nicht speichern!";
 $plugin_tx['fotorama']['message_exists'] = "Die Galerie \"%s\" existiert bereits!";
 $plugin_tx['fotorama']['message_no_folder'] = "Der Ordner \"%s\" existiert nicht!";
 $plugin_tx['fotorama']['message_no_gallery'] = "Die Galerie \"%s\" existiert nicht!";
+
+$plugin_tx['fotorama']['syscheck_title'] = "System-Prüfung";
+$plugin_tx['fotorama']['syscheck_extension'] = "PHP Erweiterung %s verfügbar: %s";
+$plugin_tx['fotorama']['syscheck_phpversion'] = "PHP Version ≥ %s: %s";
+$plugin_tx['fotorama']['syscheck_plibversion'] = "Plib_XH Version ≥ %s: %s";
+$plugin_tx['fotorama']['syscheck_xhversion'] = "CMSimple_XH Version ≥ %s: %s";
+$plugin_tx['fotorama']['syscheck_writable'] = "%s ist schreibbar: %s";
+$plugin_tx['fotorama']['syscheck_yes'] = "ja";
+$plugin_tx['fotorama']['syscheckno'] = "nein";

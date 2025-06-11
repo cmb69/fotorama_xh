@@ -1,9 +1,3 @@
-/*
- * Plugin administration
- */
-.fotorama_logo {
-    float: left;
-}
-.fotorama_license {
-    text-align: justify;
-}
+/* plugin info */
+
+article.fotorama_pluginfo {}
