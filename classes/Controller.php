@@ -38,43 +38,4 @@ class Controller
         $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
         return new SaveGalleryCommand($view);
     }
-
-    public function dispatch(): void
-    {
-        global $admin, $action, $o;
-        if (XH_ADM) { // @phpstan-ignore-line
-            XH_registerStandardPluginMenuItems(true);
-            if (XH_wantsPluginAdministration('fotorama')) {
-                $o .= print_plugin_admin('on');
-                switch ($admin) {
-                    case '':
-                        ob_start();
-                        (new PluginInfoCommand())->execute();
-                        $o .= ob_get_clean();
-                        break;
-                    case 'plugin_main':
-                        switch ($action) {
-                            case 'create':
-                                self::createGalleryCommand()->execute();
-                                break;
-                            case 'edit':
-                                ob_start();
-                                (new GalleryEditorCommand())->execute();
-                                $o .= ob_get_clean();
-                                break;
-                            case 'save':
-                                self::saveGalleryCommand()->execute();
-                                break;
-                            default:
-                                ob_start();
-                                (new GalleryListCommand())->execute();
-                                $o .= ob_get_clean();
-                        }
-                        break;
-                    default:
-                        $o .= plugin_admin_common();
-                }
-            }
-        }
-    }
 }
