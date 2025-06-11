@@ -32,7 +32,7 @@ class GalleryView
     private GalleryService $galleryService;
     private Jquery $jquery;
     private View $view;
-    private static bool $jsEmitted = false;
+    private bool $jsEmitted = false;
 
     public function __construct(
         string $pluginFolder,
@@ -54,7 +54,7 @@ class GalleryView
             return $this->view->message("fail", "message_no_gallery", $name);
         }
         $gallery = $this->galleryService->findGallery($name);
-        if (!self::$jsEmitted) {
+        if (!$this->jsEmitted) {
             $this->emitJS();
         }
         $html = $this->renderGalleryStartTag($gallery);
@@ -74,7 +74,7 @@ class GalleryView
             'fotorama',
             $this->pluginFolder . 'lib/fotorama.js'
         );
-        self::$jsEmitted = true;
+        $this->jsEmitted = true;
     }
 
     protected function renderGalleryStartTag(SimpleXMLElement $gallery): string

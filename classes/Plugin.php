@@ -28,16 +28,21 @@ class Plugin
 {
     public const VERSION = "1.0beta2";
 
+    private static ?GalleryView $galleryView = null;
+
     public static function galleryView(): GalleryView
     {
         global $pth;
-        return new GalleryView(
-            $pth["folder"]["plugins"] . "fotorama/",
-            $pth["folder"]["images"],
-            new GalleryService(),
-            new Jquery($pth["folder"]["plugins"] . "jquery/"),
-            self::view()
-        );
+        if (self::$galleryView === null) {
+            self::$galleryView = new GalleryView(
+                $pth["folder"]["plugins"] . "fotorama/",
+                $pth["folder"]["images"],
+                new GalleryService(),
+                new Jquery($pth["folder"]["plugins"] . "jquery/"),
+                self::view()
+            );
+        }
+        return self::$galleryView;
     }
 
     public static function galleryListCommand(): GalleryListCommand
