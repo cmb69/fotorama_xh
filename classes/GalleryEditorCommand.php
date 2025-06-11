@@ -40,16 +40,16 @@ class GalleryEditorCommand
             $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
         $contents = $this->galleryService->findGalleryXML($name);
-        echo '<h1>Fotorama &ndash; "' . $name . '"</h1>'
-            . '<form action="' . $sn . '?&amp;fotorama" method="post">'
+        echo '<h1>Fotorama &ndash; "' . $name . '"</h1>' . "\n"
+            . '<form action="' . $sn . '?&amp;fotorama" method="post">' . "\n"
             . $_XH_csrfProtection->tokenInput()
-            . '<input type="hidden" name="admin" value="plugin_main">'
-            . '<input type="hidden" name="fotorama_gallery" value="' . $name . '">'
+            . '<input type="hidden" name="admin" value="plugin_main">' . "\n"
+            . '<input type="hidden" name="fotorama_gallery" value="' . $name . '">' . "\n"
             . '<textarea rows="25" cols="80" class="xh_file_edit"'
-            . ' name="fotorama_text">' . XH_hsc($contents) . '</textarea>'
-            . '<button name="action" value="save">'
+            . ' name="fotorama_text">' . XH_hsc($contents) . '</textarea>' . "\n"
+            . '<button name="action" value="save">' . "\n"
             . $plugin_tx['fotorama']['label_save'] . '</button>'
-            . '</form>';
+            . '</form>' . "\n";
     }
 
     private function sanitizeName(string $name): string
