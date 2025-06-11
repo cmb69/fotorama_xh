@@ -11,6 +11,7 @@ use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
 {
+    private array $conf;
     /** @var GalleryService&Stub */
     private $galleryService;
     /** @var CsrfProtector&Stub */
@@ -19,8 +20,8 @@ class GalleryAdminCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        global $plugin_cf;
-        $plugin_cf['fotorama']['xml_auto_validate'] = "";
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
+        $this->conf["xml_auto_validate"] = "";
         $this->galleryService = $this->createStub(GalleryService::class);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
@@ -29,7 +30,7 @@ class GalleryAdminCommandTest extends TestCase
 
     private function sut(): GalleryAdminCommand
     {
-        return new GalleryAdminCommand($this->galleryService, $this->csrfProtector, $this->view);
+        return new GalleryAdminCommand($this->conf, $this->galleryService, $this->csrfProtector, $this->view);
     }
 
     public function testRendersOverview(): void

@@ -8,8 +8,9 @@ class PluginTest extends TestCase
 {
     protected function setUp(): void
     {
-        global $pth, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
         $pth = ["folder" => ["images" => "", "plugins" => ""]];
+        $plugin_cf = ["fotorama" => []];
         $plugin_tx = ["fotorama" => []];
     }
 

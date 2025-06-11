@@ -29,15 +29,20 @@ use Plib\View;
 
 class GalleryAdminCommand
 {
+    /** @var array<string,string> */
+    private array $conf;
     private GalleryService $galleryService;
     private CsrfProtector $csrfProtector;
     private View $view;
 
+    /** @param array<string,string> $conf */
     public function __construct(
+        array $conf,
         GalleryService $galleryService,
         CsrfProtector $csrfProtector,
         View $view
     ) {
+        $this->conf = $conf;
         $this->galleryService = $galleryService;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
@@ -147,15 +152,13 @@ class GalleryAdminCommand
 
     private function save(Request $request): Response
     {
-        global $plugin_cf;
-
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
         $messages = '';
         $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
         $text = $request->post("fotorama_text") ?? "";
-        if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
+        if ($this->conf["xml_auto_validate"] && !$this->validate($text)) {
             $messages .= $this->view->message("warning", "message_invalid_xml");
         }
         if (!$this->galleryService->saveGalleryXML($name, $text)) {

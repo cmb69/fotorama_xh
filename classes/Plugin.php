@@ -49,7 +49,9 @@ class Plugin
 
     public static function galleryAdminCommand(): GalleryAdminCommand
     {
+        global $plugin_cf;
         return new GalleryAdminCommand(
+            $plugin_cf["fotorama"],
             new GalleryService(),
             new CsrfProtector(),
             self::view()
