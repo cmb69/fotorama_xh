@@ -11,7 +11,7 @@
 
     <target name="sniff" description="checks adherence to PSR-2">
         <exec executable="phpcs" passthru="true" checkreturn="true">
-            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --colors classes admin.php index.php tests/attack tests/unit"/>
+            <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --colors classes admin.php index.php tests"/>
         </exec>
         <exec executable="phpcs" passthru="true" checkreturn="true">
             <arg line="--standard=PSR12 --runtime-set ignore_warnings_on_exit true --exclude=Generic.Files.LineLength config languages"/>
@@ -24,22 +24,13 @@
         </exec>
     </target>
 
-    <target name="unit-tests" description="runs all unit tests">
+    <target name="test" description="runs all developer tests">
         <exec executable="phpunit" passthru="true" checkreturn="true">
             <arg line="--colors=always"/>
         </exec>
     </target>
 
-    <target name="attack-tests" description="runs all attack tests">
-        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
-        <exec executable="phpunit" passthru="true" checkreturn="true">
-            <arg value="--bootstrap"/>
-            <arg file="tests/unit/bootstrap.php"/>
-            <arg file="tests/attack"/>
-        </exec>
-    </target>
-
-    <target name="check" description="runs all checks" depends="sniff,stan,unit-tests"/>
+    <target name="check" description="runs all checks" depends="sniff,stan,test"/>
 
     <target name="coverage" description="generates coverage report">
         <exec executable="phpunit" passthru="true" checkreturn="true">
