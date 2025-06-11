@@ -21,8 +21,6 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 use Fotorama\Plugin;
 
-define('FOTORAMA_VERSION', '1.0beta2');
-
 function fotorama(string $name): string
 {
     return Plugin::galleryView()->render($name);

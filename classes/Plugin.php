@@ -25,6 +25,8 @@ use Plib\View;
 
 class Plugin
 {
+    public const VERSION = "1.0beta2";
+
     public static function galleryView(): GalleryView
     {
         return new GalleryView(
