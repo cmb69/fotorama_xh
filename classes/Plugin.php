@@ -25,11 +25,21 @@ use Plib\View;
 
 class Plugin
 {
+    public static function galleryListCommand(): GalleryListCommand
+    {
+        return new GalleryListCommand();
+    }
+
     public static function createGalleryCommand(): CreateGalleryCommand
     {
         return new CreateGalleryCommand(
             self::view()
         );
+    }
+
+    public static function galleryEditorCommand(): GalleryEditorCommand
+    {
+        return new GalleryEditorCommand();
     }
 
     public static function saveGalleryCommand(): SaveGalleryCommand
