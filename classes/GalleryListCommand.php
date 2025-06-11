@@ -40,7 +40,7 @@ class GalleryListCommand
             . '<ul>' . "\n";
         foreach ($this->galleryService->findAllGalleries() as $gallery) {
             $html .= '<li><a href="' . XH_hsc($url . $gallery) . '">'
-                . $gallery . '</a></li>';
+                . $gallery . '</a></li>' . "\n";
         }
         $html .= '</ul>' . "\n"
             . '<form action="' . $sn . '?&amp;fotorama" method="post">' . "\n"
@@ -63,16 +63,16 @@ class GalleryListCommand
 
     protected function renderImageFolderSelect(): string
     {
-        return '<select name="fotorama_folder">'
+        return '<select name="fotorama_folder">' . "\n"
             . $this->renderImageFolderSelectOptions()
-            . '</select>';
+            . '</select>' . "\n";
     }
 
     protected function renderImageFolderSelectOptions(): string
     {
         $html = '';
         foreach ($this->galleryService->findImageFolders() as $folder) {
-            $html .= '<option>' . $folder . '</option>';
+            $html .= '<option>' . $folder . '</option>' . "\n";
         }
         return $html;
     }

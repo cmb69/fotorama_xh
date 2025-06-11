@@ -27,6 +27,8 @@ class GalleryListCommandTest extends TestCase
 
     public function testRendersOverview(): void
     {
+        $this->galleryService->method("findAllGalleries")->willReturn(["gallery1", "gallery2"]);
+        $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
         ob_start();
         $this->sut()->execute();
         $output = ob_get_clean();
