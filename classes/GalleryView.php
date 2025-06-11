@@ -27,23 +27,27 @@ use SimpleXMLElement;
 
 class GalleryView
 {
+    private GalleryService $galleryService;
     private Jquery $jquery;
     private View $view;
     private static bool $jsEmitted = false;
 
-    public function __construct(Jquery $jquery, View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        Jquery $jquery,
+        View $view
+    ) {
+        $this->galleryService = $galleryService;
         $this->jquery = $jquery;
         $this->view = $view;
     }
 
     public function render(string $name): string
     {
-        $service = new GalleryService();
-        if (!$service->hasGallery($name)) {
+        if (!$this->galleryService->hasGallery($name)) {
             return $this->view->message("fail", "message_no_gallery", $name);
         }
-        $gallery = $service->findGallery($name);
+        $gallery = $this->galleryService->findGallery($name);
         if (!self::$jsEmitted) {
             $this->emitJS();
         }

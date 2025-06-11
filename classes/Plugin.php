@@ -32,6 +32,7 @@ class Plugin
     {
         global $pth;
         return new GalleryView(
+            new GalleryService(),
             new Jquery($pth["folder"]["plugins"] . "jquery/"),
             self::view()
         );
