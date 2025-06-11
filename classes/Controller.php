@@ -79,7 +79,7 @@ class Controller
 
         switch ($action) {
             case 'create':
-                $this->createGallery();
+                self::createGalleryCommand()->execute();
                 break;
             case 'edit':
                 ob_start();
@@ -87,22 +87,12 @@ class Controller
                 $o .= ob_get_clean();
                 break;
             case 'save':
-                $this->saveGallery();
+                self::saveGalleryCommand()->execute();
                 break;
             default:
                 ob_start();
                 (new GalleryListCommand())->execute();
                 $o .= ob_get_clean();
         }
-    }
-
-    protected function createGallery(): void
-    {
-        self::createGalleryCommand()->execute();
-    }
-
-    protected function saveGallery(): void
-    {
-        self::saveGalleryCommand()->execute();
     }
 }
