@@ -59,6 +59,7 @@ class Plugin
     public static function createGalleryCommand(): CreateGalleryCommand
     {
         return new CreateGalleryCommand(
+            new GalleryService(),
             self::view()
         );
     }

@@ -25,10 +25,14 @@ use Plib\View;
 
 class CreateGalleryCommand
 {
+    private GalleryService $galleryService;
     private View $view;
 
-    public function __construct(View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        View $view
+    ) {
+        $this->galleryService = $galleryService;
         $this->view = $view;
     }
 
@@ -45,22 +49,23 @@ class CreateGalleryCommand
             . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
             . PHP_EOL
             . '<gallery path="' . $path . '">' . PHP_EOL;
-        $service = new GalleryService();
-        if ($service->hasImageFolder($path)) {
-            foreach ($service->findImagesIn($path) as $image) {
+        if ($this->galleryService->hasImageFolder($path)) {
+            foreach ($this->galleryService->findImagesIn($path) as $image) {
                 $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
             }
         } else {
-            $messages .= $this->view->message("warning", "message_no_folder", $service->getImageFoldername($path));
+            $foldername = $this->galleryService->getImageFoldername($path);
+            $messages .= $this->view->message("warning", "message_no_folder", $foldername);
         }
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
             $messages .= $this->view->message("fail", "message_invalid_name", $name);
         } else {
-            if ($service->hasGallery($name)) {
-                $messages .= $this->view->message("fail", "message_exists", $service->getGalleryFilename($name));
-            } elseif (!$service->saveGalleryXML($name, $xml)) {
-                $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
+            $filename = $this->galleryService->getImageFoldername($path);
+            if ($this->galleryService->hasGallery($name)) {
+                $messages .= $this->view->message("fail", "message_exists", $filename);
+            } elseif (!$this->galleryService->saveGalleryXML($name, $xml)) {
+                $messages .= $this->view->message("fail", "message_cant_save", $filename);
             }
         }
         if (!$messages) {
