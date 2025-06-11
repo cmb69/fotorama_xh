@@ -21,8 +21,7 @@ class PluginInfoCommandTest extends TestCase
 
     public function testRendersPluginInfo(): void
     {
-        ob_start();
-        $this->sut()->execute();
-        Approvals::verifyHtml(ob_get_clean());
+        $response = $this->sut()->execute();
+        Approvals::verifyHtml($response->output());
     }
 }

@@ -32,9 +32,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
     $o .= print_plugin_admin("on");
     switch ($admin) {
         case "":
-            ob_start();
-            Plugin::pluginInfoCommand()->execute();
-            $o .= ob_get_clean();
+            $o .= Plugin::pluginInfoCommand()->execute()();
             break;
         case "plugin_main":
             $o .= Plugin::galleryAdminCommand()(Request::current())();
