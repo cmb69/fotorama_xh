@@ -13,7 +13,6 @@ require_once "../plib/classes/Url.php";
 require_once "../plib/classes/View.php";
 require_once "../plib/classes/FakeRequest.php";
 
-require_once "./classes/GalleryEditorCommand.php";
 require_once "./classes/GalleryAdminCommand.php";
 require_once "./classes/GalleryService.php";
 require_once "./classes/GalleryView.php";

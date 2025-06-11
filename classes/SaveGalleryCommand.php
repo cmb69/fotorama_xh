@@ -65,7 +65,7 @@ class SaveGalleryCommand
         } else {
             $o .= $messages;
             ob_start();
-            Plugin::galleryEditorCommand()->execute();
+            Plugin::galleryAdminCommand()->edit();
             return Response::create(ob_get_clean());
         }
     }

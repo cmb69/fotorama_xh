@@ -104,4 +104,26 @@ class GalleryAdminCommand
     {
         return preg_match('/^[a-z0-9-]+$/', $name);
     }
+
+    public function edit(): void
+    {
+        global $sn;
+
+        if (isset($_GET['fotorama_gallery'])) {
+            $name = $this->sanitizeName($_GET['fotorama_gallery']);
+        } else {
+            $name = $this->sanitizeName($_POST['fotorama_gallery']);
+        }
+        echo $this->view->render("editor", [
+            "name" => $name,
+            "action" => $sn . '?&fotorama',
+            "token" => $this->csrfProtector->token(),
+            "xml" => $this->galleryService->findGalleryXML($name),
+        ]);
+    }
+
+    private function sanitizeName(string $name): string
+    {
+        return preg_replace('/[^a-z0-9-]/', '', $name);
+    }
 }

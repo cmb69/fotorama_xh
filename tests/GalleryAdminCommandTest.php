@@ -62,4 +62,13 @@ class GalleryAdminCommandTest extends TestCase
         $response = $this->sut()->create($request);
         $this->assertSame(403, $response->status());
     }
+
+    public function testRendersEditor(): void
+    {
+        $_GET = ["fotorama_gallery" => "test"];
+        ob_start();
+        $this->sut()->edit();
+        $output = ob_get_clean();
+        Approvals::verifyHtml($output);
+    }
 }
