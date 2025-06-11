@@ -50,6 +50,7 @@ class Plugin
     {
         return new GalleryListCommand(
             new GalleryService(),
+            self::view()
         );
     }
 

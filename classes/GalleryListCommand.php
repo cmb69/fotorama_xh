@@ -21,59 +21,29 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\View;
+
 class GalleryListCommand
 {
     private GalleryService $galleryService;
+    private View $view;
 
-    public function __construct(GalleryService $galleryService)
+    public function __construct(GalleryService $galleryService, View $view)
     {
         $this->galleryService = $galleryService;
+        $this->view = $view;
     }
 
     public function execute(): void
     {
-        global $sn, $plugin_tx, $_XH_csrfProtection;
+        global $sn, $_XH_csrfProtection;
 
-        $url = $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=';
-        $html = '<h1>Fotorama &ndash; ' . $plugin_tx['fotorama']['menu_main']
-            . '</h1>' . "\n"
-            . '<ul>' . "\n";
-        foreach ($this->galleryService->findAllGalleries() as $gallery) {
-            $html .= '<li><a href="' . XH_hsc($url . $gallery) . '">'
-                . $gallery . '</a></li>' . "\n";
-        }
-        $html .= '</ul>' . "\n"
-            . '<form action="' . $sn . '?&amp;fotorama" method="post">' . "\n"
-            . $_XH_csrfProtection->tokenInput()
-            . '<input type="hidden" name="admin" value="plugin_main">' . "\n"
-            . '<fieldset>' . "\n" . '<legend>' . $plugin_tx['fotorama']['label_create_gallery']
-            . '</legend>' . "\n"
-            . '<p><label>' . $plugin_tx['fotorama']['label_name'] . ' '
-            . '<input type="text" name="fotorama_gallery">'
-            . '</label></p>' . "\n"
-            . '<p><label>' . $plugin_tx['fotorama']['label_folder'] . ' '
-            . $this->renderImageFolderSelect()
-            . '</label></p>' . "\n"
-            . '<p><button class="submit" name="action" value="create">'
-            . $plugin_tx['fotorama']['label_create'] . '</button></p>' . "\n"
-            . '</fieldset>' . "\n"
-            . '</form>' . "\n";
-        echo $html;
-    }
-
-    protected function renderImageFolderSelect(): string
-    {
-        return '<select name="fotorama_folder">' . "\n"
-            . $this->renderImageFolderSelectOptions()
-            . '</select>' . "\n";
-    }
-
-    protected function renderImageFolderSelectOptions(): string
-    {
-        $html = '';
-        foreach ($this->galleryService->findImageFolders() as $folder) {
-            $html .= '<option>' . $folder . '</option>' . "\n";
-        }
-        return $html;
+        echo $this->view->render("overview", [
+            "url" => $sn . '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=',
+            "galleries" => $this->galleryService->findAllGalleries(),
+            "action" => $sn . '?&fotorama',
+            "token_input" => $_XH_csrfProtection->tokenInput(),
+            "folders" => $this->galleryService->findImageFolders(),
+        ]);
     }
 }
