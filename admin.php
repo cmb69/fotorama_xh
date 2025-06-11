@@ -19,9 +19,9 @@
  *along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Fotorama\Controller;
 use Fotorama\GalleryEditorCommand;
 use Fotorama\GalleryListCommand;
+use Fotorama\Plugin;
 use Fotorama\PluginInfoCommand;
 
 /**
@@ -42,7 +42,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
         case "plugin_main":
             switch ($action) {
                 case "create":
-                    Controller::createGalleryCommand()->execute();
+                    Plugin::createGalleryCommand()->execute();
                     break;
                 case "edit":
                     ob_start();
@@ -50,7 +50,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
                     $o .= ob_get_clean();
                     break;
                 case "save":
-                    Controller::saveGalleryCommand()->execute();
+                    Plugin::saveGalleryCommand()->execute();
                     break;
                 default:
                     ob_start();

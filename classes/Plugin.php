@@ -23,7 +23,7 @@ namespace Fotorama;
 
 use Plib\View;
 
-class Controller
+class Plugin
 {
     public static function createGalleryCommand(): CreateGalleryCommand
     {
