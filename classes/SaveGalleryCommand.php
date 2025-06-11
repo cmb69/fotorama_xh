@@ -22,39 +22,51 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use DOMDocument;
+use Plib\CsrfProtector;
+use Plib\Request;
+use Plib\Response;
 use Plib\View;
 
 class SaveGalleryCommand
 {
+    private GalleryService $galleryService;
+    private CsrfProtector $csrfProtector;
     private View $view;
 
-    public function __construct(View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        CsrfProtector $csrfProtector,
+        View $view
+    ) {
+        $this->galleryService = $galleryService;
+        $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
 
-    public function execute(): void
+    public function execute(Request $request): Response
     {
-        global $plugin_cf, $_XH_csrfProtection, $o;
+        global $plugin_cf, $o;
 
-        $_XH_csrfProtection->check();
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
         $messages = '';
-        $name = $this->sanitizeName($_POST['fotorama_gallery']);
-        $text = $_POST['fotorama_text'];
+        $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
+        $text = $request->post("fotorama_text") ?? "";
         if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
             $messages .= $this->view->message("warning", "message_invalid_xml");
         }
-        $service = new GalleryService();
-        if (!$service->saveGalleryXML($name, $text)) {
-            $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
+        if (!$this->galleryService->saveGalleryXML($name, $text)) {
+            $filename = $this->galleryService->getGalleryFilename($name);
+            $messages .= $this->view->message("fail", "message_cant_save", $filename);
         }
         if (!$messages) {
-            $this->relocate('?&fotorama&admin=plugin_main&action=plugin_text');
+            return Response::redirect($request->url()->without("action")->absolute());
         } else {
             $o .= $messages;
             ob_start();
             Plugin::galleryEditorCommand()->execute();
-            $o .= ob_get_clean();
+            return Response::create(ob_get_clean());
         }
     }
 
@@ -67,11 +79,5 @@ class SaveGalleryCommand
     private function sanitizeName(string $name): string
     {
         return preg_replace('/[^a-z0-9-]/', '', $name);
-    }
-
-    private function relocate(string $url): void
-    {
-        header('Location: ' . CMSIMPLE_URL . $url);
-        exit();
     }
 }

@@ -75,6 +75,8 @@ class Plugin
     public static function saveGalleryCommand(): SaveGalleryCommand
     {
         return new SaveGalleryCommand(
+            new GalleryService(),
+            new CsrfProtector(),
             self::view()
         );
     }
