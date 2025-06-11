@@ -21,16 +21,19 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\Jquery;
 use Plib\View;
 use SimpleXMLElement;
 
 class GalleryView
 {
+    private Jquery $jquery;
     private View $view;
     private static bool $jsEmitted = false;
 
-    public function __construct(View $view)
+    public function __construct(Jquery $jquery, View $view)
     {
+        $this->jquery = $jquery;
         $this->view = $view;
     }
 
@@ -54,11 +57,10 @@ class GalleryView
     {
         global $hjs, $pth;
 
-        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
-        include_jquery();
+        $this->jquery->include();
         $hjs .= '<link rel="stylesheet" type="text/css" href="'
             . $pth['folder']['plugins'] . 'fotorama/lib/fotorama.css">';
-        include_jqueryplugin(
+        $this->jquery->includePlugin(
             'fotorama',
             $pth['folder']['plugins'] . 'fotorama/lib/fotorama.js'
         );

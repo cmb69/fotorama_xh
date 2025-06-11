@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\Jquery;
 use Plib\View;
 
 class Plugin
@@ -29,7 +30,9 @@ class Plugin
 
     public static function galleryView(): GalleryView
     {
+        global $pth;
         return new GalleryView(
+            new Jquery($pth["folder"]["plugins"] . "jquery/"),
             self::view()
         );
     }

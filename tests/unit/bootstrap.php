@@ -2,6 +2,7 @@
 
 require_once "./vendor/autoload.php";
 
+require_once "../plib/classes/Jquery.php";
 require_once "../plib/classes/View.php";
 
 require_once "./classes/CreateGalleryCommand.php";
