@@ -7,9 +7,8 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
 use Plib\View;
-use XH\CSRFProtection;
 
-class GalleryListCommandTest extends TestCase
+class GalleryAdminCommandTest extends TestCase
 {
     /** @var GalleryService&Stub */
     private $galleryService;
@@ -25,9 +24,9 @@ class GalleryListCommandTest extends TestCase
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
     }
 
-    private function sut(): GalleryListCommand
+    private function sut(): GalleryAdminCommand
     {
-        return new GalleryListCommand($this->galleryService, $this->csrfProtector, $this->view);
+        return new GalleryAdminCommand($this->galleryService, $this->csrfProtector, $this->view);
     }
 
     public function testRendersOverview(): void

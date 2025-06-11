@@ -47,9 +47,9 @@ class Plugin
         return self::$galleryView;
     }
 
-    public static function galleryListCommand(): GalleryListCommand
+    public static function galleryAdminCommand(): GalleryAdminCommand
     {
-        return new GalleryListCommand(
+        return new GalleryAdminCommand(
             new GalleryService(),
             new CsrfProtector(),
             self::view()

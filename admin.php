@@ -52,7 +52,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
                     break;
                 default:
                     ob_start();
-                    Plugin::galleryListCommand()->execute();
+                    Plugin::galleryAdminCommand()->execute();
                     $o .= ob_get_clean();
             }
             break;

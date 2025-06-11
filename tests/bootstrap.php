@@ -15,7 +15,7 @@ require_once "../plib/classes/FakeRequest.php";
 
 require_once "./classes/CreateGalleryCommand.php";
 require_once "./classes/GalleryEditorCommand.php";
-require_once "./classes/GalleryListCommand.php";
+require_once "./classes/GalleryAdminCommand.php";
 require_once "./classes/GalleryService.php";
 require_once "./classes/GalleryView.php";
 require_once "./classes/Plugin.php";

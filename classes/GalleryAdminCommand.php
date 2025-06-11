@@ -24,7 +24,7 @@ namespace Fotorama;
 use Plib\CsrfProtector;
 use Plib\View;
 
-class GalleryListCommand
+class GalleryAdminCommand
 {
     private GalleryService $galleryService;
     private CsrfProtector $csrfProtector;

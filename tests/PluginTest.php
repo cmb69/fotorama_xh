@@ -18,9 +18,9 @@ class PluginTest extends TestCase
         $this->assertInstanceOf(GalleryView::class, Plugin::galleryView());
     }
 
-    public function testMakesGalleryListCommand(): void
+    public function testMakesGalleryAdminCommand(): void
     {
-        $this->assertInstanceOf(GalleryListCommand::class, Plugin::galleryListCommand());
+        $this->assertInstanceOf(GalleryAdminCommand::class, Plugin::galleryAdminCommand());
     }
 
     public function testMakesCreateGalleryCommand(): void

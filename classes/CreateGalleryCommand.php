@@ -82,7 +82,7 @@ class CreateGalleryCommand
         } else {
             $o .= $messages;
             ob_start();
-            Plugin::galleryListCommand()->execute();
+            Plugin::galleryAdminCommand()->execute();
             return Response::create(ob_get_clean());
         }
     }
