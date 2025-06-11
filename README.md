@@ -26,7 +26,7 @@ and every image can have an additional caption.
 ## Requirements
 
 Fotorama\_XH is a plugin for CMSimple\_XH ≥ 1.7.0.
-It requires PHP ≥ 5.3.0 with the dom, fileinfo, gd and SimpleXML extensions.
+It requires PHP ≥ 7.4.0 with the dom, fileinfo, gd and SimpleXML extensions.
 
 ## Download
 
