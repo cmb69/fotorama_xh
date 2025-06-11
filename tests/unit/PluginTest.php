@@ -9,8 +9,13 @@ class PluginTest extends TestCase
     protected function setUp(): void
     {
         global $pth, $plugin_tx;
-        $pth = ["folder" => ["plugins" => ""]];
+        $pth = ["folder" => ["images" => "", "plugins" => ""]];
         $plugin_tx = ["fotorama" => []];
+    }
+
+    public function testMakesGalleryView(): void
+    {
+        $this->assertInstanceOf(GalleryView::class, Plugin::galleryView());
     }
 
     public function testMakesGalleryListCommand(): void

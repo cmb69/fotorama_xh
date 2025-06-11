@@ -21,29 +21,43 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\Jquery;
 use Plib\View;
 use SimpleXMLElement;
 
 class GalleryView
 {
+    private string $pluginFolder;
+    private string $imageFolder;
+    private GalleryService $galleryService;
+    private ThumbnailService $thumbnailService;
+    private Jquery $jquery;
     private View $view;
-    protected string $name;
-    private static bool $jsEmitted = false;
+    private bool $jsEmitted = false;
 
-    public function __construct(View $view, string $name)
-    {
+    public function __construct(
+        string $pluginFolder,
+        string $imageFolder,
+        GalleryService $galleryService,
+        ThumbnailService $thumbnailService,
+        Jquery $jquery,
+        View $view
+    ) {
+        $this->pluginFolder = $pluginFolder;
+        $this->imageFolder = $imageFolder;
+        $this->galleryService = $galleryService;
+        $this->thumbnailService = $thumbnailService;
+        $this->jquery = $jquery;
         $this->view = $view;
-        $this->name = $name;
     }
 
-    public function render(): string
+    public function render(string $name): string
     {
-        $service = new GalleryService();
-        if (!$service->hasGallery($this->name)) {
-            return $this->view->message("fail", "message_no_gallery", $this->name);
+        if (!$this->galleryService->hasGallery($name)) {
+            return $this->view->message("fail", "message_no_gallery", $name);
         }
-        $gallery = $service->findGallery($this->name);
-        if (!self::$jsEmitted) {
+        $gallery = $this->galleryService->findGallery($name);
+        if (!$this->jsEmitted) {
             $this->emitJS();
         }
         $html = $this->renderGalleryStartTag($gallery);
@@ -54,17 +68,16 @@ class GalleryView
 
     protected function emitJS(): void
     {
-        global $hjs, $pth;
+        global $hjs;
 
-        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
-        include_jquery();
+        $this->jquery->include();
         $hjs .= '<link rel="stylesheet" type="text/css" href="'
-            . $pth['folder']['plugins'] . 'fotorama/lib/fotorama.css">';
-        include_jqueryplugin(
+            . $this->pluginFolder . 'lib/fotorama.css">';
+        $this->jquery->includePlugin(
             'fotorama',
-            $pth['folder']['plugins'] . 'fotorama/lib/fotorama.js'
+            $this->pluginFolder . 'lib/fotorama.js'
         );
-        self::$jsEmitted = true;
+        $this->jsEmitted = true;
     }
 
     protected function renderGalleryStartTag(SimpleXMLElement $gallery): string
@@ -85,35 +98,33 @@ class GalleryView
         if (isset($gallery['transition'])) {
             $html .= ' data-transition="' . $gallery['transition'] . '"';
         }
-        $html .= '>';
+        $html .= '>' . "\n";
         return $html;
     }
 
     private function renderPictures(SimpleXMLElement $gallery): string
     {
-        global $pth;
-
         $html = '';
         foreach ($gallery->pic as $pic) {
             $caption = XH_hsc(isset($pic['caption']) ? $pic['caption'] : '');
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic['path'])) {
                 $filename = $pic['path'];
             } else {
-                $filename = $pth['folder']['images'] . $gallery['path'] . '/'
+                $filename = $this->imageFolder . $gallery['path'] . '/'
                     . $pic['path'];
             }
             if (isset($gallery['nav'])) {
                 if ($isAbsoluteUrl) {
-                    $thumbnail = "{$pth['folder']['plugins']}fotorama/images/external.jpg";
+                    $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
-                    $thumbnail = $this->makeThumbnail($filename, 64);
+                    $thumbnail = $this->thumbnailService->makeThumbnail($filename, 64);
                 }
                 $html .= "<a href=\"$filename\" data-caption=\"$caption\">";
             } else {
                 $thumbnail = $filename;
             }
             $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
-                . '" alt="' . $caption . '">';
+                . '" alt="' . $caption . '">' . "\n";
             if (isset($gallery['nav'])) {
                 $html .= '</a>';
             }
@@ -124,38 +135,5 @@ class GalleryView
     private function isAbsoluteUrl(string $url): bool
     {
         return strpos($url, '://') !== false;
-    }
-
-    protected function makeThumbnail(string $path, int $size): string
-    {
-        global $pth;
-
-        $md5 = md5($path);
-        $thumb = $pth['folder']['plugins'] . 'fotorama/cache/'
-            . "{$md5}_{$size}.jpg";
-        if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
-            if (($source = imagecreatefromjpeg($path)) === false) {
-                return $path;
-            }
-            $w1 = imagesx($source);
-            $h1 = imagesy($source);
-            if ($w1 < $h1) {
-                $w2 = $size;
-                $h2 = $w2 / $w1 * $h1;
-            } else {
-                $h2 = $size;
-                $w2 = $h2 / $h1 * $w1;
-            }
-            if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
-                return $path;
-            }
-            imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
-            if (!imagejpeg($dest, $thumb)) {
-                return $path;
-            }
-            imagedestroy($source);
-            imagedestroy($dest);
-        }
-        return $thumb;
     }
 }

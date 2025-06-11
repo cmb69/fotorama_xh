@@ -19,14 +19,9 @@ You should have received a copy of the GNU General Public License
 along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-use Fotorama\GalleryView;
-use Plib\View;
-
-define('FOTORAMA_VERSION', '1.0beta2');
+use Fotorama\Plugin;
 
 function fotorama(string $name): string
 {
-    global $pth, $plugin_tx;
-    $view = new View($pth["folder"]["plugins"] . "fotorama/views/", $plugin_tx["fotorama"]);
-    return (new GalleryView($view, $name))->render();
+    return Plugin::galleryView()->render($name);
 }

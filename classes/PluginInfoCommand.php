@@ -31,7 +31,7 @@ class PluginInfoCommand
             . '<img src="' . $pth['folder']['plugins'] . 'fotorama/fotorama.png"'
                 . ' class="fotorama_logo" alt="'
                 . $plugin_tx['fotorama']['alt_logo'] . '">'
-            . '<p>Version: ' . FOTORAMA_VERSION . '</p>'
+            . '<p>Version: ' . Plugin::VERSION . '</p>'
             . '<p>Codeeditor_XH is powered by <a href="http://fotorama.io/">'
             . 'Fotorama</a>.</p>'
             . '<p>Copyright &copy; 2015-2021 <a href="http://3-magi.net">'

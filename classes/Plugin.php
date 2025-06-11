@@ -21,10 +21,31 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\Jquery;
 use Plib\View;
 
 class Plugin
 {
+    public const VERSION = "1.0beta2";
+
+    private static ?GalleryView $galleryView = null;
+
+    public static function galleryView(): GalleryView
+    {
+        global $pth;
+        if (self::$galleryView === null) {
+            self::$galleryView = new GalleryView(
+                $pth["folder"]["plugins"] . "fotorama/",
+                $pth["folder"]["images"],
+                new GalleryService(),
+                new ThumbnailService(),
+                new Jquery($pth["folder"]["plugins"] . "jquery/"),
+                self::view()
+            );
+        }
+        return self::$galleryView;
+    }
+
     public static function galleryListCommand(): GalleryListCommand
     {
         return new GalleryListCommand();
