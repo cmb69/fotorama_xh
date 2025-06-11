@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use DOMDocument;
 use Plib\CsrfProtector;
 use Plib\Request;
 use Plib\Response;
@@ -120,6 +121,39 @@ class GalleryAdminCommand
             "token" => $this->csrfProtector->token(),
             "xml" => $this->galleryService->findGalleryXML($name),
         ]);
+    }
+
+    public function save(Request $request): Response
+    {
+        global $plugin_cf, $o;
+
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
+        $messages = '';
+        $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
+        $text = $request->post("fotorama_text") ?? "";
+        if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
+            $messages .= $this->view->message("warning", "message_invalid_xml");
+        }
+        if (!$this->galleryService->saveGalleryXML($name, $text)) {
+            $filename = $this->galleryService->getGalleryFilename($name);
+            $messages .= $this->view->message("fail", "message_cant_save", $filename);
+        }
+        if (!$messages) {
+            return Response::redirect($request->url()->without("action")->absolute());
+        } else {
+            $o .= $messages;
+            ob_start();
+            $this->edit();
+            return Response::create(ob_get_clean());
+        }
+    }
+
+    private function validate(string $xml): bool
+    {
+        $doc = new DOMDocument();
+        return $doc->loadXML($xml) && $doc->validate();
     }
 
     private function sanitizeName(string $name): string

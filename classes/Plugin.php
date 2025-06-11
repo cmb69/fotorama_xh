@@ -56,15 +56,6 @@ class Plugin
         );
     }
 
-    public static function saveGalleryCommand(): SaveGalleryCommand
-    {
-        return new SaveGalleryCommand(
-            new GalleryService(),
-            new CsrfProtector(),
-            self::view()
-        );
-    }
-
     public static function pluginInfoCommand(): PluginInfoCommand
     {
         return new PluginInfoCommand();

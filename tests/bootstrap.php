@@ -18,7 +18,6 @@ require_once "./classes/GalleryService.php";
 require_once "./classes/GalleryView.php";
 require_once "./classes/Plugin.php";
 require_once "./classes/PluginInfoCommand.php";
-require_once "./classes/SaveGalleryCommand.php";
 require_once "./classes/ThumbnailService.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.6";

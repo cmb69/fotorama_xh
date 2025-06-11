@@ -48,7 +48,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
                     $o .= ob_get_clean();
                     break;
                 case "save":
-                    $o .= Plugin::saveGalleryCommand()->execute(Request::current())();
+                    $o .= Plugin::galleryAdminCommand()->save(Request::current())();
                     break;
                 default:
                     ob_start();

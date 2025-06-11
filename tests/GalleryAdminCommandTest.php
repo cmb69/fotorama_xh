@@ -19,6 +19,8 @@ class GalleryAdminCommandTest extends TestCase
 
     protected function setUp(): void
     {
+        global $plugin_cf;
+        $plugin_cf['fotorama']['xml_auto_validate'] = "";
         $this->galleryService = $this->createStub(GalleryService::class);
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
@@ -70,5 +72,22 @@ class GalleryAdminCommandTest extends TestCase
         $this->sut()->edit();
         $output = ob_get_clean();
         Approvals::verifyHtml($output);
+    }
+
+    public function testRedirectsAfterSaving(): void
+    {
+        $this->galleryService->method("saveGalleryXML")->willReturn(true);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest();
+        $response = $this->sut()->save($request);
+        $this->assertSame("http://example.com/", $response->location());
+    }
+
+    public function testSavingIsCsrfProtected(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(false);
+        $request = new FakeRequest();
+        $response = $this->sut()->save($request);
+        $this->assertSame(403, $response->status());
     }
 }
