@@ -21,35 +21,34 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\View;
+
 class GalleryEditorCommand
 {
     private GalleryService $galleryService;
+    private View $view;
 
-    public function __construct(GalleryService $galleryService)
+    public function __construct(GalleryService $galleryService, View $view)
     {
         $this->galleryService = $galleryService;
+        $this->view = $view;
     }
 
     public function execute(): void
     {
-        global $sn, $plugin_tx, $_XH_csrfProtection;
+        global $sn, $_XH_csrfProtection;
 
         if (isset($_GET['fotorama_gallery'])) {
             $name = $this->sanitizeName($_GET['fotorama_gallery']);
         } else {
             $name = $this->sanitizeName($_POST['fotorama_gallery']);
         }
-        $contents = $this->galleryService->findGalleryXML($name);
-        echo '<h1>Fotorama &ndash; "' . $name . '"</h1>' . "\n"
-            . '<form action="' . $sn . '?&amp;fotorama" method="post">' . "\n"
-            . $_XH_csrfProtection->tokenInput()
-            . '<input type="hidden" name="admin" value="plugin_main">' . "\n"
-            . '<input type="hidden" name="fotorama_gallery" value="' . $name . '">' . "\n"
-            . '<textarea rows="25" cols="80" class="xh_file_edit"'
-            . ' name="fotorama_text">' . XH_hsc($contents) . '</textarea>' . "\n"
-            . '<button name="action" value="save">' . "\n"
-            . $plugin_tx['fotorama']['label_save'] . '</button>'
-            . '</form>' . "\n";
+        echo $this->view->render("editor", [
+            "name" => $name,
+            "action" => $sn . '?&fotorama',
+            "token_input" => $_XH_csrfProtection->tokenInput(),
+            "xml" => $this->galleryService->findGalleryXML($name),
+        ]);
     }
 
     private function sanitizeName(string $name): string

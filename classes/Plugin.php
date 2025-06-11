@@ -67,6 +67,7 @@ class Plugin
     {
         return new GalleryEditorCommand(
             new GalleryService(),
+            self::view()
         );
     }
 
