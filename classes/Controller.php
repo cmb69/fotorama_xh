@@ -61,7 +61,7 @@ class Controller
     protected function handleMainAction(): void
     {
         global $action, $o;
-        
+
         switch ($action) {
             case 'create':
                 $this->createGallery();

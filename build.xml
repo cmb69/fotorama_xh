@@ -11,8 +11,8 @@
 
     <target name="sniff" description="checks adherence to PSR-2">
         <exec executable="phpcs" passthru="true" checkreturn="true">
-            <arg value="--standard=PSR2"/>
-            <arg line="--runtime-set ignore_warnings_on_exit true"/>
+            <arg value="--standard=PSR12"/>
+            <arg line="--runtime-set ignore_warnings_on_exit true --colors"/>
             <arg file="classes"/>
             <arg file="index.php"/>
             <arg file="tests/attack"/>

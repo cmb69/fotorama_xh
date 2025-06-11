@@ -112,7 +112,7 @@ class GalleryView
     private function renderPictures(\SimpleXMLElement $gallery): string
     {
         global $pth;
-    
+
         $html = '';
         foreach ($gallery->pic as $pic) {
             $caption = XH_hsc(isset($pic['caption']) ? $pic['caption'] : '');

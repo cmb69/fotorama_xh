@@ -46,7 +46,7 @@ class GalleryService
     {
         return is_file($this->getGalleryFilename($name));
     }
-    
+
     /**
      * @param string $name
      * @return \SimpleXMLElement
@@ -64,7 +64,7 @@ class GalleryService
     {
         return file_get_contents($this->getGalleryFilename($name));
     }
-    
+
     /**
      * @param string $name
      * @param string $xml
