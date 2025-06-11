@@ -60,6 +60,7 @@ class Plugin
     {
         return new CreateGalleryCommand(
             new GalleryService(),
+            new CsrfProtector(),
             self::view()
         );
     }
