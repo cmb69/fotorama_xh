@@ -18,16 +18,6 @@
         </exec>
     </target>
 
-    <target name="mess" description="detects code flaws">
-        <exec executable="phpmd" passthru="true" checkreturn="true">
-            <arg line="index.php,classes ansi codesize,unusedcode"/>
-        </exec>
-    </target>
-
-    <target name="compat" description="checks PHP requirements">
-        <exec command="phpcompatinfo analyser:run --alias current" logoutput="true"/>
-    </target>
-
     <target name="unit-tests" description="runs all unit tests">
         <exec executable="phpunit" passthru="true" checkreturn="true">
             <arg value="--bootstrap"/>
@@ -88,7 +78,6 @@
                 <exclude name="composer.json"/>
                 <exclude name="composer.lock"/>
                 <exclude name="coverage.xml"/>
-                <exclude name="phpcompatinfo.json"/>
                 <exclude name="teplad.xml"/>
             </fileset>
         </move>
