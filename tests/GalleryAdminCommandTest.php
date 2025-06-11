@@ -65,6 +65,52 @@ class GalleryAdminCommandTest extends TestCase
         $this->assertSame(403, $response->status());
     }
 
+    public function testReportsInvalidFolderNameWhenCreating(): void
+    {
+        $this->galleryService->method("hasImageFolder")->willReturn(false);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=create",
+            "post" => [
+                "fotorama_gallery" => "gallery",
+                "fotorama_folder" => "folder",
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The folder &quot;&quot; does not exist!", $response->output());
+    }
+
+    public function testReportsInvalidGalleryNameWhenCreating(): void
+    {
+        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=create",
+            "post" => [
+                "fotorama_gallery" => "not allowed",
+                "fotorama_folder" => "folder",
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Gallery name &quot;not allowed&quot; is invalid!", $response->output());
+    }
+
+    public function testReportsExistingGalleryWhenCreating(): void
+    {
+        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->galleryService->method("hasGallery")->willReturn(true);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=create",
+            "post" => [
+                "fotorama_gallery" => "gallery",
+                "fotorama_folder" => "folder",
+            ],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery &quot;&quot; does already exist!", $response->output());
+    }
+
     public function testRendersEditor(): void
     {
         $_GET = ["fotorama_gallery" => "test"];
@@ -88,5 +134,17 @@ class GalleryAdminCommandTest extends TestCase
         $request = new FakeRequest(["url" => "http://example.com/?&action=save"]);
         $response = $this->sut()($request);
         $this->assertSame(403, $response->status());
+    }
+
+    public function testReportsFailureToSave(): void
+    {
+        $_GET = ["fotorama_gallery" => "test"];
+        $this->galleryService->method("saveGalleryXML")->willReturn(false);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=save",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Can't save &quot;&quot;!", $response->output());
     }
 }
