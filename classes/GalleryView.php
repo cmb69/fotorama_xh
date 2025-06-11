@@ -27,16 +27,19 @@ use SimpleXMLElement;
 
 class GalleryView
 {
+    private string $pluginFolder;
     private GalleryService $galleryService;
     private Jquery $jquery;
     private View $view;
     private static bool $jsEmitted = false;
 
     public function __construct(
+        string $pluginFolder,
         GalleryService $galleryService,
         Jquery $jquery,
         View $view
     ) {
+        $this->pluginFolder = $pluginFolder;
         $this->galleryService = $galleryService;
         $this->jquery = $jquery;
         $this->view = $view;
@@ -59,14 +62,14 @@ class GalleryView
 
     protected function emitJS(): void
     {
-        global $hjs, $pth;
+        global $hjs;
 
         $this->jquery->include();
         $hjs .= '<link rel="stylesheet" type="text/css" href="'
-            . $pth['folder']['plugins'] . 'fotorama/lib/fotorama.css">';
+            . $this->pluginFolder . 'lib/fotorama.css">';
         $this->jquery->includePlugin(
             'fotorama',
-            $pth['folder']['plugins'] . 'fotorama/lib/fotorama.js'
+            $this->pluginFolder . 'lib/fotorama.js'
         );
         self::$jsEmitted = true;
     }
@@ -108,7 +111,7 @@ class GalleryView
             }
             if (isset($gallery['nav'])) {
                 if ($isAbsoluteUrl) {
-                    $thumbnail = "{$pth['folder']['plugins']}fotorama/images/external.jpg";
+                    $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
                     $thumbnail = $this->makeThumbnail($filename, 64);
                 }
