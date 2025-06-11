@@ -55,7 +55,6 @@ class PluginInfoCommand
         return [
             $this->checkPhpVersion("7.4.0"),
             $this->checkExtension("dom"),
-            $this->checkExtension("fileinfo"),
             $this->checkExtension("gd"),
             $this->checkExtension("simplexml"),
             $this->checkXHVersion("1.7.0"),

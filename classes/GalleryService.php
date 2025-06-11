@@ -131,8 +131,8 @@ class GalleryService
 
     private function isImageFile(string $filename): bool
     {
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        return is_file($filename) && $finfo->file($filename) == 'image/jpeg';
+        return is_file($filename)
+            && in_array(pathinfo($filename, PATHINFO_EXTENSION), ["jpeg", "jpg", "JPEG", "JPG"], true);
     }
 
     public function getImageFoldername(string $path): string
