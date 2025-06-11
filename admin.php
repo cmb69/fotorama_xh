@@ -23,7 +23,6 @@ use Fotorama\Plugin;
 use Plib\Request;
 
 /**
- * @var string $action
  * @var string $admin
  * @var string $o
  */
@@ -38,19 +37,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
             $o .= ob_get_clean();
             break;
         case "plugin_main":
-            switch ($action) {
-                case "create":
-                    $o .= Plugin::galleryAdminCommand()->create(Request::current())();
-                    break;
-                case "edit":
-                    $o .= Plugin::galleryAdminCommand()->edit()();
-                    break;
-                case "save":
-                    $o .= Plugin::galleryAdminCommand()->save(Request::current())();
-                    break;
-                default:
-                    $o .= Plugin::galleryAdminCommand()->execute()();
-            }
+            $o .= Plugin::galleryAdminCommand()(Request::current())();
             break;
         default:
             $o .= plugin_admin_common();

@@ -43,6 +43,20 @@ class GalleryAdminCommand
         $this->view = $view;
     }
 
+    public function __invoke(Request $request): Response
+    {
+        switch ($request->get("action") ?? $request->post("action")) {
+            default:
+                return $this->execute();
+            case "create":
+                return $this->create($request);
+            case "edit":
+                return $this->edit();
+            case "save":
+                return $this->save($request);
+        }
+    }
+
     public function execute(): Response
     {
         return Response::create($this->renderOverview());
