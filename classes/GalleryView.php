@@ -98,7 +98,7 @@ class GalleryView
         if (isset($gallery['transition'])) {
             $html .= ' data-transition="' . $gallery['transition'] . '"';
         }
-        $html .= '>';
+        $html .= '>' . "\n";
         return $html;
     }
 
@@ -124,7 +124,7 @@ class GalleryView
                 $thumbnail = $filename;
             }
             $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
-                . '" alt="' . $caption . '">';
+                . '" alt="' . $caption . '">' . "\n";
             if (isset($gallery['nav'])) {
                 $html .= '</a>';
             }
