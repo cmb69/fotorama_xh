@@ -23,9 +23,6 @@ namespace Fotorama;
 
 class CreateGalleryCommand extends Command
 {
-    /**
-     * Creates a gallery.
-     */
     public function execute(): void
     {
         global $plugin_tx, $o, $_XH_csrfProtection;
@@ -82,14 +79,7 @@ class CreateGalleryCommand extends Command
         }
     }
 
-    /**
-     * Returns whether a given name is a valid gallery name.
-     *
-     * @param string $name A gallery name.
-     *
-     * @return bool
-     */
-    protected function isValidName($name)
+    protected function isValidName(string $name): bool
     {
         return preg_match('/^[a-z0-9-]+$/', $name);
     }

@@ -21,6 +21,9 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use SimpleXMLElement;
+use SplFileInfo;
+
 class GalleryService
 {
     /** @return list<string> */
@@ -38,39 +41,22 @@ class GalleryService
         return array_values($result);
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasGallery($name)
+    public function hasGallery(string $name): bool
     {
         return is_file($this->getGalleryFilename($name));
     }
 
-    /**
-     * @param string $name
-     * @return \SimpleXMLElement
-     */
-    public function findGallery($name)
+    public function findGallery(string $name): SimpleXMLElement
     {
         return simplexml_load_file($this->getGalleryFilename($name));
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function findGalleryXML($name)
+    public function findGalleryXML(string $name): string
     {
         return file_get_contents($this->getGalleryFilename($name));
     }
 
-    /**
-     * @param string $name
-     * @param string $xml
-     * @return bool
-     */
-    public function saveGalleryXML($name, $xml)
+    public function saveGalleryXML(string $name, string $xml): bool
     {
         global $pth;
 
@@ -78,21 +64,15 @@ class GalleryService
         return file_put_contents($filename, $xml) !== false;
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    public function getGalleryFilename($name)
+    public function getGalleryFilename(string $name): string
     {
         global $pth;
 
         return $pth['folder']['content'] . 'fotorama/' . $name . '.xml';
     }
 
-    /**
-     * @return string[]
-     */
-    public function findImageFolders()
+    /** @return list<string> */
+    public function findImageFolders(): array
     {
         global $pth;
 
@@ -101,21 +81,13 @@ class GalleryService
         return array_values($folders);
     }
 
-    /**
-     * @param string $path A path inside the image folder.
-     * @return bool
-     */
-    public function hasImageFolder($path)
+    public function hasImageFolder(string $path): bool
     {
         return is_dir($this->getImageFoldername($path));
     }
 
-    /**
-     * @param string $path
-     * @param string $prefix
-     * @return string[]
-     */
-    protected function findImageFoldersIn($path, $prefix)
+    /** @return list<string> */
+    protected function findImageFoldersIn(string $path, string $prefix): array
     {
         $folders = array();
         $files = new \DirectoryIterator($path);
@@ -129,10 +101,9 @@ class GalleryService
 
     /**
      * @param list<string> $folders
-     * @param string $prefix
      * @return list<string>
      */
-    private function appendTo(array $folders, \SplFileInfo $file, $prefix): array
+    private function appendTo(array $folders, SplFileInfo $file, string $prefix): array
     {
         $folders[] = $prefix . $file->getFilename();
         return array_merge(
@@ -141,11 +112,8 @@ class GalleryService
         );
     }
 
-    /**
-     * @param string $path A path inside the image folder.
-     * @return string[]
-     */
-    public function findImagesIn($path)
+    /** @return list<string> */
+    public function findImagesIn(string $path): array
     {
         global $pth;
 
@@ -161,34 +129,20 @@ class GalleryService
         return array_values($images);
     }
 
-    /**
-     * @param string $filename
-     * @return bool
-     */
-    private function isImageFile($filename)
+    private function isImageFile(string $filename): bool
     {
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         return is_file($filename) && $finfo->file($filename) == 'image/jpeg';
     }
 
-    /**
-     * @param string $path A path inside the image folder.
-     * @return string
-     */
-    public function getImageFoldername($path)
+    public function getImageFoldername(string $path): string
     {
         global $pth;
 
         return "{$pth['folder']['images']}$path";
     }
 
-    /**
-     * Returns the path of the content folder. If the folder does not exist, it
-     * is created.
-     *
-     * @return string
-     */
-    protected function findContentFolder()
+    protected function findContentFolder(): string
     {
         global $pth;
 

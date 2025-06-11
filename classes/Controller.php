@@ -33,10 +33,7 @@ class Controller
         }
     }
 
-    /**
-     * @return bool
-     */
-    protected function isAdministrationRequested()
+    protected function isAdministrationRequested(): bool
     {
         return XH_wantsPluginAdministration('fotorama');
     }
@@ -77,10 +74,7 @@ class Controller
         }
     }
 
-    /**
-     * @return string HTML.
-     */
-    protected function render(Command $command)
+    protected function render(Command $command): string
     {
         ob_start();
         $command->execute();

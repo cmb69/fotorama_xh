@@ -25,28 +25,15 @@ use SimpleXMLElement;
 
 class GalleryView
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
+    private static bool $jsEmitted = false;
 
-    /**
-     * @var bool
-     */
-    private static $jsEmitted = false;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string (X)HTML
-     */
-    public function render()
+    public function render(): string
     {
         global $plugin_tx;
 
@@ -83,11 +70,7 @@ class GalleryView
         self::$jsEmitted = true;
     }
 
-    /**
-     * @param SimpleXMLElement $gallery
-     * @return string (X)HTML
-     */
-    protected function renderGalleryStartTag(\SimpleXMLElement $gallery)
+    protected function renderGalleryStartTag(SimpleXMLElement $gallery): string
     {
         $html = '<div class="fotorama"';
         if (isset($gallery['width'])) {
@@ -109,7 +92,7 @@ class GalleryView
         return $html;
     }
 
-    private function renderPictures(\SimpleXMLElement $gallery): string
+    private function renderPictures(SimpleXMLElement $gallery): string
     {
         global $pth;
 
@@ -146,12 +129,7 @@ class GalleryView
         return strpos($url, '://') !== false;
     }
 
-    /**
-     * @param string $path
-     * @param int $size Minimum size in pixels.
-     * @return string
-     */
-    protected function makeThumbnail($path, $size)
+    protected function makeThumbnail(string $path, int $size): string
     {
         global $pth;
 

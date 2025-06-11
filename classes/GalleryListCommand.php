@@ -23,9 +23,6 @@ namespace Fotorama;
 
 class GalleryListCommand extends Command
 {
-    /**
-     * Renders the gallery list.
-     */
     public function execute(): void
     {
         global $sn, $plugin_tx, $_XH_csrfProtection;
@@ -58,20 +55,14 @@ class GalleryListCommand extends Command
         echo $html;
     }
 
-    /**
-     * @return string (X)HTML
-     */
-    protected function renderImageFolderSelect()
+    protected function renderImageFolderSelect(): string
     {
         return '<select name="fotorama_folder">'
             . $this->renderImageFolderSelectOptions()
             . '</select>';
     }
 
-    /**
-     * @return string (X)HTML
-     */
-    protected function renderImageFolderSelectOptions()
+    protected function renderImageFolderSelectOptions(): string
     {
         $html = '';
         $service = new GalleryService();

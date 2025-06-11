@@ -19,17 +19,16 @@ You should have received a copy of the GNU General Public License
 along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+use Fotorama\Controller;
+use Fotorama\GalleryView;
+
 define('FOTORAMA_VERSION', '1.0beta2');
 
- /**
-  * @param string $name
-  * @return string (X)HTML
-  */
-function fotorama($name)
+function fotorama(string $name): string
 {
-    $view = new Fotorama\GalleryView($name);
+    $view = new GalleryView($name);
     return $view->render();
 }
 
-$temp = new Fotorama\Controller();
+$temp = new Controller();
 $temp->dispatch();

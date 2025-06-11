@@ -25,30 +25,20 @@ abstract class Command
 {
     abstract public function execute(): void;
 
-    /**
-     * @param string $url
-     */
-    protected function relocate($url): void
+    protected function relocate(string $url): void
     {
         header('Location: ' . CMSIMPLE_URL . $url);
         exit();
     }
 
-    /**
-     * @return string HTML.
-     */
-    protected function render(Command $command)
+    protected function render(Command $command): string
     {
         ob_start();
         $command->execute();
         return ob_get_clean();
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
-    protected function sanitizeName($name)
+    protected function sanitizeName(string $name): string
     {
         return preg_replace('/[^a-z0-9-]/', '', $name);
     }

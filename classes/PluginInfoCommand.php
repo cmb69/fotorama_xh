@@ -23,9 +23,6 @@ namespace Fotorama;
 
 class PluginInfoCommand extends Command
 {
-    /**
-     * Renders the plugin info.
-     */
     public function execute(): void
     {
         global $pth, $plugin_tx;

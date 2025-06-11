@@ -21,11 +21,10 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use DOMDocument;
+
 class SaveGalleryCommand extends Command
 {
-    /**
-     * Saves a gallery.
-     */
     public function execute(): void
     {
         global $plugin_cf, $plugin_tx, $_XH_csrfProtection, $o;
@@ -55,13 +54,9 @@ class SaveGalleryCommand extends Command
         }
     }
 
-    /**
-     * @param string $xml
-     * @return bool
-     */
-    protected function validate($xml)
+    protected function validate(string $xml): bool
     {
-        $doc = new \DomDocument();
+        $doc = new DOMDocument();
         return $doc->loadXML($xml) && $doc->validate();
     }
 }
