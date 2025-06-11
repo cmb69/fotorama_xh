@@ -40,7 +40,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
         case "plugin_main":
             switch ($action) {
                 case "create":
-                    Plugin::createGalleryCommand()->execute();
+                    Plugin::createGalleryCommand()->execute(Request::current());
                     break;
                 case "edit":
                     ob_start();

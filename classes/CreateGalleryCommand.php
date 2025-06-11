@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\Request;
 use Plib\View;
 
 class CreateGalleryCommand
@@ -36,14 +37,14 @@ class CreateGalleryCommand
         $this->view = $view;
     }
 
-    public function execute(): void
+    public function execute(Request $request): void
     {
         global $o, $_XH_csrfProtection;
 
         $_XH_csrfProtection->check();
         $messages = '';
-        $name = $_POST['fotorama_gallery'];
-        $path = $_POST['fotorama_folder'];
+        $name = $request->post("fotorama_gallery");
+        $path = $request->post("fotorama_folder");
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
             . '<!DOCTYPE gallery SYSTEM' . PHP_EOL
             . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
