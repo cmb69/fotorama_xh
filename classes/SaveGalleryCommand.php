@@ -53,7 +53,7 @@ class SaveGalleryCommand
         } else {
             $o .= $messages;
             ob_start();
-            (new GalleryEditorCommand())->execute();
+            Plugin::galleryEditorCommand()->execute();
             $o .= ob_get_clean();
         }
     }

@@ -65,7 +65,11 @@ class Plugin
 
     public static function galleryEditorCommand(): GalleryEditorCommand
     {
-        return new GalleryEditorCommand();
+        return new GalleryEditorCommand(
+            new GalleryService(),
+            new CsrfProtector(),
+            self::view()
+        );
     }
 
     public static function saveGalleryCommand(): SaveGalleryCommand
