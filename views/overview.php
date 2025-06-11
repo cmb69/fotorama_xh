@@ -19,17 +19,27 @@ use Plib\View;
 <?endforeach?>
 </ul>
 <form action="<?=$this->esc($action)?>" method="post">
-<input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
-<input type="hidden" name="admin" value="plugin_main">
-<fieldset>
-  <legend><?=$this->text("label_create_gallery")?></legend>
-<p><label><?=$this->text("label_name")?> <input type="text" name="fotorama_gallery"></label></p>
-<p><label><?=$this->text("label_folder")?> <select name="fotorama_folder">
+  <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
+  <input type="hidden" name="admin" value="plugin_main">
+  <fieldset>
+    <legend><?=$this->text("label_create_gallery")?></legend>
+    <p>
+      <label>
+        <span><?=$this->text("label_name")?></span>
+        <input type="text" name="fotorama_gallery"></label>
+    </p>
+    <p>
+      <label>
+        <span><?=$this->text("label_folder")?></span>
+        <select name="fotorama_folder">
 <?foreach ($folders as $folder):?>
-<option><?=$this->esc($folder)?></option>
+          <option><?=$this->esc($folder)?></option>
 <?endforeach?>
-</select>
-</label></p>
-<p><button class="submit" name="action" value="create"><?=$this->text("label_create")?></button></p>
-</fieldset>
+        </select>
+      </label>
+    </p>
+    <p>
+      <button class="submit" name="action" value="create"><?=$this->text("label_create")?></button>
+    </p>
+  </fieldset>
 </form>
