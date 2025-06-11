@@ -22,11 +22,21 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Plib\Response;
+use Plib\View;
 
 class PluginInfoCommand
 {
+    private View $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     public function __invoke(): Response
     {
-        return Response::create('<h1>Fotorama ' . Plugin::VERSION . '</h1>' . "\n");
+        return Response::create($this->view->render("info", [
+            "version" => Plugin::VERSION,
+        ]));
     }
 }

@@ -60,7 +60,7 @@ class Plugin
 
     public static function pluginInfoCommand(): PluginInfoCommand
     {
-        return new PluginInfoCommand();
+        return new PluginInfoCommand(self::view());
     }
 
     private static function view(): View
