@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use DOMDocument;
+use Plib\Request;
 use Plib\View;
 
 class SaveGalleryCommand
@@ -37,14 +38,14 @@ class SaveGalleryCommand
         $this->view = $view;
     }
 
-    public function execute(): void
+    public function execute(Request $request): void
     {
         global $plugin_cf, $_XH_csrfProtection, $o;
 
         $_XH_csrfProtection->check();
         $messages = '';
-        $name = $this->sanitizeName($_POST['fotorama_gallery']);
-        $text = $_POST['fotorama_text'];
+        $name = $this->sanitizeName($request->post("fotorama_gallery)") ?? "");
+        $text = $request->post("fotorama_text") ?? "";
         if ($plugin_cf['fotorama']['xml_auto_validate'] && !$this->validate($text)) {
             $messages .= $this->view->message("warning", "message_invalid_xml");
         }

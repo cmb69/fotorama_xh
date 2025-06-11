@@ -20,6 +20,7 @@
  */
 
 use Fotorama\Plugin;
+use Plib\Request;
 
 /**
  * @var string $action
@@ -47,7 +48,7 @@ if (XH_wantsPluginAdministration("fotorama")) {
                     $o .= ob_get_clean();
                     break;
                 case "save":
-                    Plugin::saveGalleryCommand()->execute();
+                    Plugin::saveGalleryCommand()->execute(Request::current());
                     break;
                 default:
                     ob_start();
