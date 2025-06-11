@@ -25,7 +25,7 @@ use Plib\Response;
 
 class PluginInfoCommand
 {
-    public function execute(): Response
+    public function __invoke(): Response
     {
         return Response::create('<h1>Fotorama ' . Plugin::VERSION . '</h1>' . "\n");
     }
