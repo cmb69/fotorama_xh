@@ -21,68 +21,74 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Plib\CsrfProtector;
+use Plib\Request;
+use Plib\Response;
 use Plib\View;
 
 class CreateGalleryCommand
 {
+    private GalleryService $galleryService;
+    private CsrfProtector $csrfProtector;
     private View $view;
 
-    public function __construct(View $view)
-    {
+    public function __construct(
+        GalleryService $galleryService,
+        CsrfProtector $csrfProtector,
+        View $view
+    ) {
+        $this->galleryService = $galleryService;
+        $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
 
-    public function execute(): void
+    public function execute(Request $request): Response
     {
-        global $o, $_XH_csrfProtection;
+        global $o;
 
-        $_XH_csrfProtection->check();
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
         $messages = '';
-        $name = $_POST['fotorama_gallery'];
-        $path = $_POST['fotorama_folder'];
+        $name = $request->post("fotorama_gallery");
+        $path = $request->post("fotorama_folder");
         $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
             . '<!DOCTYPE gallery SYSTEM' . PHP_EOL
             . '        "http://3-magi.net/userfiles/downloads/dtd/gallery.dtd">'
             . PHP_EOL
             . '<gallery path="' . $path . '">' . PHP_EOL;
-        $service = new GalleryService();
-        if ($service->hasImageFolder($path)) {
-            foreach ($service->findImagesIn($path) as $image) {
+        if ($this->galleryService->hasImageFolder($path)) {
+            foreach ($this->galleryService->findImagesIn($path) as $image) {
                 $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
             }
         } else {
-            $messages .= $this->view->message("warning", "message_no_folder", $service->getImageFoldername($path));
+            $foldername = $this->galleryService->getImageFoldername($path);
+            $messages .= $this->view->message("warning", "message_no_folder", $foldername);
         }
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
             $messages .= $this->view->message("fail", "message_invalid_name", $name);
         } else {
-            if ($service->hasGallery($name)) {
-                $messages .= $this->view->message("fail", "message_exists", $service->getGalleryFilename($name));
-            } elseif (!$service->saveGalleryXML($name, $xml)) {
-                $messages .= $this->view->message("fail", "message_cant_save", $service->getGalleryFilename($name));
+            $filename = $this->galleryService->getImageFoldername($path);
+            if ($this->galleryService->hasGallery($name)) {
+                $messages .= $this->view->message("fail", "message_exists", $filename);
+            } elseif (!$this->galleryService->saveGalleryXML($name, $xml)) {
+                $messages .= $this->view->message("fail", "message_cant_save", $filename);
             }
         }
         if (!$messages) {
-            $this->relocate(
-                '?&fotorama&admin=plugin_main&action=edit&fotorama_gallery=' . $name
-            );
+            $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
+            return Response::redirect($url->absolute());
         } else {
             $o .= $messages;
             ob_start();
             Plugin::galleryListCommand()->execute();
-            $o .= ob_get_clean();
+            return Response::create(ob_get_clean());
         }
     }
 
     protected function isValidName(string $name): bool
     {
         return preg_match('/^[a-z0-9-]+$/', $name);
-    }
-
-    private function relocate(string $url): void
-    {
-        header('Location: ' . CMSIMPLE_URL . $url);
-        exit();
     }
 }
