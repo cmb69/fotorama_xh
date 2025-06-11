@@ -37,6 +37,6 @@ class PluginInfoCommand
     {
         return Response::create($this->view->render("info", [
             "version" => Plugin::VERSION,
-        ]));
+        ]))->withTitle("Fotorama " . $this->view->esc(Plugin::VERSION));
     }
 }
