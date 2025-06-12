@@ -64,16 +64,16 @@ class GalleryAdminCommand
 
     private function respondWithOverview(
         Request $request,
-        string $name = "",
-        string $path = "",
         string $error = ""
     ): Response {
-        return Response::create($this->renderOverview($request, $name, $path, $error))
+        return Response::create($this->renderOverview($request, $error))
             ->withTitle("Fotorama – " . $this->view->text("menu_main"));
     }
 
-    private function renderOverview(Request $request, string $name, string $path, string $error): string
+    private function renderOverview(Request $request, string $error): string
     {
+        $name = $request->post("fotorama_name") ?? "";
+        $path = $request->post("fotorama_path") ?? "";
         return $this->view->render("overview", [
             "error" => $error,
             "galleries" => $this->galleryDtos($request),
@@ -114,23 +114,23 @@ class GalleryAdminCommand
         $path = $request->post("fotorama_folder") ?? "";
         if (!$this->isValidName($name)) {
             $error = $this->view->message("fail", "message_invalid_name", $name);
-            return $this->respondWithOverview($request, $name, $path, $error);
+            return $this->respondWithOverview($request, $error);
         }
         if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
             $error = $this->view->message("warning", "message_no_folder", $foldername);
-            return $this->respondWithOverview($request, $name, $path, $error);
+            return $this->respondWithOverview($request, $error);
         }
         if (($gallery = Gallery::create($name, $path, $this->store)) === null) {
             $error = $this->view->message("fail", "message_exists", $name);
-            return $this->respondWithOverview($request, $name, $path, $error);
+            return $this->respondWithOverview($request, $error);
         }
         foreach ($this->galleryService->findImagesIn($path) as $image) {
             $gallery->addImage($image);
         }
         if (!$this->store->commit()) {
             $error = $this->view->message("fail", "message_cant_save", $name);
-            return $this->respondWithOverview($request, $name, $path, $error);
+            return $this->respondWithOverview($request, $error);
         }
         $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
         return Response::redirect($url->absolute());
@@ -146,7 +146,7 @@ class GalleryAdminCommand
         $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery") ?? "");
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             $error = $this->view->message("fail", "message_no_gallery", $name);
-            return $this->respondWithOverview($request, $name, "", $error);
+            return $this->respondWithOverview($request, $error);
         }
         return Response::create($this->renderEditor($request, $gallery, $name, $error))
             ->withTitle("Fotorama – " . $this->view->esc($name));
@@ -176,7 +176,7 @@ class GalleryAdminCommand
         $text = $request->post("fotorama_text") ?? "";
         if (($gallery = Gallery::update($name, $this->store)) === null) {
             $error = $this->view->message("warning", "message_no_gallery", $name);
-            return $this->respondWithOverview($request, $name, "", $error);
+            return $this->respondWithOverview($request, $error);
         }
         if (!$gallery->updateFromXml($text)) {
             $this->store->rollback();
