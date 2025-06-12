@@ -62,10 +62,8 @@ class GalleryAdminCommand
         }
     }
 
-    private function respondWithOverview(
-        Request $request,
-        string $error = ""
-    ): Response {
+    private function respondWithOverview(Request $request, string $error = ""): Response
+    {
         return Response::create($this->renderOverview($request, $error))
             ->withTitle("Fotorama – " . $this->view->text("menu_main"));
     }
