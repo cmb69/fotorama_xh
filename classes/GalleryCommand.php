@@ -59,7 +59,8 @@ class GalleryCommand
             return Response::create($this->view->message("fail", "message_no_gallery", $name));
         }
         if (!$this->jqueryIncluded) {
-            $this->includejQuery();
+            $this->jquery->include();
+            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
             $this->jqueryIncluded = true;
         }
         return Response::create($this->view->render("gallery", [
@@ -68,12 +69,6 @@ class GalleryCommand
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
-    }
-
-    protected function includejQuery(): void
-    {
-        $this->jquery->include();
-        $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
     }
 
     protected function renderAttributes(Gallery $gallery): string
