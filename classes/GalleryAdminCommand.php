@@ -181,11 +181,11 @@ class GalleryAdminCommand
         if (!$gallery->updateFromXml($text)) {
             $this->store->rollback();
             $error = $this->view->message("warning", "message_invalid_xml");
-            return $this->respondWithOverview($request, $name, "", $error);
+            return $this->respondWithEditor($request, $error);
         }
         if (!$this->store->commit()) {
             $error = $this->view->message("fail", "message_cant_save", $name);
-            return $this->respondWithOverview($request, $name, "", $error);
+            return $this->respondWithEditor($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
     }
