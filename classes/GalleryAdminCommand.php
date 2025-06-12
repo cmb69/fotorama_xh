@@ -104,8 +104,8 @@ class GalleryAdminCommand
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
-        $name = $request->post("fotorama_gallery");
-        $path = $request->post("fotorama_folder");
+        $name = $request->post("fotorama_gallery") ?? "";
+        $path = $request->post("fotorama_folder") ?? "";
         if (!$this->isValidName($name)) {
             $error = $this->view->message("fail", "message_invalid_name", $name);
             return $this->respondWithOverview($request, $error);
@@ -132,12 +132,12 @@ class GalleryAdminCommand
 
     private function isValidName(string $name): bool
     {
-        return preg_match('/^[a-z0-9-]+$/', $name);
+        return (bool) preg_match('/^[a-z0-9-]+$/', $name);
     }
 
     private function respondWithEditor(Request $request, string $error = ""): Response
     {
-        $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
+        $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery") ?? "");
         return Response::create($this->renderEditor($request, $name, $error))
             ->withTitle("Fotorama – " . $this->view->esc($name));
     }
@@ -183,6 +183,6 @@ class GalleryAdminCommand
 
     private function sanitizeName(string $name): string
     {
-        return preg_replace('/[^a-z0-9-]/', '', $name);
+        return (string) preg_replace('/[^a-z0-9-]/', '', $name);
     }
 }
