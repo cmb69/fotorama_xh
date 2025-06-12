@@ -22,7 +22,9 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use DOMDocument;
+use Fotorama\Model\Gallery;
 use Plib\CsrfProtector;
+use Plib\DocumentStore2 as DocumentStore;
 use Plib\Request;
 use Plib\Response;
 use Plib\View;
@@ -30,15 +32,18 @@ use Plib\View;
 class GalleryAdminCommand
 {
     private GalleryService $galleryService;
+    private DocumentStore $store;
     private CsrfProtector $csrfProtector;
     private View $view;
 
     public function __construct(
         GalleryService $galleryService,
+        DocumentStore $store,
         CsrfProtector $csrfProtector,
         View $view
     ) {
         $this->galleryService = $galleryService;
+        $this->store = $store;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
@@ -93,28 +98,25 @@ class GalleryAdminCommand
         }
         $name = $request->post("fotorama_gallery");
         $path = $request->post("fotorama_folder");
-        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . PHP_EOL
-            . '<gallery path="' . $path . '">' . PHP_EOL;
         if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
             $error = $this->view->message("warning", "message_no_folder", $foldername);
             return $this->respondWithOverview($request, $error);
         }
-        foreach ($this->galleryService->findImagesIn($path) as $image) {
-            $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
+        if (($gallery = Gallery::create($name, $this->store)) === null) {
+            $error = $this->view->message("fail", "message_exists", $name);
+            return $this->respondWithOverview($request, $error);
         }
-        $xml .= '</gallery>' . PHP_EOL;
+        foreach ($this->galleryService->findImagesIn($path) as $image) {
+            $gallery->addImage($image);
+        }
         if (!$this->isValidName($name)) {
+            $this->store->rollback();
             $error = $this->view->message("fail", "message_invalid_name", $name);
             return $this->respondWithOverview($request, $error);
         }
-        $filename = $this->galleryService->getImageFoldername($path);
-        if ($this->galleryService->hasGallery($name)) {
-            $error = $this->view->message("fail", "message_exists", $filename);
-            return $this->respondWithOverview($request, $error);
-        }
-        if (!$this->galleryService->saveGalleryXML($name, $xml)) {
-            $error = $this->view->message("fail", "message_cant_save", $filename);
+        if (!$this->store->commit()) {
+            $error = $this->view->message("fail", "message_cant_save", $name);
             return $this->respondWithOverview($request, $error);
         }
         $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);

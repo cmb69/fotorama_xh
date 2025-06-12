@@ -75,6 +75,11 @@ final class Gallery implements Document
         return $that;
     }
 
+    public static function create(string $name, DocumentStore $store): ?self
+    {
+        return $store->create("$name.xml", self::class);
+    }
+
     public static function read(string $name, DocumentStore $store): ?self
     {
         return $store->read("$name.xml", self::class);
@@ -119,6 +124,11 @@ final class Gallery implements Document
     public function images(): array
     {
         return $this->images;
+    }
+
+    public function addImage(string $path): void
+    {
+        $this->images[] = new Image($path);
     }
 
     public function toString(): ?string

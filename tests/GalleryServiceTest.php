@@ -40,17 +40,6 @@ XML;
         $this->assertEquals(array('bar', 'foo'), $this->sut->findAllGalleries());
     }
 
-    public function testHasGallery()
-    {
-        $this->assertTrue($this->sut->hasGallery('foo'));
-        $this->assertFalse($this->sut->hasGallery('baz'));
-    }
-
-    public function testGalleryIsSimpleXMLElement()
-    {
-        $this->assertInstanceOf('SimpleXMLElement', $this->sut->findGallery('foo'));
-    }
-
     public function testFindsGalleryXml()
     {
         $this->assertEquals(self::FOO_XML, $this->sut->findGalleryXml('foo'));

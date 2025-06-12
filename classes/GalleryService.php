@@ -41,16 +41,6 @@ class GalleryService
         return array_values($result);
     }
 
-    public function hasGallery(string $name): bool
-    {
-        return is_file($this->getGalleryFilename($name));
-    }
-
-    public function findGallery(string $name): SimpleXMLElement
-    {
-        return simplexml_load_file($this->getGalleryFilename($name));
-    }
-
     public function findGalleryXML(string $name): string
     {
         return file_get_contents($this->getGalleryFilename($name));
