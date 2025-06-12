@@ -60,10 +60,11 @@ class GalleryView
         if (!$this->jsEmitted) {
             $this->emitJS();
         }
-        $html = $this->renderGalleryStartTag($gallery);
-        $html .= $this->renderPictures($gallery);
-        $html .= '</div>';
-        return $html;
+        return $this->view->render("gallery", [
+            "attributes" => $this->renderAttributes($gallery),
+            "images" => $this->pictureDtos($gallery),
+            "thumbnails" => $gallery->thumbs(),
+        ]);
     }
 
     protected function emitJS(): void
@@ -80,31 +81,30 @@ class GalleryView
         $this->jsEmitted = true;
     }
 
-    protected function renderGalleryStartTag(Gallery $gallery): string
+    protected function renderAttributes(Gallery $gallery): string
     {
-        $html = '<div class="fotorama"';
+        $html = "";
         if ($gallery->width() !== null) {
-            $html .= ' data-width="' . $gallery->width() . '"';
+            $html .= ' data-width="' . $this->view->esc($gallery->width()) . '"';
         }
         if ($gallery->ratio() !== null) {
-            $html .= ' data-ratio="' . $gallery->ratio() . '"';
+            $html .= ' data-ratio="' . $this->view->esc($gallery->ratio()) . '"';
         }
         if ($gallery->thumbs()) {
             $html .= ' data-nav="thumbs"';
         }
         if ($gallery->fullscreen()) {
-            $html .= ' data-allowfullscreen="' . $gallery->fullscreen() . '"';
+            $html .= ' data-allowfullscreen="' . $this->view->esc($gallery->fullscreen()) . '"';
         }
-        $html .= ' data-transition="' . $gallery->transition() . '"';
-        $html .= '>' . "\n";
+        $html .= ' data-transition="' . $this->view->esc($gallery->transition()) . '"';
         return $html;
     }
 
-    private function renderPictures(Gallery $gallery): string
+    /** @return iterable<object{filename:string,caption:string,thumbnail:string}> */
+    private function pictureDtos(Gallery $gallery): iterable
     {
-        $html = '';
         foreach ($gallery->images() as $pic) {
-            $caption = XH_hsc($pic->caption() ?? "");
+            $caption = $pic->caption() ?? "";
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
             } else {
@@ -116,17 +116,15 @@ class GalleryView
                 } else {
                     $thumbnail = $this->thumbnailService->makeThumbnail($filename, 64);
                 }
-                $html .= "<a href=\"$filename\" data-caption=\"$caption\">";
             } else {
                 $thumbnail = $filename;
             }
-            $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
-                . '" alt="' . $caption . '">' . "\n";
-            if ($gallery->thumbs()) {
-                $html .= '</a>';
-            }
+            yield (object) [
+                "filename" => $filename,
+                "caption" => $caption,
+                "thumbnail" => $thumbnail,
+            ];
         }
-        return $html;
     }
 
     private function isAbsoluteUrl(string $url): bool
