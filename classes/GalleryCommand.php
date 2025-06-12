@@ -26,7 +26,7 @@ use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\View;
 
-class GalleryView
+class GalleryCommand
 {
     private string $pluginFolder;
     private string $imageFolder;

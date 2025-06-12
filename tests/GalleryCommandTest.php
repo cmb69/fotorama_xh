@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\View;
-use SimpleXMLElement;
 
 class GalleryViewTest extends TestCase
 {
@@ -28,9 +27,9 @@ class GalleryViewTest extends TestCase
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
     }
 
-    private function sut(): GalleryView
+    private function sut(): GalleryCommand
     {
-        return new GalleryView(
+        return new GalleryCommand(
             "./",
             "./",
             $this->store,
