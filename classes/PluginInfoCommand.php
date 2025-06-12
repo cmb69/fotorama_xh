@@ -56,7 +56,6 @@ class PluginInfoCommand
             $this->checkPhpVersion("7.4.0"),
             $this->checkExtension("dom"),
             $this->checkExtension("gd"),
-            $this->checkExtension("simplexml"),
             $this->checkXHVersion("1.7.0"),
             $this->checkPlibVersion("1.10"),
             $this->checkWritability($this->pluginFolder . "cache/"),
