@@ -42,7 +42,9 @@ class GalleryAdminCommandTest extends TestCase
         Gallery::create("gallery2", "gallery2", $this->store);
         $this->store->commit();
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
-        $request = new FakeRequest();
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=plugin_tx&normal",
+        ]);
         $response = $this->sut()($request);
         $this->assertSame("Fotorama – Galleries", $response->title());
         Approvals::verifyHtml($response->output());

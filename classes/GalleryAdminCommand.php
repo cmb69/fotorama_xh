@@ -73,7 +73,7 @@ class GalleryAdminCommand
         return $this->view->render("overview", [
             "error" => $error,
             "galleries" => $this->galleryDtos($request),
-            "action" => $request->url()->page("fotorama")->relative(),
+            "action" => $request->url()->with("action", "create")->relative(),
             "token" => $this->csrfProtector->token(),
             "folders" => $this->galleryService->findImageFolders(),
         ]);

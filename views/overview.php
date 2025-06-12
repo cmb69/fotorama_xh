@@ -26,7 +26,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 </ul>
 <form action="<?=$this->esc($action)?>" method="post">
   <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
-  <input type="hidden" name="admin" value="plugin_main">
   <fieldset>
     <legend><?=$this->text("label_create_gallery")?></legend>
     <p>
@@ -45,7 +44,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       </label>
     </p>
     <p>
-      <button class="submit" name="action" value="create"><?=$this->text("label_create")?></button>
+      <button class="submit"><?=$this->text("label_create")?></button>
     </p>
   </fieldset>
 </form>

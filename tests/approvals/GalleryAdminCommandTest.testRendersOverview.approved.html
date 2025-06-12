@@ -4,9 +4,8 @@
   <li><a href="/?fotorama&amp;admin=plugin_main&amp;action=edit&amp;fotorama_gallery=gallery1">gallery1</a></li>
   <li><a href="/?fotorama&amp;admin=plugin_main&amp;action=edit&amp;fotorama_gallery=gallery2">gallery2</a></li>
 </ul>
-<form action="/?fotorama" method="post">
+<form action="/?&amp;fotorama&amp;admin=plugin_main&amp;action=create&amp;normal" method="post">
   <input type="hidden" name="fotorama_token" value="1234">
-  <input type="hidden" name="admin" value="plugin_main">
   <fieldset>
     <legend>Create new gallery</legend>
     <p>
@@ -24,7 +23,7 @@
       </label>
     </p>
     <p>
-      <button class="submit" name="action" value="create">Create</button>
+      <button class="submit">Create</button>
     </p>
   </fieldset>
 </form>
