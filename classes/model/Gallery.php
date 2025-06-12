@@ -129,21 +129,12 @@ final class Gallery implements Document
         $gallery = $document->documentElement;
         assert($gallery !== null);
         $this->path = $gallery->getAttribute("path");
-        if ($gallery->hasAttribute("width")) {
-            $this->width = $gallery->getAttribute("width");
-        }
-        if ($gallery->hasAttribute("ratio")) {
-            $this->ratio = $gallery->getAttribute("ratio");
-        }
-        if ($gallery->hasAttribute("nav")) {
-            $this->thumbs = true;
-        }
-        if ($gallery->hasAttribute("fullscreen")) {
-            $this->fullscreen = $gallery->getAttribute("fullscreen");
-        }
-        if ($gallery->hasAttribute("transition")) {
-            $this->transition = $gallery->getAttribute("transition");
-        }
+        $this->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
+        $this->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
+        $this->thumbs = $gallery->hasAttribute("nav");
+        $this->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
+        $this->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
+        $this->images = [];
         foreach ($gallery->childNodes as $childNode) {
             assert($childNode instanceof DOMNode);
             if ($childNode->nodeName === "pic") {
