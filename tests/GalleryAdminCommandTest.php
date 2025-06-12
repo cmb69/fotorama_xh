@@ -138,6 +138,8 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRendersEditor(): void
     {
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
         $request = new FakeRequest(["url" => "http://example.com/?&action=edit&fotorama_gallery=test"]);
         $response = $this->sut()($request);
         $this->assertSame("Fotorama – test", $response->title());

@@ -138,17 +138,20 @@ class GalleryAdminCommand
     private function respondWithEditor(Request $request, string $error = ""): Response
     {
         $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery") ?? "");
-        return Response::create($this->renderEditor($request, $name, $error))
+        if (($gallery = Gallery::read($name, $this->store)) === null) {
+            $error = $this->view->message("fail", "message_no_gallery", $name);
+            return $this->respondWithOverview($request, $error);
+        }
+        return Response::create($this->renderEditor($request, $gallery, $name, $error))
             ->withTitle("Fotorama – " . $this->view->esc($name));
     }
 
-    private function renderEditor(Request $request, string $name, string $error): string
+    private function renderEditor(Request $request, Gallery $gallery, string $name, string $error): string
     {
         if (function_exists("init_codeeditor")) {
             init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
         }
-        $gallery = Gallery::read($name, $this->store);
-        $xml = $gallery !== null ? $gallery->toString() : "";
+        $xml = $gallery->toString();
         return $this->view->render("editor", [
             "error" => $error,
             "name" => $name,
