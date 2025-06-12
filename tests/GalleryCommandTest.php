@@ -7,6 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\DocumentStore2 as DocumentStore;
+use Plib\FakeRequest;
 use Plib\Jquery;
 use Plib\View;
 
@@ -30,7 +31,7 @@ class GalleryViewTest extends TestCase
     private function sut(): GalleryCommand
     {
         return new GalleryCommand(
-            "./",
+            "./plugins/fotorama/",
             "./",
             $this->store,
             $this->thumbnailService,
@@ -41,7 +42,8 @@ class GalleryViewTest extends TestCase
 
     public function testRendersGallery(): void
     {
-        $response = $this->sut()("test");
+        $request = new FakeRequest();
+        $response = $this->sut()($request, "test");
         Approvals::verifyHtml($response->output());
     }
 
@@ -50,7 +52,8 @@ class GalleryViewTest extends TestCase
         $this->jquery->expects($this->once())->method("include");
         $this->jquery->expects($this->once())->method("includePlugin")->with("fotorama");
         $sut = $this->sut();
-        $sut("test");
-        $sut("test");
+        $request = new FakeRequest();
+        $sut($request, "test");
+        $sut($request, "test");
     }
 }

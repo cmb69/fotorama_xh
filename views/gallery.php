@@ -6,20 +6,22 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
+ * @var string $script
  * @var string $stylesheet
  * @var string $caption
- * @var string $attributes
+ * @var array<string,mixed> $config
  * @var list<object{filename:string,caption:string,thumbnail:string}> $images
  * @var bool $thumbnails
  */
 ?>
 
+<script type="module" src="<?=$this->esc($script)?>"></script>
 <link rel="stylesheet" type="text/css" href="<?=$this->esc($stylesheet)?>">
-<figure class="fotorama_gallery">
+<figure class="fotorama_gallery" data-config='<?=$this->json($config)?>'>
 <?if ($caption):?>
   <figcaption><?=$this->esc($caption)?></figcaption>
 <?endif?>
-  <div class="fotorama" <?=$this->raw($attributes)?>>
+  <div class="fotorama" data-auto="false">
 <?foreach ($images as $image):?>
 <?if ($thumbnails):?>
     <a href="<?=$this->esc($image->filename)?>" data-caption="<?=$this->esc($image->caption)?>">

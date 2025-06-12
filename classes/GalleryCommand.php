@@ -24,6 +24,7 @@ namespace Fotorama;
 use Fotorama\Model\Gallery;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
+use Plib\Request;
 use Plib\Response;
 use Plib\View;
 
@@ -53,7 +54,7 @@ class GalleryCommand
         $this->view = $view;
     }
 
-    public function __invoke(string $name): Response
+    public function __invoke(Request $request, string $name): Response
     {
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             return Response::create($this->view->message("fail", "error_no_gallery", $name));
@@ -64,31 +65,41 @@ class GalleryCommand
             $this->jqueryIncluded = true;
         }
         return Response::create($this->view->render("gallery", [
+            "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
             "caption" => $gallery->caption() ?? "",
-            "attributes" => $this->renderAttributes($gallery),
+            "config" => $this->jsConfig($gallery),
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
     }
 
-    private function renderAttributes(Gallery $gallery): string
+    private function script(): string
     {
-        $html = "";
+        if (is_file($this->pluginFolder . "fotorama.min.js")) {
+            return $this->pluginFolder . "fotorama.min.js";
+        }
+        return $this->pluginFolder . "fotorama.js";
+    }
+
+    /** @return array<string,mixed> */
+    private function jsConfig(Gallery $gallery): array
+    {
+        $config = [];
         if ($gallery->width() !== null) {
-            $html .= ' data-width="' . $this->view->esc($gallery->width()) . '"';
+            $config["width"] = $gallery->width();
         }
         if ($gallery->ratio() !== null) {
-            $html .= ' data-ratio="' . $this->view->esc($gallery->ratio()) . '"';
+            $config["ratio"] = $gallery->ratio();
         }
         if ($gallery->thumbs()) {
-            $html .= ' data-nav="thumbs"';
+            $config["nav"] = "thumbs";
         }
         if ($gallery->fullscreen()) {
-            $html .= ' data-allowfullscreen="' . $this->view->esc($gallery->fullscreen()) . '"';
+            $config["fullscreen"] = $gallery->fullscreen();
         }
-        $html .= ' data-transition="' . $this->view->esc($gallery->transition()) . '"';
-        return $html;
+        $config["transition"] = $gallery->transition();
+        return $config;
     }
 
     /** @return iterable<object{filename:string,caption:string,thumbnail:string}> */

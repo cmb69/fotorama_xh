@@ -20,8 +20,9 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 use Fotorama\Plugin;
+use Plib\Request;
 
 function fotorama(string $name): string
 {
-    return Plugin::galleryCommand()($name)();
+    return Plugin::galleryCommand()(Request::current(), $name)();
 }
