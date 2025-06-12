@@ -85,6 +85,11 @@ final class Gallery implements Document
         return $store->read("$name.xml", self::class);
     }
 
+    public static function update(string $name, DocumentStore $store): ?self
+    {
+        return $store->update("$name.xml", self::class);
+    }
+
     public function __construct(string $path)
     {
         $this->path = $path;
@@ -129,6 +134,40 @@ final class Gallery implements Document
     public function addImage(string $path): void
     {
         $this->images[] = new Image($path);
+    }
+
+    public function updateFromXml(string $xml): bool
+    {
+        $document = new DOMDocument();
+        if (!@$document->loadXML($xml)) {
+            return false;
+        }
+        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
+            return false;
+        }
+        $gallery = $document->documentElement;
+        $this->path = $gallery->getAttribute("path");
+        if ($gallery->hasAttribute("width")) {
+            $this->width = $gallery->getAttribute("width");
+        }
+        if ($gallery->hasAttribute("ratio")) {
+            $this->ratio = $gallery->getAttribute("ratio");
+        }
+        if ($gallery->hasAttribute("nav")) {
+            $this->thumbs = true;
+        }
+        if ($gallery->hasAttribute("fullscreen")) {
+            $this->fullscreen = $gallery->getAttribute("fullscreen");
+        }
+        if ($gallery->hasAttribute("transition")) {
+            $this->transition = $gallery->getAttribute("transition");
+        }
+        foreach ($gallery->childNodes as $childNode) {
+            if ($childNode->nodeName === "pic") {
+                $this->images[] = Image::fromElement($childNode);
+            }
+        }
+        return true;
     }
 
     public function toString(): ?string

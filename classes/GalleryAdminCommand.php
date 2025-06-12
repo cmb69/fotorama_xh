@@ -157,22 +157,19 @@ class GalleryAdminCommand
         }
         $name = $this->sanitizeName($request->post("fotorama_gallery") ?? "");
         $text = $request->post("fotorama_text") ?? "";
-        if (!$this->validate($text)) {
+        $gallery = Gallery::update($name, $this->store);
+        assert($gallery !== null); // TODO invalid assertion
+        if (!$gallery->updateFromXml($text)) {
+            $this->store->rollback();
             $error = $this->view->message("warning", "message_invalid_xml");
             return $this->respondWithOverview($request, $error);
         }
-        if (!$this->galleryService->saveGalleryXML($name, $text)) {
+        if (!$this->store->commit()) {
             $filename = $this->galleryService->getGalleryFilename($name);
             $error = $this->view->message("fail", "message_cant_save", $filename);
             return $this->respondWithOverview($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
-    }
-
-    private function validate(string $xml): bool
-    {
-        $doc = new DOMDocument();
-        return @$doc->loadXML($xml) && @$doc->relaxNGValidate(__DIR__ . "/../gallery.rng");
     }
 
     private function sanitizeName(string $name): string

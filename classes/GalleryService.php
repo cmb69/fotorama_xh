@@ -41,14 +41,6 @@ class GalleryService
         return array_values($result);
     }
 
-    public function saveGalleryXML(string $name, string $xml): bool
-    {
-        global $pth;
-
-        $filename = $pth['folder']['content'] . 'fotorama/' . $name . '.xml';
-        return file_put_contents($filename, $xml) !== false;
-    }
-
     public function getGalleryFilename(string $name): string
     {
         global $pth;

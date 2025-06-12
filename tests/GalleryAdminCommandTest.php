@@ -49,7 +49,6 @@ class GalleryAdminCommandTest extends TestCase
     public function testRedirectsAfterCreating(): void
     {
         $this->galleryService->method("hasImageFolder")->willReturn(true);
-        $this->galleryService->method("saveGalleryXML")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=create",
@@ -143,11 +142,13 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRedirectsAfterSaving(): void
     {
-        $this->galleryService->method("saveGalleryXML")->willReturn(true);
+        Gallery::create("test", $this->store);
+        $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save",
             "post" => [
+                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
             ],
         ]);
@@ -165,10 +166,13 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsInvalidXML(): void
     {
+        Gallery::create("test", $this->store);
+        $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
+                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
             ]
         ]);
@@ -178,11 +182,14 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsFailureToSave(): void
     {
-        $this->galleryService->method("saveGalleryXML")->willReturn(false);
+        Gallery::create("test", $this->store);
+        $this->store->commit();
+        vfsStream::setQuota(0);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
+                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
             ]
         ]);
