@@ -24,9 +24,10 @@ namespace Fotorama;
 use Fotorama\Model\Gallery;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
+use Plib\Response;
 use Plib\View;
 
-class GalleryView
+class GalleryCommand
 {
     private string $pluginFolder;
     private string $imageFolder;
@@ -34,7 +35,7 @@ class GalleryView
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
-    private bool $jsEmitted = false;
+    private bool $jqueryIncluded = false;
 
     public function __construct(
         string $pluginFolder,
@@ -52,59 +53,48 @@ class GalleryView
         $this->view = $view;
     }
 
-    public function render(string $name): string
+    public function __invoke(string $name): Response
     {
         if (($gallery = Gallery::read($name, $this->store)) === null) {
-            return $this->view->message("fail", "message_no_gallery", $name);
+            return Response::create($this->view->message("fail", "message_no_gallery", $name));
         }
-        if (!$this->jsEmitted) {
-            $this->emitJS();
+        if (!$this->jqueryIncluded) {
+            $this->jquery->include();
+            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
+            $this->jqueryIncluded = true;
         }
-        $html = $this->renderGalleryStartTag($gallery);
-        $html .= $this->renderPictures($gallery);
-        $html .= '</div>';
-        return $html;
+        return Response::create($this->view->render("gallery", [
+            "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
+            "attributes" => $this->renderAttributes($gallery),
+            "images" => $this->pictureDtos($gallery),
+            "thumbnails" => $gallery->thumbs(),
+        ]));
     }
 
-    protected function emitJS(): void
+    protected function renderAttributes(Gallery $gallery): string
     {
-        global $hjs;
-
-        $this->jquery->include();
-        $hjs .= '<link rel="stylesheet" type="text/css" href="'
-            . $this->pluginFolder . 'lib/fotorama.css">';
-        $this->jquery->includePlugin(
-            'fotorama',
-            $this->pluginFolder . 'lib/fotorama.js'
-        );
-        $this->jsEmitted = true;
-    }
-
-    protected function renderGalleryStartTag(Gallery $gallery): string
-    {
-        $html = '<div class="fotorama"';
+        $html = "";
         if ($gallery->width() !== null) {
-            $html .= ' data-width="' . $gallery->width() . '"';
+            $html .= ' data-width="' . $this->view->esc($gallery->width()) . '"';
         }
         if ($gallery->ratio() !== null) {
-            $html .= ' data-ratio="' . $gallery->ratio() . '"';
+            $html .= ' data-ratio="' . $this->view->esc($gallery->ratio()) . '"';
         }
         if ($gallery->thumbs()) {
             $html .= ' data-nav="thumbs"';
         }
         if ($gallery->fullscreen()) {
-            $html .= ' data-allowfullscreen="' . $gallery->fullscreen() . '"';
+            $html .= ' data-allowfullscreen="' . $this->view->esc($gallery->fullscreen()) . '"';
         }
-        $html .= ' data-transition="' . $gallery->transition() . '"';
-        $html .= '>' . "\n";
+        $html .= ' data-transition="' . $this->view->esc($gallery->transition()) . '"';
         return $html;
     }
 
-    private function renderPictures(Gallery $gallery): string
+    /** @return iterable<object{filename:string,caption:string,thumbnail:string}> */
+    private function pictureDtos(Gallery $gallery): iterable
     {
-        $html = '';
         foreach ($gallery->images() as $pic) {
-            $caption = XH_hsc($pic->caption() ?? "");
+            $caption = $pic->caption() ?? "";
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
             } else {
@@ -116,17 +106,15 @@ class GalleryView
                 } else {
                     $thumbnail = $this->thumbnailService->makeThumbnail($filename, 64);
                 }
-                $html .= "<a href=\"$filename\" data-caption=\"$caption\">";
             } else {
                 $thumbnail = $filename;
             }
-            $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
-                . '" alt="' . $caption . '">' . "\n";
-            if ($gallery->thumbs()) {
-                $html .= '</a>';
-            }
+            yield (object) [
+                "filename" => $filename,
+                "caption" => $caption,
+                "thumbnail" => $thumbnail,
+            ];
         }
-        return $html;
     }
 
     private function isAbsoluteUrl(string $url): bool

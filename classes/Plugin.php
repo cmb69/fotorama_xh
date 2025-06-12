@@ -31,13 +31,13 @@ class Plugin
 {
     public const VERSION = "1.0beta2";
 
-    private static ?GalleryView $galleryView = null;
+    private static ?GalleryCommand $galleryView = null;
 
-    public static function galleryView(): GalleryView
+    public static function galleryCommand(): GalleryCommand
     {
         global $pth;
         if (self::$galleryView === null) {
-            self::$galleryView = new GalleryView(
+            self::$galleryView = new GalleryCommand(
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
                 new DocumentStore($pth["folder"]["content"] . "fotorama/"),
