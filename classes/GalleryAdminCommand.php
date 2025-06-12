@@ -88,7 +88,7 @@ class GalleryAdminCommand
     /** @return iterable<object{name:string,url:string}> */
     private function galleryDtos(Request $request): iterable
     {
-        $url = $request->url()->page("fotorama")->with("admin", "plugin_main")->with("action", "edit");
+        $url = $request->url()->with("action", "edit");
         foreach ($this->findGalleries() as $gallery) {
             yield (object) [
                 "name" => $gallery,
