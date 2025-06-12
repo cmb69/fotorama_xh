@@ -157,7 +157,7 @@ class GalleryAdminCommand
         if (function_exists("init_codeeditor")) {
             init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
         }
-        $xml = $gallery->toString();
+        $xml = $request->post("fotorama_text") ?? $gallery->toString();
         return $this->view->render("editor", [
             "error" => $error,
             "name" => $name,
