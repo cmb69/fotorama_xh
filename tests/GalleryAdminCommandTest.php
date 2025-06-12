@@ -152,14 +152,13 @@ class GalleryAdminCommandTest extends TestCase
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save",
+            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
-                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertSame("http://example.com/", $response->location());
+        $this->assertSame("http://example.com/?&fotorama_gallery=test", $response->location());
     }
 
     public function testSavingIsCsrfProtected(): void
@@ -176,7 +175,6 @@ class GalleryAdminCommandTest extends TestCase
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
-                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
             ]
         ]);
@@ -192,7 +190,6 @@ class GalleryAdminCommandTest extends TestCase
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
-                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
             ]
         ]);
@@ -209,7 +206,6 @@ class GalleryAdminCommandTest extends TestCase
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
-                "fotorama_gallery" => "test",
                 "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
             ]
         ]);

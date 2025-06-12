@@ -143,7 +143,7 @@ class GalleryAdminCommand
 
     private function respondWithEditor(Request $request, string $error = ""): Response
     {
-        $name = $request->get("fotorama_gallery") ?? $request->post("fotorama_gallery") ?? "";
+        $name = $request->get("fotorama_gallery") ?? "";
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             $error = $this->view->message("fail", "message_no_gallery", $name);
             return $this->respondWithOverview($request, $error);
@@ -172,7 +172,7 @@ class GalleryAdminCommand
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);
         }
-        $name = $request->post("fotorama_gallery") ?? "";
+        $name = $request->get("fotorama_gallery") ?? "";
         $text = $request->post("fotorama_text") ?? "";
         if (($gallery = Gallery::update($name, $this->store)) === null) {
             $error = $this->view->message("warning", "message_no_gallery", $name);
