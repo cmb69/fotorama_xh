@@ -71,7 +71,7 @@ class GalleryCommand
         ]));
     }
 
-    protected function renderAttributes(Gallery $gallery): string
+    private function renderAttributes(Gallery $gallery): string
     {
         $html = "";
         if ($gallery->width() !== null) {

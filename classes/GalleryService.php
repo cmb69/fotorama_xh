@@ -87,7 +87,7 @@ class GalleryService
     }
 
     /** @return list<string> */
-    protected function findImageFoldersIn(string $path, string $prefix): array
+    private function findImageFoldersIn(string $path, string $prefix): array
     {
         $folders = array();
         $files = new \DirectoryIterator($path);
@@ -142,7 +142,7 @@ class GalleryService
         return "{$pth['folder']['images']}$path";
     }
 
-    protected function findContentFolder(): string
+    private function findContentFolder(): string
     {
         global $pth;
 
