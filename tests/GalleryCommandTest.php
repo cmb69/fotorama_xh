@@ -41,7 +41,7 @@ class GalleryViewTest extends TestCase
 
     public function testRendersGallery(): void
     {
-        $output = $this->sut()("test");
-        Approvals::verifyHtml($output);
+        $response = $this->sut()("test");
+        Approvals::verifyHtml($response->output());
     }
 }

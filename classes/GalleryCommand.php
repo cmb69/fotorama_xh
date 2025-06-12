@@ -24,6 +24,7 @@ namespace Fotorama;
 use Fotorama\Model\Gallery;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
+use Plib\Response;
 use Plib\View;
 
 class GalleryCommand
@@ -52,19 +53,19 @@ class GalleryCommand
         $this->view = $view;
     }
 
-    public function __invoke(string $name): string
+    public function __invoke(string $name): Response
     {
         if (($gallery = Gallery::read($name, $this->store)) === null) {
-            return $this->view->message("fail", "message_no_gallery", $name);
+            return Response::create($this->view->message("fail", "message_no_gallery", $name));
         }
         if (!$this->jsEmitted) {
             $this->emitJS();
         }
-        return $this->view->render("gallery", [
+        return Response::create($this->view->render("gallery", [
             "attributes" => $this->renderAttributes($gallery),
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),
-        ]);
+        ]));
     }
 
     protected function emitJS(): void
