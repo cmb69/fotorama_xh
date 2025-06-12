@@ -9,12 +9,12 @@ $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
 
-$plugin_tx['fotorama']['message_invalid_xml'] = "Ungültiges XML!";
-$plugin_tx['fotorama']['message_invalid_name'] = "Der Galeriename \"%s\" ist ungültig!";
-$plugin_tx['fotorama']['message_cant_save'] = "Kann \"%s\" nicht speichern!";
-$plugin_tx['fotorama']['message_exists'] = "Die Galerie \"%s\" existiert bereits!";
-$plugin_tx['fotorama']['message_no_folder'] = "Der Ordner \"%s\" existiert nicht!";
-$plugin_tx['fotorama']['message_no_gallery'] = "Die Galerie \"%s\" existiert nicht!";
+$plugin_tx['fotorama']['error_invalid_xml'] = "Ungültiges XML!";
+$plugin_tx['fotorama']['error_invalid_name'] = "Der Galeriename \"%s\" ist ungültig!";
+$plugin_tx['fotorama']['error_cant_save'] = "Kann \"%s\" nicht speichern!";
+$plugin_tx['fotorama']['error_exists'] = "Die Galerie \"%s\" existiert bereits!";
+$plugin_tx['fotorama']['error_no_folder'] = "Der Ordner \"%s\" existiert nicht!";
+$plugin_tx['fotorama']['error_no_gallery'] = "Die Galerie \"%s\" existiert nicht!";
 
 $plugin_tx['fotorama']['syscheck_title'] = "System-Prüfung";
 $plugin_tx['fotorama']['syscheck_extension'] = "PHP Erweiterung %s verfügbar: %s";
