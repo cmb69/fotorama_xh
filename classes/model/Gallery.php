@@ -43,34 +43,9 @@ final class Gallery implements Document
 
     public static function fromString(string $contents, string $key): ?self
     {
-        $document = new DOMDocument();
-        if (!@$document->loadXML($contents)) {
+        $that = new self("");
+        if (!$that->updateFromXml($contents)) {
             return null;
-        }
-        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
-            return null;
-        }
-        $gallery = $document->documentElement;
-        $that = new self($gallery->getAttribute("path"));
-        if ($gallery->hasAttribute("width")) {
-            $that->width = $gallery->getAttribute("width");
-        }
-        if ($gallery->hasAttribute("ratio")) {
-            $that->ratio = $gallery->getAttribute("ratio");
-        }
-        if ($gallery->hasAttribute("nav")) {
-            $that->thumbs = true;
-        }
-        if ($gallery->hasAttribute("fullscreen")) {
-            $that->fullscreen = $gallery->getAttribute("fullscreen");
-        }
-        if ($gallery->hasAttribute("transition")) {
-            $that->transition = $gallery->getAttribute("transition");
-        }
-        foreach ($gallery->childNodes as $childNode) {
-            if ($childNode->nodeName === "pic") {
-                $that->images[] = Image::fromElement($childNode);
-            }
         }
         return $that;
     }
