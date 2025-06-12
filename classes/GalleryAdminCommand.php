@@ -50,7 +50,7 @@ class GalleryAdminCommand
 
     public function __invoke(Request $request): Response
     {
-        switch ($request->get("action") ?? $request->post("action")) {
+        switch ($request->get("action")) {
             default:
                 return $this->respondWithOverview($request);
             case "create":
