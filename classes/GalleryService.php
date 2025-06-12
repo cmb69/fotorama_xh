@@ -21,56 +21,10 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
-use SimpleXMLElement;
 use SplFileInfo;
 
 class GalleryService
 {
-    /** @return list<string> */
-    public function findAllGalleries(): array
-    {
-        $result = array();
-        $files = new \DirectoryIterator($this->findContentFolder());
-        foreach ($files as $file) {
-            $filename = $file->getFilename();
-            if (pathinfo($filename, PATHINFO_EXTENSION) == 'xml') {
-                $result[] = basename($filename, '.xml');
-            }
-        }
-        natcasesort($result);
-        return array_values($result);
-    }
-
-    public function hasGallery(string $name): bool
-    {
-        return is_file($this->getGalleryFilename($name));
-    }
-
-    public function findGallery(string $name): SimpleXMLElement
-    {
-        return simplexml_load_file($this->getGalleryFilename($name));
-    }
-
-    public function findGalleryXML(string $name): string
-    {
-        return file_get_contents($this->getGalleryFilename($name));
-    }
-
-    public function saveGalleryXML(string $name, string $xml): bool
-    {
-        global $pth;
-
-        $filename = $pth['folder']['content'] . 'fotorama/' . $name . '.xml';
-        return file_put_contents($filename, $xml) !== false;
-    }
-
-    public function getGalleryFilename(string $name): string
-    {
-        global $pth;
-
-        return $pth['folder']['content'] . 'fotorama/' . $name . '.xml';
-    }
-
     /** @return list<string> */
     public function findImageFolders(): array
     {
@@ -140,17 +94,5 @@ class GalleryService
         global $pth;
 
         return "{$pth['folder']['images']}$path";
-    }
-
-    private function findContentFolder(): string
-    {
-        global $pth;
-
-        $folder = $pth['folder']['content'] . 'fotorama/';
-        if (!is_dir($folder)) {
-            mkdir($folder, 0777);
-            chmod($folder, 0777);
-        }
-        return $folder;
     }
 }

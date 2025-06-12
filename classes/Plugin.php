@@ -40,7 +40,7 @@ class Plugin
             self::$galleryView = new GalleryCommand(
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
-                new DocumentStore($pth["folder"]["content"] . "fotorama/"),
+                self::store(),
                 new ThumbnailService(),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()
@@ -53,6 +53,7 @@ class Plugin
     {
         return new GalleryAdminCommand(
             new GalleryService(),
+            self::store(),
             new CsrfProtector(),
             self::view()
         );
@@ -66,6 +67,12 @@ class Plugin
             new SystemChecker(),
             self::view()
         );
+    }
+
+    private static function store(): DocumentStore
+    {
+        global $pth;
+        return new DocumentStore($pth["folder"]["content"] . "fotorama/");
     }
 
     private static function view(): View
