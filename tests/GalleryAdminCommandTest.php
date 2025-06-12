@@ -38,8 +38,8 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRendersOverview(): void
     {
-        Gallery::create("gallery1", $this->store);
-        Gallery::create("gallery2", $this->store);
+        Gallery::create("gallery1", "gallery1", $this->store);
+        Gallery::create("gallery2", "gallery2", $this->store);
         $this->store->commit();
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
         $request = new FakeRequest();
@@ -104,7 +104,7 @@ class GalleryAdminCommandTest extends TestCase
     public function testReportsExistingGalleryWhenCreating(): void
     {
         $this->galleryService->method("hasImageFolder")->willReturn(true);
-        Gallery::create("gallery", $this->store);
+        Gallery::create("gallery", "gallery", $this->store);
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
@@ -144,7 +144,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRedirectsAfterSaving(): void
     {
-        Gallery::create("test", $this->store);
+        Gallery::create("test", "test", $this->store);
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
@@ -182,7 +182,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsInvalidXML(): void
     {
-        Gallery::create("test", $this->store);
+        Gallery::create("test", "test", $this->store);
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
@@ -198,7 +198,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsFailureToSave(): void
     {
-        Gallery::create("test", $this->store);
+        Gallery::create("test", "test", $this->store);
         $this->store->commit();
         vfsStream::setQuota(0);
         $this->csrfProtector->method("check")->willReturn(true);

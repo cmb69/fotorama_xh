@@ -115,7 +115,7 @@ class GalleryAdminCommand
             $error = $this->view->message("warning", "message_no_folder", $foldername);
             return $this->respondWithOverview($request, $error);
         }
-        if (($gallery = Gallery::create($name, $this->store)) === null) {
+        if (($gallery = Gallery::create($name, $path, $this->store)) === null) {
             $error = $this->view->message("fail", "message_exists", $name);
             return $this->respondWithOverview($request, $error);
         }

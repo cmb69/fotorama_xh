@@ -52,9 +52,13 @@ final class Gallery implements Document
         return $that;
     }
 
-    public static function create(string $name, DocumentStore $store): ?self
+    public static function create(string $name, string $path, DocumentStore $store): ?self
     {
-        return $store->create("$name.xml", self::class);
+        if (($that = $store->create("$name.xml", self::class)) === null) {
+            return null;
+        }
+        $that->path = $path;
+        return $that;
     }
 
     public static function read(string $name, DocumentStore $store): ?self
