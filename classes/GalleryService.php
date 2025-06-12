@@ -41,13 +41,6 @@ class GalleryService
         return array_values($result);
     }
 
-    public function getGalleryFilename(string $name): string
-    {
-        global $pth;
-
-        return $pth['folder']['content'] . 'fotorama/' . $name . '.xml';
-    }
-
     /** @return list<string> */
     public function findImageFolders(): array
     {

@@ -208,6 +208,6 @@ class GalleryAdminCommandTest extends TestCase
             ]
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Can't save &quot;&quot;!", $response->output());
+        $this->assertStringContainsString("Can't save &quot;test&quot;!", $response->output());
     }
 }

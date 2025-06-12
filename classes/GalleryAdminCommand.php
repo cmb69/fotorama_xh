@@ -167,8 +167,7 @@ class GalleryAdminCommand
             return $this->respondWithOverview($request, $error);
         }
         if (!$this->store->commit()) {
-            $filename = $this->galleryService->getGalleryFilename($name);
-            $error = $this->view->message("fail", "message_cant_save", $filename);
+            $error = $this->view->message("fail", "message_cant_save", $name);
             return $this->respondWithOverview($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
