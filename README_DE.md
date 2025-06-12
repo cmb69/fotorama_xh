@@ -141,6 +141,9 @@ Folgende Attribute werden unterstützt:
 Wird die Datei gespeichert, wird sie automatisch gegen das RelaxNG Schema validiert
 (`gallery.rng`).
 
+Ist [Codeeditor_XH](https://github.com/cmb69/codeeditor_xh/releases) installiert,
+ist die Bearbeitung des XML ein wenig erträglicher.
+
 ### Externe Bilder
 
 Es ist ebenfalls möglich externe Bilder

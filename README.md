@@ -139,6 +139,9 @@ The following attributes are supported:
 When the file is saved, it is automatically validated against the RelaxNG schema
 (`gallery.rng`).
 
+If you have [Codeeditor_XH](https://github.com/cmb69/codeeditor_xh/releases)
+installed, editing the XML is a bit more bearable.
+
 ### External images
 
 It is also possible to show external images

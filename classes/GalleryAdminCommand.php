@@ -132,7 +132,7 @@ class GalleryAdminCommand
     private function renderEditor(Request $request): string
     {
         if (function_exists("init_codeeditor")) {
-            init_codeeditor(["xh_file_edit"], '{"mode":"application/xml"}');
+            init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
         }
         $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
         return $this->view->render("editor", [
