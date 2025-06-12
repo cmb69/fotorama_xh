@@ -139,12 +139,14 @@ class GalleryAdminCommand
         if (function_exists("init_codeeditor")) {
             init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
         }
+        $gallery = Gallery::read($name, $this->store);
+        $xml = $gallery !== null ? $gallery->toString() : "";
         return $this->view->render("editor", [
             "error" => $error,
             "name" => $name,
             "action" => $request->url()->page("fotorama")->relative(),
             "token" => $this->csrfProtector->token(),
-            "xml" => $this->galleryService->findGalleryXML($name),
+            "xml" => $xml,
         ]);
     }
 

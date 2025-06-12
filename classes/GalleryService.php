@@ -41,11 +41,6 @@ class GalleryService
         return array_values($result);
     }
 
-    public function findGalleryXML(string $name): string
-    {
-        return file_get_contents($this->getGalleryFilename($name));
-    }
-
     public function saveGalleryXML(string $name, string $xml): bool
     {
         global $pth;
