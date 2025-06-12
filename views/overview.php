@@ -11,6 +11,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var list<object{name:string,url:string}> $galleries
  * @var string $action
  * @var string $token
+ * @var string $name
+ * @var string $path
  * @var list<string> $folders
  */
 ?>
@@ -31,14 +33,14 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <p>
       <label>
         <span><?=$this->text("label_name")?></span>
-        <input type="text" name="fotorama_gallery"></label>
+        <input type="text" name="fotorama_gallery" value="<?=$this->esc($name)?>"></label>
     </p>
     <p>
       <label>
         <span><?=$this->text("label_folder")?></span>
         <select name="fotorama_folder">
 <?foreach ($folders as $folder):?>
-          <option><?=$this->esc($folder)?></option>
+          <option <?=$this->selected($folder, $path)?>><?=$this->esc($folder)?></option>
 <?endforeach?>
         </select>
       </label>
