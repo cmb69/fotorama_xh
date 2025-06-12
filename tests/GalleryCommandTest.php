@@ -44,4 +44,13 @@ class GalleryViewTest extends TestCase
         $response = $this->sut()("test");
         Approvals::verifyHtml($response->output());
     }
+
+    public function testIncludeJqueryOnce(): void
+    {
+        $this->jquery->expects($this->once())->method("include");
+        $this->jquery->expects($this->once())->method("includePlugin")->with("fotorama");
+        $sut = $this->sut();
+        $sut("test");
+        $sut("test");
+    }
 }

@@ -35,7 +35,7 @@ class GalleryCommand
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
-    private bool $jsEmitted = false;
+    private bool $jqueryIncluded = false;
 
     public function __construct(
         string $pluginFolder,
@@ -58,8 +58,9 @@ class GalleryCommand
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             return Response::create($this->view->message("fail", "message_no_gallery", $name));
         }
-        if (!$this->jsEmitted) {
-            $this->emitJS();
+        if (!$this->jqueryIncluded) {
+            $this->includejQuery();
+            $this->jqueryIncluded = true;
         }
         return Response::create($this->view->render("gallery", [
             "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
@@ -69,14 +70,10 @@ class GalleryCommand
         ]));
     }
 
-    protected function emitJS(): void
+    protected function includejQuery(): void
     {
         $this->jquery->include();
-        $this->jquery->includePlugin(
-            'fotorama',
-            $this->pluginFolder . 'lib/fotorama.js'
-        );
-        $this->jsEmitted = true;
+        $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
     }
 
     protected function renderAttributes(Gallery $gallery): string
