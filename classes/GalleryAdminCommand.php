@@ -157,8 +157,10 @@ class GalleryAdminCommand
         }
         $name = $this->sanitizeName($request->post("fotorama_gallery") ?? "");
         $text = $request->post("fotorama_text") ?? "";
-        $gallery = Gallery::update($name, $this->store);
-        assert($gallery !== null); // TODO invalid assertion
+        if (($gallery = Gallery::update($name, $this->store)) === null) {
+            $error = $this->view->message("warning", "message_no_gallery", $name);
+            return $this->respondWithOverview($request, $error);
+        }
         if (!$gallery->updateFromXml($text)) {
             $this->store->rollback();
             $error = $this->view->message("warning", "message_invalid_xml");

@@ -164,6 +164,20 @@ class GalleryAdminCommandTest extends TestCase
         $this->assertSame(403, $response->status());
     }
 
+    public function testReportsNonExistingGallery(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
+            "post" => [
+                "fotorama_gallery" => "test",
+                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
+            ]
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
+    }
+
     public function testReportsInvalidXML(): void
     {
         Gallery::create("test", $this->store);
