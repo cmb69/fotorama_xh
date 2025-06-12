@@ -52,7 +52,7 @@ class GalleryCommand
         $this->view = $view;
     }
 
-    public function render(string $name): string
+    public function __invoke(string $name): string
     {
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             return $this->view->message("fail", "message_no_gallery", $name);

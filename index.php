@@ -23,5 +23,5 @@ use Fotorama\Plugin;
 
 function fotorama(string $name): string
 {
-    return Plugin::galleryCommand()->render($name);
+    return Plugin::galleryCommand()($name);
 }
