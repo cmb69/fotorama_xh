@@ -6,12 +6,14 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
+ * @var string $stylesheet
  * @var string $attributes
  * @var list<object{filename:string,caption:string,thumbnail:string}> $images
  * @var bool $thumbnails
  */
 ?>
 
+<link rel="stylesheet" type="text/css" href="<?=$this->esc($stylesheet)?>">
 <div class="fotorama" <?=$this->raw($attributes)?>>
 <?foreach ($images as $image):?>
 <?if ($thumbnails):?>

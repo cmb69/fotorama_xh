@@ -62,6 +62,7 @@ class GalleryCommand
             $this->emitJS();
         }
         return Response::create($this->view->render("gallery", [
+            "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
             "attributes" => $this->renderAttributes($gallery),
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),
@@ -70,11 +71,7 @@ class GalleryCommand
 
     protected function emitJS(): void
     {
-        global $hjs;
-
         $this->jquery->include();
-        $hjs .= '<link rel="stylesheet" type="text/css" href="'
-            . $this->pluginFolder . 'lib/fotorama.css">';
         $this->jquery->includePlugin(
             'fotorama',
             $this->pluginFolder . 'lib/fotorama.js'
