@@ -35,11 +35,6 @@ XML;
         $this->sut = new GalleryService();
     }
 
-    public function testAllGalleriesAreFound()
-    {
-        $this->assertEquals(array('bar', 'foo'), $this->sut->findAllGalleries());
-    }
-
     public function testFindsAllImageFolders()
     {
         $this->assertEquals(array('test'), $this->sut->findImageFolders());

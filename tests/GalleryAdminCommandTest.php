@@ -38,7 +38,9 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRendersOverview(): void
     {
-        $this->galleryService->method("findAllGalleries")->willReturn(["gallery1", "gallery2"]);
+        Gallery::create("gallery1", $this->store);
+        Gallery::create("gallery2", $this->store);
+        $this->store->commit();
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
         $request = new FakeRequest();
         $response = $this->sut()($request);

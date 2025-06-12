@@ -26,21 +26,6 @@ use SplFileInfo;
 class GalleryService
 {
     /** @return list<string> */
-    public function findAllGalleries(): array
-    {
-        $result = array();
-        $files = new \DirectoryIterator($this->findContentFolder());
-        foreach ($files as $file) {
-            $filename = $file->getFilename();
-            if (pathinfo($filename, PATHINFO_EXTENSION) == 'xml') {
-                $result[] = basename($filename, '.xml');
-            }
-        }
-        natcasesort($result);
-        return array_values($result);
-    }
-
-    /** @return list<string> */
     public function findImageFolders(): array
     {
         global $pth;
@@ -109,17 +94,5 @@ class GalleryService
         global $pth;
 
         return "{$pth['folder']['images']}$path";
-    }
-
-    private function findContentFolder(): string
-    {
-        global $pth;
-
-        $folder = $pth['folder']['content'] . 'fotorama/';
-        if (!is_dir($folder)) {
-            mkdir($folder, 0777);
-            chmod($folder, 0777);
-        }
-        return $folder;
     }
 }

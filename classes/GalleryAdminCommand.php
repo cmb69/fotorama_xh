@@ -83,12 +83,20 @@ class GalleryAdminCommand
     private function galleryDtos(Request $request): iterable
     {
         $url = $request->url()->page("fotorama")->with("admin", "plugin_main")->with("action", "edit");
-        foreach ($this->galleryService->findAllGalleries() as $gallery) {
+        foreach ($this->findGalleries() as $gallery) {
             yield (object) [
                 "name" => $gallery,
                 "url" => $url->with("fotorama_gallery", $gallery)->relative(),
             ];
         }
+    }
+
+    /** @return list<string> */
+    private function findGalleries(): array
+    {
+        $galleries = array_map(fn ($name) => basename($name, ".xml"), $this->store->find('/^[^\/]+\.xml$/'));
+        natcasesort($galleries);
+        return array_values($galleries);
     }
 
     private function create(Request $request): Response
