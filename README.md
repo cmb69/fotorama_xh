@@ -95,8 +95,8 @@ a `caption` attribute whose value will be shown in the gallery;
 the caption will also be used as `alt` attribute of the HTML `<img>`.
 You can change the value of the `path` attribute,
 but you must not remove the attribute completely.
-Note that you should not touch the first three
-lines of the file (the XML and the doctype declaration).
+Note that you should not touch the first
+line of the file (the XML declaration).
 
 Furthermore you can specify additional attributes
 (the `path` attribute is mandatory again)

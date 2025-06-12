@@ -96,8 +96,8 @@ hinzugefügt werden, dessen Wert in der Galerie angezeigt wird;
 die Beschriftung wird ebenfalls als `alt` Attribut des HTML `<img>` verwendet.
 Sie können den Wert des `path` Attributs (Pfad) ändern,
 aber Sie dürfen das Attribut nicht komplett entfernen.
-Beachten Sie, dass Sie die ersten drei Zeilen der Datei
-(die XML- und die Doctype-Deklaration) nicht ändern sollten.
+Beachten Sie, dass Sie die erste Zeile der Datei
+(die XML-Deklaration) nicht ändern sollten.
 
 Weiterhin können Sie dem `<gallery>` Element (Galerie) zusätzliche Attribute
 (das `path` Attribute ist auf jeden Fall erforderlich) geben,
