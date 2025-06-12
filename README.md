@@ -104,6 +104,8 @@ for the `<gallery>` element which affect the functionality
 and look-and-feel of the gallery.
 The following attributes are supported:
 
+- `caption`:
+  The caption will be shown above the gallery as accessible name.
 - `width` and `ratio`:
   These attributes specify the width and aspect ratio of the gallery,
   respectively.

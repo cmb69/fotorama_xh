@@ -104,6 +104,8 @@ Weiterhin können Sie dem `<gallery>` Element (Galerie) zusätzliche Attribute
 die die Funktionalität und das Aussehen der Galerie beeinflussen.
 Folgende Attribute werden unterstützt:
 
+- `caption`:
+  Die Beschriftung wird oberhalb der Galerie als zugänglicher Name angezeigt.
 - `width` und `ratio`:
   Diese Attribute geben die Breite bzw. das Seitenverhältnis der Galerie an.
   Die Breite ist entweder eine einfache Zahl,

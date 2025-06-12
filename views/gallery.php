@@ -7,6 +7,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $stylesheet
+ * @var string $caption
  * @var string $attributes
  * @var list<object{filename:string,caption:string,thumbnail:string}> $images
  * @var bool $thumbnails
@@ -14,14 +15,19 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?=$this->esc($stylesheet)?>">
-<div class="fotorama" <?=$this->raw($attributes)?>>
+<figure class="fotorama_gallery">
+<?if ($caption):?>
+  <figcaption><?=$this->esc($caption)?></figcaption>
+<?endif?>
+  <div class="fotorama" <?=$this->raw($attributes)?>>
 <?foreach ($images as $image):?>
 <?if ($thumbnails):?>
-  <a href="<?=$this->esc($image->filename)?>" data-caption="<?=$this->esc($image->caption)?>">
+    <a href="<?=$this->esc($image->filename)?>" data-caption="<?=$this->esc($image->caption)?>">
 <?endif?>
-    <img src="<?=$this->esc($image->thumbnail)?>" data-caption="<?=$this->esc($image->caption)?>" alt="<?=$this->esc($image->caption)?>">
+      <img src="<?=$this->esc($image->thumbnail)?>" data-caption="<?=$this->esc($image->caption)?>" alt="<?=$this->esc($image->caption)?>">
 <?if ($thumbnails):?>
-  </a>
+    </a>
 <?endif?>
 <?endforeach?>
-</div>
+  </div>
+</figure>

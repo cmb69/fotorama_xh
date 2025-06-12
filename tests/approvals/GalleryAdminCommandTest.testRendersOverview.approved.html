@@ -1,29 +1,31 @@
 
-<h1>Fotorama – Galleries</h1>
-<ul>
-  <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery1">gallery1</a></li>
-  <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery2">gallery2</a></li>
-</ul>
-<form action="/?&amp;fotorama&amp;admin=plugin_main&amp;action=create&amp;normal" method="post">
-  <input type="hidden" name="fotorama_token" value="1234">
-  <fieldset>
-    <legend>Create new gallery</legend>
-    <p>
-      <label>
-        <span>Name</span>
-        <input type="text" name="fotorama_gallery" value=""></label>
-    </p>
-    <p>
-      <label>
-        <span>Folder</span>
-        <select name="fotorama_folder">
-          <option >folder1</option>
-          <option >folder2</option>
-        </select>
-      </label>
-    </p>
-    <p>
-      <button class="submit">Create</button>
-    </p>
-  </fieldset>
-</form>
+<article class="fotorama_overview">
+  <h1>Fotorama – Galleries</h1>
+  <ul>
+    <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery1">gallery1</a></li>
+    <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery2">gallery2</a></li>
+  </ul>
+  <form action="/?&amp;fotorama&amp;admin=plugin_main&amp;action=create&amp;normal" method="post">
+    <input type="hidden" name="fotorama_token" value="1234">
+    <fieldset>
+      <legend>Create new gallery</legend>
+      <p>
+        <label>
+          <span>Name</span>
+          <input type="text" name="fotorama_gallery" value=""></label>
+      </p>
+      <p>
+        <label>
+          <span>Folder</span>
+          <select name="fotorama_folder">
+            <option >folder1</option>
+            <option >folder2</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <button class="submit">Create</button>
+      </p>
+    </fieldset>
+  </form>
+</article>

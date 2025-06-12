@@ -65,6 +65,7 @@ class GalleryCommand
         }
         return Response::create($this->view->render("gallery", [
             "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
+            "caption" => $gallery->caption() ?? "",
             "attributes" => $this->renderAttributes($gallery),
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),

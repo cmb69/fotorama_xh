@@ -1,3 +1,19 @@
+/* gallery */
+
+figure.fotorama_gallery {}
+figure.fotorama_gallery figcaption {
+    font-size: larger;
+    text-align: center;
+}
+
+/* overview */
+
+article.fotorama_overview {}
+
+/* editor */
+
+article.fotorama_editor {}
+
 /* plugin info */
 
 article.fotorama_pluginfo {}

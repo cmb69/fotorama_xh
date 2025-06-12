@@ -30,6 +30,7 @@ use Plib\DocumentStore2 as DocumentStore;
 final class Gallery implements Document
 {
     private string $path;
+    private ?string $caption = null;
     private ?string $width = null;
     private ?string $ratio = null;
     private bool $thumbs = false;
@@ -81,6 +82,11 @@ final class Gallery implements Document
         return $this->path;
     }
 
+    public function caption(): ?string
+    {
+        return $this->caption;
+    }
+
     public function width(): ?string
     {
         return $this->width;
@@ -129,6 +135,7 @@ final class Gallery implements Document
         $gallery = $document->documentElement;
         assert($gallery !== null);
         $this->path = $gallery->getAttribute("path");
+        $this->caption = $gallery->hasAttribute("caption") ? $gallery->getAttribute("caption") : null;
         $this->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
         $this->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
         $this->thumbs = $gallery->hasAttribute("nav");
@@ -150,6 +157,9 @@ final class Gallery implements Document
         $document = new DOMDocument("1.0", "UTF-8");
         $gallery = $document->createElement("gallery");
         $gallery->setAttribute("path", $this->path);
+        if ($this->caption !== null) {
+            $gallery->setAttribute("caption", $this->caption);
+        }
         if ($this->width !== null) {
             $gallery->setAttribute("width", $this->width);
         }

@@ -2,6 +2,9 @@
 <element name="gallery" xmlns="http://relaxng.org/ns/structure/1.0">
   <attribute name="path"/>
   <optional>
+    <attribute name="caption"/>
+  </optional>
+  <optional>
     <attribute name="width"/>
   </optional>
   <optional>
