@@ -21,15 +21,16 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Fotorama\Model\Gallery;
+use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\View;
-use SimpleXMLElement;
 
 class GalleryView
 {
     private string $pluginFolder;
     private string $imageFolder;
-    private GalleryService $galleryService;
+    private DocumentStore $store;
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
@@ -38,14 +39,14 @@ class GalleryView
     public function __construct(
         string $pluginFolder,
         string $imageFolder,
-        GalleryService $galleryService,
+        DocumentStore $store,
         ThumbnailService $thumbnailService,
         Jquery $jquery,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->imageFolder = $imageFolder;
-        $this->galleryService = $galleryService;
+        $this->store = $store;
         $this->thumbnailService = $thumbnailService;
         $this->jquery = $jquery;
         $this->view = $view;
@@ -53,10 +54,9 @@ class GalleryView
 
     public function render(string $name): string
     {
-        if (!$this->galleryService->hasGallery($name)) {
+        if (($gallery = Gallery::read($name, $this->store)) === null) {
             return $this->view->message("fail", "message_no_gallery", $name);
         }
-        $gallery = $this->galleryService->findGallery($name);
         if (!$this->jsEmitted) {
             $this->emitJS();
         }
@@ -80,40 +80,37 @@ class GalleryView
         $this->jsEmitted = true;
     }
 
-    protected function renderGalleryStartTag(SimpleXMLElement $gallery): string
+    protected function renderGalleryStartTag(Gallery $gallery): string
     {
         $html = '<div class="fotorama"';
-        if (isset($gallery['width'])) {
-            $html .= ' data-width="' . $gallery['width'] . '"';
+        if ($gallery->width() !== null) {
+            $html .= ' data-width="' . $gallery->width() . '"';
         }
-        if (isset($gallery['ratio'])) {
-            $html .= ' data-ratio="' . $gallery['ratio'] . '"';
+        if ($gallery->ratio() !== null) {
+            $html .= ' data-ratio="' . $gallery->ratio() . '"';
         }
-        if (isset($gallery['nav'])) {
+        if ($gallery->thumbs()) {
             $html .= ' data-nav="thumbs"';
         }
-        if (isset($gallery['fullscreen'])) {
-            $html .= ' data-allowfullscreen="' . $gallery['fullscreen'] . '"';
+        if ($gallery->fullscreen()) {
+            $html .= ' data-allowfullscreen="' . $gallery->fullscreen() . '"';
         }
-        if (isset($gallery['transition'])) {
-            $html .= ' data-transition="' . $gallery['transition'] . '"';
-        }
+        $html .= ' data-transition="' . $gallery->transition() . '"';
         $html .= '>' . "\n";
         return $html;
     }
 
-    private function renderPictures(SimpleXMLElement $gallery): string
+    private function renderPictures(Gallery $gallery): string
     {
         $html = '';
-        foreach ($gallery->pic as $pic) {
-            $caption = XH_hsc(isset($pic['caption']) ? $pic['caption'] : '');
-            if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic['path'])) {
-                $filename = $pic['path'];
+        foreach ($gallery->images() as $pic) {
+            $caption = XH_hsc($pic->caption() ?? "");
+            if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
+                $filename = $pic->path();
             } else {
-                $filename = $this->imageFolder . $gallery['path'] . '/'
-                    . $pic['path'];
+                $filename = $this->imageFolder . $gallery->path() . '/' . $pic->path();
             }
-            if (isset($gallery['nav'])) {
+            if ($gallery->thumbs()) {
                 if ($isAbsoluteUrl) {
                     $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
@@ -125,7 +122,7 @@ class GalleryView
             }
             $html .= '<img src="' . $thumbnail . '" data-caption="' . $caption
                 . '" alt="' . $caption . '">' . "\n";
-            if (isset($gallery['nav'])) {
+            if ($gallery->thumbs()) {
                 $html .= '</a>';
             }
         }

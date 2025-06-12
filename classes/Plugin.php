@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Plib\CsrfProtector;
+use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\SystemChecker;
 use Plib\View;
@@ -39,7 +40,7 @@ class Plugin
             self::$galleryView = new GalleryView(
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
-                new GalleryService(),
+                new DocumentStore($pth["folder"]["content"] . "fotorama/"),
                 new ThumbnailService(),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()

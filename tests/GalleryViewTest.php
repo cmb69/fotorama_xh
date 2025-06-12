@@ -6,14 +6,14 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
+use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\View;
 use SimpleXMLElement;
 
 class GalleryViewTest extends TestCase
 {
-    /** @var GalleryService&Stub */
-    private $galleryService;
+    private DocumentStore $store;
     /** @var ThumbnailService&Stub */
     private $thumbnailService;
     /** @var Jquery&MockObject */
@@ -22,7 +22,7 @@ class GalleryViewTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->galleryService = $this->createStub(GalleryService::class);
+        $this->store = new DocumentStore(__DIR__ . "/" . "data/");
         $this->thumbnailService = $this->createStub(ThumbnailService::class);
         $this->jquery = $this->createMock(Jquery::class);
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
@@ -33,7 +33,7 @@ class GalleryViewTest extends TestCase
         return new GalleryView(
             "./",
             "./",
-            $this->galleryService,
+            $this->store,
             $this->thumbnailService,
             $this->jquery,
             $this->view
@@ -42,9 +42,6 @@ class GalleryViewTest extends TestCase
 
     public function testRendersGallery(): void
     {
-        $sxe = new SimpleXMLElement(__DIR__ . "/data/test.xml", 0, true);
-        $this->galleryService->method("hasGallery")->willReturn(true);
-        $this->galleryService->method("findGallery")->willReturn($sxe);
         $output = $this->sut()->render("test");
         Approvals::verifyHtml($output);
     }

@@ -9,7 +9,7 @@ class PluginTest extends TestCase
     protected function setUp(): void
     {
         global $pth, $plugin_tx;
-        $pth = ["folder" => ["images" => "", "plugins" => ""]];
+        $pth = ["folder" => ["content" => "", "images" => "", "plugins" => ""]];
         $plugin_tx = ["fotorama" => []];
     }
 
