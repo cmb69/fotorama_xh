@@ -161,7 +161,7 @@ class GalleryAdminCommand
         return $this->view->render("editor", [
             "error" => $error,
             "name" => $name,
-            "action" => $request->url()->page("fotorama")->relative(),
+            "action" => $request->url()->with("action", "save")->relative(),
             "token" => $this->csrfProtector->token(),
             "xml" => $xml,
         ]);
