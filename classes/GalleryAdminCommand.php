@@ -98,6 +98,10 @@ class GalleryAdminCommand
         }
         $name = $request->post("fotorama_gallery");
         $path = $request->post("fotorama_folder");
+        if (!$this->isValidName($name)) {
+            $error = $this->view->message("fail", "message_invalid_name", $name);
+            return $this->respondWithOverview($request, $error);
+        }
         if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
             $error = $this->view->message("warning", "message_no_folder", $foldername);
@@ -109,11 +113,6 @@ class GalleryAdminCommand
         }
         foreach ($this->galleryService->findImagesIn($path) as $image) {
             $gallery->addImage($image);
-        }
-        if (!$this->isValidName($name)) {
-            $this->store->rollback();
-            $error = $this->view->message("fail", "message_invalid_name", $name);
-            return $this->respondWithOverview($request, $error);
         }
         if (!$this->store->commit()) {
             $error = $this->view->message("fail", "message_cant_save", $name);
