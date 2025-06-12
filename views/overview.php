@@ -6,6 +6,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
+ * @var string $error
  * @var string $url
  * @var list<object{name:string,url:string}> $galleries
  * @var string $action
@@ -15,6 +16,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 ?>
 
 <h1>Fotorama – <?=$this->text("menu_main")?></h1>
+<?if ($error):?>
+  <?=$this->raw($error)?>
+<?endif?>
 <ul>
 <?foreach ($galleries as $gallery):?>
   <li><a href="<?=$this->esc($gallery->url)?>"><?=$this->esc($gallery->name)?></a></li>

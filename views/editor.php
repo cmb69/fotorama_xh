@@ -6,6 +6,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
+ * @var string $error
  * @var string $name
  * @var string $action
  * @var string $token
@@ -14,6 +15,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 ?>
 
 <h1>Fotorama – <?=$this->esc($name)?></h1>
+<?if ($error):?>
+  <?=$this->raw($error)?>
+<?endif?>
 <form action="<?=$action?>" method="post">
   <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
   <input type="hidden" name="admin" value="plugin_main">
