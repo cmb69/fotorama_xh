@@ -36,6 +36,7 @@ class GalleryAdminCommandTest extends TestCase
         $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
         $request = new FakeRequest();
         $response = $this->sut()($request);
+        $this->assertSame("Fotorama – Galleries", $response->title());
         Approvals::verifyHtml($response->output());
     }
 
@@ -129,6 +130,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         $request = new FakeRequest(["url" => "http://example.com/?&action=edit&fotorama_gallery=test"]);
         $response = $this->sut()($request);
+        $this->assertSame("Fotorama – test", $response->title());
         Approvals::verifyHtml($response->output());
     }
 

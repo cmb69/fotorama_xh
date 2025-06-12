@@ -47,22 +47,23 @@ class GalleryAdminCommand
     {
         switch ($request->get("action") ?? $request->post("action")) {
             default:
-                return $this->overview($request);
+                return $this->respondWithOverview($request);
             case "create":
                 return $this->create($request);
             case "edit":
-                return $this->edit($request);
+                return $this->respondWithEditor($request);
             case "save":
                 return $this->save($request);
         }
     }
 
-    private function overview(Request $request): Response
+    private function respondWithOverview(Request $request, string $error = ""): Response
     {
-        return Response::create($this->renderOverview($request));
+        return Response::create($this->renderOverview($request, $error))
+            ->withTitle("Fotorama – " . $this->view->text("menu_main"));
     }
 
-    private function renderOverview(Request $request, string $error = ""): string
+    private function renderOverview(Request $request, string $error): string
     {
         return $this->view->render("overview", [
             "error" => $error,
@@ -97,7 +98,7 @@ class GalleryAdminCommand
         if (!$this->galleryService->hasImageFolder($path)) {
             $foldername = $this->galleryService->getImageFoldername($path);
             $error = $this->view->message("warning", "message_no_folder", $foldername);
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         foreach ($this->galleryService->findImagesIn($path) as $image) {
             $xml .= '    <pic path="' . $image . '"/>' . PHP_EOL;
@@ -105,16 +106,16 @@ class GalleryAdminCommand
         $xml .= '</gallery>' . PHP_EOL;
         if (!$this->isValidName($name)) {
             $error = $this->view->message("fail", "message_invalid_name", $name);
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         $filename = $this->galleryService->getImageFoldername($path);
         if ($this->galleryService->hasGallery($name)) {
             $error = $this->view->message("fail", "message_exists", $filename);
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         if (!$this->galleryService->saveGalleryXML($name, $xml)) {
             $error = $this->view->message("fail", "message_cant_save", $filename);
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
         return Response::redirect($url->absolute());
@@ -125,17 +126,18 @@ class GalleryAdminCommand
         return preg_match('/^[a-z0-9-]+$/', $name);
     }
 
-    private function edit(Request $request): Response
+    private function respondWithEditor(Request $request, string $error = ""): Response
     {
-        return Response::create($this->renderEditor($request));
+        $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
+        return Response::create($this->renderEditor($request, $name, $error))
+            ->withTitle("Fotorama – " . $this->view->esc($name));
     }
 
-    private function renderEditor(Request $request, string $error = ""): string
+    private function renderEditor(Request $request, string $name, string $error): string
     {
         if (function_exists("init_codeeditor")) {
             init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
         }
-        $name = $this->sanitizeName($request->get("fotorama_gallery") ?? $request->post("fotorama_gallery"));
         return $this->view->render("editor", [
             "error" => $error,
             "name" => $name,
@@ -154,12 +156,12 @@ class GalleryAdminCommand
         $text = $request->post("fotorama_text") ?? "";
         if (!$this->validate($text)) {
             $error = $this->view->message("warning", "message_invalid_xml");
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         if (!$this->galleryService->saveGalleryXML($name, $text)) {
             $filename = $this->galleryService->getGalleryFilename($name);
             $error = $this->view->message("fail", "message_cant_save", $filename);
-            return Response::create($this->renderOverview($request, $error));
+            return $this->respondWithOverview($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
     }
