@@ -22,6 +22,7 @@
 namespace Fotorama\Model;
 
 use DOMDocument;
+use DOMElement;
 use Plib\Document2 as Document;
 use Plib\DocumentStore2 as DocumentStore;
 
@@ -139,6 +140,7 @@ final class Gallery implements Document
         }
         foreach ($gallery->childNodes as $childNode) {
             if ($childNode->nodeName === "pic") {
+                assert($childNode instanceof DOMElement);
                 $this->images[] = Image::fromElement($childNode);
             }
         }
