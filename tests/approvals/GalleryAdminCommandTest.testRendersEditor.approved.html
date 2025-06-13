@@ -43,7 +43,7 @@
     <input type="hidden" name="gallery_images" value="[]">
     <fieldset class="fotorama_images">
       <legend>Images</legend>
-      <ul>
+      <ul data-base-url="/">
       </ul>
       <p class="fotorama_controls">
         <button class="fotorama_add_image" type="button">Add</button>
@@ -55,6 +55,7 @@
   </form>
   <template class="fotorama_template">
     <li>
+      <img class="fotorama_thumb" src="">
       <label class="fotorama_path">
         <span>Path</span>
         <input>

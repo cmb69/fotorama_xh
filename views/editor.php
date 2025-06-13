@@ -11,6 +11,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $name
  * @var string $action
  * @var string $token
+ * @var string $base_url
  * @var object{caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} $gallery
  */
 ?>
@@ -62,7 +63,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <input type="hidden" name="gallery_images" value="<?=$this->esc($gallery->images)?>">
     <fieldset class="fotorama_images">
       <legend>Images</legend>
-      <ul>
+      <ul data-base-url="<?=$this->esc($base_url)?>">
       </ul>
       <p class="fotorama_controls">
         <button class="fotorama_add_image" type="button">Add</button>
@@ -74,6 +75,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
   </form>
   <template class="fotorama_template">
     <li>
+      <img class="fotorama_thumb" src="">
       <label class="fotorama_path">
         <span>Path</span>
         <input>

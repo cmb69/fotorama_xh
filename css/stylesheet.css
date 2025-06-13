@@ -75,13 +75,18 @@ article.fotorama_editor .fotorama_images ul {
     margin: 1em 0;
     padding-left: 0;
     display: grid;
-    grid-template-columns: 3fr 3fr 1fr;
+    grid-template-columns: 7em auto auto 5em;
 }
 article.fotorama_editor .fotorama_images li {
-    grid-column: 1/4;
+    grid-column: 1/5;
     display: grid;
     grid-template-columns: subgrid;
     align-items: end;
+}
+article.fotorama_editor .fotorama_thumb {
+    max-width: 7em;
+    max-height: 7em;
+    margin: auto;
 }
 article.fotorama_editor .fotorama_images span {
     display: block;

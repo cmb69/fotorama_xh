@@ -7,11 +7,18 @@ function editor(article) {
     const imagesInput = article.querySelector("input[name=gallery_images]");
     const images = JSON.parse(imagesInput.value);
     const ul = article.querySelector("ul");
+    const baseUrl = ul.dataset.baseUrl;
     const template = article.querySelector(".fotorama_template");
     images.forEach(image => {
         const clone = template.content.cloneNode(true);
         const li = clone.querySelector("li");
-        clone.querySelector(".fotorama_path input").value = image.path;
+        const thumb = clone.querySelector(".fotorama_thumb");
+        thumb.src = baseUrl + image.path;
+        const path = clone.querySelector(".fotorama_path input");
+        path.value = image.path;
+        path.addEventListener("change", () => {
+            thumb.src = baseUrl + path.value;
+        });
         clone.querySelector(".fotorama_caption input").value = image.caption;
         clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
             li.parentElement.insertBefore(li, li.previousElementSibling);

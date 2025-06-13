@@ -163,6 +163,7 @@ class GalleryAdminCommand
             "name" => $name,
             "action" => $request->url()->with("action", "save")->relative(),
             "token" => $this->csrfProtector->token(),
+            "base_url" => $this->galleryService->getImageFoldername($gallery->path()) . "/",
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
     }
