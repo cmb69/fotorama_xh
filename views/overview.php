@@ -36,6 +36,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     </ul>
     <p class="fotorama_controls">
       <button name="action" value="edit"><?=$this->text("label_edit")?></button>
+      <button name="action" value="delete"><?=$this->text("label_delete")?></button>
   </form>
   <form action="<?=$this->esc($action)?>" method="post">
     <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">

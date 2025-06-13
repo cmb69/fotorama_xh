@@ -29,12 +29,22 @@ article.fotorama_overview li label {
 }
 article.fotorama_overview .fotorama_controls {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin: 1em;
 }
 
 /* editor */
 
 article.fotorama_editor {}
+
+/* delete confirmation */
+
+article.fotorama_delete {}
+article.fotorama_delete .fotorama_controls {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1em;
+}
 
 /* plugin info */
 

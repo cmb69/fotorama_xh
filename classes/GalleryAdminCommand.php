@@ -59,6 +59,8 @@ class GalleryAdminCommand
                 return $this->respondWithEditor($request);
             case "save":
                 return $this->save($request);
+            case "delete":
+                return $this->delete($request);
         }
     }
 
@@ -187,5 +189,41 @@ class GalleryAdminCommand
             return $this->respondWithEditor($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
+    }
+
+    private function delete(Request $request): Response
+    {
+        if ($request->post("fotorama_do") !== null) {
+            return $this->doDelete($request);
+        }
+        return $this->respondWithDeleteConfirmation($request);
+    }
+
+    private function respondWithDeleteConfirmation(Request $request, string $error = ""): Response
+    {
+        $gallery = $request->get("fotorama_gallery") ?? "";
+        if (Gallery::read($gallery, $this->store) === null) {
+            $error = $this->view->message("fail", "error_no_gallery", $gallery);
+            return $this->respondWithOverview($request, $error);
+        }
+        return Response::create($this->view->render("delete", [
+            "error" => $error,
+            "action" => $request->url()->relative(),
+            "gallery" => $gallery,
+            "token" => $this->csrfProtector->token(),
+        ]))->withTitle("Fotorama – " . $this->view->text("label_delete"));
+    }
+
+    private function doDelete(Request $request): Response
+    {
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
+        $gallery = $request->get("fotorama_gallery") ?? "";
+        if (!Gallery::delete($gallery, $this->store)) {
+            $error = $this->view->message("fail", "error_delete", $gallery);
+            return $this->respondWithDeleteConfirmation($request, $error);
+        }
+        return Response::redirect($request->url()->without("action")->without("fotorama_gallery")->absolute());
     }
 }

@@ -72,6 +72,11 @@ final class Gallery implements Document
         return $store->update("$name.xml", self::class);
     }
 
+    public static function delete(string $name, DocumentStore $store): bool
+    {
+        return $store->delete("$name.xml");
+    }
+
     public function __construct(string $path)
     {
         $this->path = $path;

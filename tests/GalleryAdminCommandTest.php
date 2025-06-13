@@ -212,4 +212,62 @@ class GalleryAdminCommandTest extends TestCase
         $response = $this->sut()($request);
         $this->assertStringContainsString("Can't save &quot;test&quot;!", $response->output());
     }
+
+    public function testRendersDeleteConfirmation(): void
+    {
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
+        $request = new FakeRequest(["url" => "http://example.com/?&action=delete&fotorama_gallery=test"]);
+        $response = $this->sut()($request);
+        $this->assertSame("Fotorama – Delete", $response->title());
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testReportsNonExistingGalleryWhenDeleting(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=delete&fotorama_gallery=test",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
+    }
+
+    public function testDeletesGallery(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=delete&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertEmpty($this->store->find('/test\..xml/'));
+        $this->assertSame("http://example.com/?&fotorama&admin=plugin_main", $response->location());
+    }
+
+    public function testDeletingIsCsrfProtected(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(false);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=delete&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertSame(403, $response->status());
+    }
+
+    public function testReportsFailureToDelete(): void
+    {
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
+        chmod(vfsStream::url("root"), 0000);
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=delete&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Cannot delete the &quot;test&quot; gallery!", $response->output());
+    }
 }
