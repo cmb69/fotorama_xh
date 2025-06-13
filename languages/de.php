@@ -3,19 +3,27 @@
 $plugin_tx['fotorama']['menu_main'] = "Galerien";
 $plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 
+$plugin_tx['fotorama']['label_add'] = "Hinzufügen";
 $plugin_tx['fotorama']['label_caption'] = "Beschriftung";
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
+$plugin_tx['fotorama']['label_crossfade'] = "Überblenden";
 $plugin_tx['fotorama']['label_delete'] = "Löschen";
-$plugin_tx['fotorama']['label_delete_image'] = "Bild löschen";
+$plugin_tx['fotorama']['label_dissolve'] = "Zerfließen";
 $plugin_tx['fotorama']['label_edit'] = "Bearbeiten";
 $plugin_tx['fotorama']['label_folder'] = "Ordner";
 $plugin_tx['fotorama']['label_fullscreen'] = "Vollbild";
-$plugin_tx['fotorama']['label_move_image'] = "Bild verschieben";
+$plugin_tx['fotorama']['label_fullscreen_false'] = "nein";
+$plugin_tx['fotorama']['label_fullscreen_true'] = "Browser";
+$plugin_tx['fotorama']['label_fullscreen_native'] = "Bildschirm";
+$plugin_tx['fotorama']['label_images'] = "Bilder";
+$plugin_tx['fotorama']['label_move_up'] = "nach oben";
 $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_nav'] = "Navigation";
+$plugin_tx['fotorama']['label_path'] = "Pfad";
 $plugin_tx['fotorama']['label_ratio'] = "Seitenverhältnis";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
+$plugin_tx['fotorama']['label_slide'] = "Gleiten";
 $plugin_tx['fotorama']['label_transition'] = "Übergang";
 $plugin_tx['fotorama']['label_width'] = "Breite";
 
