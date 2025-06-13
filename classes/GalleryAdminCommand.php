@@ -21,7 +21,6 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
-use DOMDocument;
 use Fotorama\Model\Gallery;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
@@ -31,17 +30,20 @@ use Plib\View;
 
 class GalleryAdminCommand
 {
+    private string $pluginFolder;
     private GalleryService $galleryService;
     private DocumentStore $store;
     private CsrfProtector $csrfProtector;
     private View $view;
 
     public function __construct(
+        string $pluginFolder,
         GalleryService $galleryService,
         DocumentStore $store,
         CsrfProtector $csrfProtector,
         View $view
     ) {
+        $this->pluginFolder = $pluginFolder;
         $this->galleryService = $galleryService;
         $this->store = $store;
         $this->csrfProtector = $csrfProtector;
@@ -156,13 +158,21 @@ class GalleryAdminCommand
     private function renderEditor(Request $request, Gallery $gallery, string $name, string $error): string
     {
         return $this->view->render("editor", [
-            "script" => "./plugins/fotorama/admin.js",
+            "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "error" => $error,
             "name" => $name,
             "action" => $request->url()->with("action", "save")->relative(),
             "token" => $this->csrfProtector->token(),
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
+    }
+
+    private function script(): string
+    {
+        if (is_file($this->pluginFolder . "admin.min.js")) {
+            return $this->pluginFolder . "admin.min.js";
+        }
+        return $this->pluginFolder . "admin.js";
     }
 
     /** @return object{caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} */

@@ -71,6 +71,7 @@
     <delete file="export.zip"/>
     <jsMin targetDir="dist" suffix=".min" failonerror="true">
       <fileset dir="export">
+        <include name="admin.js"/>
         <include name="fotorama.js"/>
       </fileset>
     </jsMin>

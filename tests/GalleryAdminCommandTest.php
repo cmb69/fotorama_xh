@@ -33,7 +33,13 @@ class GalleryAdminCommandTest extends TestCase
 
     private function sut(): GalleryAdminCommand
     {
-        return new GalleryAdminCommand($this->galleryService, $this->store, $this->csrfProtector, $this->view);
+        return new GalleryAdminCommand(
+            "./plugins/fotorama/",
+            $this->galleryService,
+            $this->store,
+            $this->csrfProtector,
+            $this->view
+        );
     }
 
     public function testRendersOverview(): void
