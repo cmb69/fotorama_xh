@@ -9,35 +9,9 @@ function editor(article) {
     const ul = article.querySelector("ul");
     const baseUrl = ul.dataset.baseUrl;
     const template = article.querySelector(".fotorama_template");
-    images.forEach(image => {
-        const clone = template.content.cloneNode(true);
-        const li = clone.querySelector("li");
-        const thumb = clone.querySelector(".fotorama_thumb");
-        thumb.src = baseUrl + image.path;
-        const path = clone.querySelector(".fotorama_path input");
-        path.value = image.path;
-        path.addEventListener("change", () => {
-            thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
-        });
-        clone.querySelector(".fotorama_caption input").value = image.caption;
-        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
-            li.parentElement.insertBefore(li, li.previousElementSibling);
-        });
-        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
-            li.remove();
-        });
-        ul.appendChild(clone);
-    });
+    images.forEach(image);
     form.querySelector(".fotorama_add_image").addEventListener("click", () => {
-        const clone = template.content.cloneNode(true);
-        const li = clone.querySelector("li");
-        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
-            li.parentElement.insertBefore(li, li.previousElementSibling);
-        });
-        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
-            li.remove();
-        });
-        ul.appendChild(clone);
+        image(null);
     });
     form.addEventListener("submit", () => {
         let records = [];
@@ -48,6 +22,25 @@ function editor(article) {
             });
         });
         imagesInput.value = JSON.stringify(records);
-        console.log(imagesInput.value);
     });
+
+    function image(image) {
+        const clone = template.content.cloneNode(true);
+        const li = clone.querySelector("li");
+        const thumb = clone.querySelector(".fotorama_thumb");
+        thumb.src = image ? baseUrl + image.path : "";
+        const path = clone.querySelector(".fotorama_path input");
+        path.value = image ? image.path : "";
+        path.addEventListener("change", () => {
+            thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
+        });
+        clone.querySelector(".fotorama_caption input").value = image ? image.caption : "";
+        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
+            li.parentElement.insertBefore(li, li.previousElementSibling);
+        });
+        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
+            li.remove();
+        });
+        ul.appendChild(clone);
+    }
 }
