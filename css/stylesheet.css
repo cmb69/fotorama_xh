@@ -52,15 +52,38 @@ article.fotorama_overview .fotorama_help {
 /* editor */
 
 article.fotorama_editor {}
+article.fotorama_editor fieldset {
+    padding: 0.5em;
+    margin: 1em 0;
+}
+article.fotorama_editor legend {
+    padding: 0 0.2em;
+}
+article.fotorama_editor .fotorama_controls {
+    display: flex;
+    justify-content: space-evenly;
+}
 article.fotorama_editor .fotorama_gallery {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0.5em;
-}
-article.fotorama_editor .fotorama_gallery legend {
-    padding: 0 0.2em;
 }
 article.fotorama_editor .fotorama_gallery label {
+    display: block;
+}
+article.fotorama_editor .fotorama_images ul {
+    list-style: none;
+    margin: 1em 0;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: 3fr 3fr 1fr;
+}
+article.fotorama_editor .fotorama_images li {
+    grid-column: 1/4;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: end;
+}
+article.fotorama_editor .fotorama_images span {
     display: block;
 }
 
