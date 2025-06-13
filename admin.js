@@ -17,7 +17,7 @@ function editor(article) {
         const path = clone.querySelector(".fotorama_path input");
         path.value = image.path;
         path.addEventListener("change", () => {
-            thumb.src = baseUrl + path.value;
+            thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
         });
         clone.querySelector(".fotorama_caption input").value = image.caption;
         clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
