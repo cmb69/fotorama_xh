@@ -3,13 +3,19 @@
 $plugin_tx['fotorama']['menu_main'] = "Galerien";
 $plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 
+$plugin_tx['fotorama']['label_caption'] = "Beschriftung";
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
+$plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
 $plugin_tx['fotorama']['label_delete'] = "Löschen";
 $plugin_tx['fotorama']['label_edit'] = "Bearbeiten";
 $plugin_tx['fotorama']['label_folder'] = "Ordner";
+$plugin_tx['fotorama']['label_fullscreen'] = "Vollbild";
 $plugin_tx['fotorama']['label_name'] = "Name";
+$plugin_tx['fotorama']['label_nav'] = "Navigation";
+$plugin_tx['fotorama']['label_ratio'] = "Seitenverhältnis";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
-$plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
+$plugin_tx['fotorama']['label_transition'] = "Übergang";
+$plugin_tx['fotorama']['label_width'] = "Breite";
 
 $plugin_tx['fotorama']['help_name'] = "(nur a-z, 0-9 und minus)";
 
@@ -30,4 +36,4 @@ $plugin_tx['fotorama']['syscheck_plibversion'] = "Plib_XH Version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_xhversion'] = "CMSimple_XH Version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_writable'] = "%s ist schreibbar: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "ja";
-$plugin_tx['fotorama']['syscheckno'] = "nein";
+$plugin_tx['fotorama']['syscheck_no'] = "nein";
