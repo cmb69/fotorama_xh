@@ -13,21 +13,21 @@ function editor(article) {
         const li = clone.querySelector("li");
         clone.querySelector(".fotorama_path input").value = image.path;
         clone.querySelector(".fotorama_caption input").value = image.caption;
-        clone.querySelector(".fotorama_move").addEventListener("click", () => {
+        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
             li.parentElement.insertBefore(li, li.previousElementSibling);
         });
-        clone.querySelector(".fotorama_delete").addEventListener("click", () => {
+        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
             li.remove();
         });
         ul.appendChild(clone);
     });
-    form.querySelector(".fotorama_add").addEventListener("click", () => {
+    form.querySelector(".fotorama_add_image").addEventListener("click", () => {
         const clone = template.content.cloneNode(true);
         const li = clone.querySelector("li");
-        clone.querySelector(".fotorama_move").addEventListener("click", () => {
+        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
             li.parentElement.insertBefore(li, li.previousElementSibling);
         });
-        clone.querySelector(".fotorama_delete").addEventListener("click", () => {
+        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
             li.remove();
         });
         ul.appendChild(clone);
