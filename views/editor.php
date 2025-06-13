@@ -31,11 +31,17 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         <input id="fotorama_caption" name="caption" value="<?=$this->esc($gallery->caption)?>">
       </p>
       <p>
-        <label for="fotorama_width"><?=$this->text("label_width")?></label>
+        <label for="fotorama_width">
+          <span><?=$this->text("label_width")?></span>
+          <span class="fotorama_help"><?=$this->text("help_width")?></span>
+        </label>
         <input id="fotorama_width" name="width" value="<?=$this->esc($gallery->width)?>">
       </p>
       <p>
-        <label for="fotorama_ratio"><?=$this->text("label_ratio")?></label>
+        <label for="fotorama_ratio">
+          <span><?=$this->text("label_ratio")?></span>
+          <span class="fotorama_help"><?=$this->text("help_ratio")?></span>
+        </label>
         <input id="fotorama_ratio" name="ratio" value="<?=$this->esc($gallery->ratio)?>">
       </p>
       <p>

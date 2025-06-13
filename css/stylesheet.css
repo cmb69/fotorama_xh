@@ -52,6 +52,9 @@ article.fotorama_overview .fotorama_help {
 /* editor */
 
 article.fotorama_editor {}
+article.fotorama_editor .fotorama_help {
+    font-size: smaller;
+}
 article.fotorama_editor fieldset {
     padding: 0.5em;
     margin: 1em 0;

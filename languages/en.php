@@ -28,6 +28,8 @@ $plugin_tx['fotorama']['label_transition'] = "Transition";
 $plugin_tx['fotorama']['label_width'] = "Width";
 
 $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
+$plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
+$plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
 
