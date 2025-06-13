@@ -22,8 +22,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <?=$this->raw($error)?>
 <?endif?>
   <form action="<?=$action?>" method="post">
-    <fieldset class="fotorama_gallery">
-      <legend>Gallery</legend>
+    <div class="fotorama_gallery">
       <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
       <input type="hidden" name="fotorama_gallery" value="<?=$this->esc($name)?>">
       <p>
@@ -59,7 +58,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
           <option <?=$this->selected("dissolve", $gallery->transition)?>>dissolve</option>
         </select>
       </p>
-    </fieldset>
+    </div>
     <input type="hidden" name="gallery_images" value="<?=$this->esc($gallery->images)?>">
     <fieldset class="fotorama_images">
       <legend>Images</legend>
