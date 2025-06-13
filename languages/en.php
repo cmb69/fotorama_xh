@@ -3,13 +3,19 @@
 $plugin_tx['fotorama']['menu_main'] = "Galleries";
 $plugin_tx['fotorama']['alt_logo'] = "Image folder";
 
+$plugin_tx['fotorama']['label_caption'] = "Caption";
 $plugin_tx['fotorama']['label_create'] = "Create";
+$plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
 $plugin_tx['fotorama']['label_delete'] = "Delete";
 $plugin_tx['fotorama']['label_edit'] = "Edit";
 $plugin_tx['fotorama']['label_folder'] = "Folder";
+$plugin_tx['fotorama']['label_fullscreen'] = "Fullscreen";
 $plugin_tx['fotorama']['label_name'] = "Name";
+$plugin_tx['fotorama']['label_nav'] = "Navigation";
+$plugin_tx['fotorama']['label_ratio'] = "Aspect ratio";
 $plugin_tx['fotorama']['label_save'] = "Save";
-$plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
+$plugin_tx['fotorama']['label_transition'] = "Transition";
+$plugin_tx['fotorama']['label_width'] = "Width";
 
 $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
 

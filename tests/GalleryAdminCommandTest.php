@@ -153,9 +153,7 @@ class GalleryAdminCommandTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [
-                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
-            ],
+            "post" => [],
         ]);
         $response = $this->sut()($request);
         $this->assertSame("http://example.com/?&fotorama_gallery=test", $response->location());
@@ -174,9 +172,7 @@ class GalleryAdminCommandTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [
-                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
-            ]
+            "post" => [],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
@@ -190,7 +186,7 @@ class GalleryAdminCommandTest extends TestCase
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
             "post" => [
-                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery/>',
+                "gallery_images" => "nope",
             ]
         ]);
         $response = $this->sut()($request);
@@ -205,9 +201,7 @@ class GalleryAdminCommandTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [
-                "fotorama_text" => '<?xml version="1.0" encoding="UTF-8" standalone="no"?><gallery path=""/>',
-            ]
+            "post" => [],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Can't save &quot;test&quot;!", $response->output());

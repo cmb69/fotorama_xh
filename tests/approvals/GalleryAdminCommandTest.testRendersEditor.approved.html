@@ -1,12 +1,69 @@
 
+<script type="module" src="./plugins/fotorama/admin.js"></script>
 <article class="fotorama_editor">
   <h1>Fotorama – test</h1>
   <form action="/?&action=save&fotorama_gallery=test" method="post">
-    <input type="hidden" name="fotorama_token" value="1234">
-    <input type="hidden" name="fotorama_gallery" value="test">
-    <textarea rows="25" cols="80" class="fotorama_xml xh_file_edit" name="fotorama_text">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;gallery path=&quot;test&quot;/&gt;
-</textarea>
+    <fieldset class="fotorama_gallery">
+      <legend>Gallery</legend>
+      <input type="hidden" name="fotorama_token" value="1234">
+      <input type="hidden" name="fotorama_gallery" value="test">
+      <p>
+        <label for="fotorama_caption">Caption</label>
+        <input id="fotorama_caption" name="caption" value="">
+      </p>
+      <p>
+        <label for="fotorama_width">Width</label>
+        <input id="fotorama_width" name="width" value="">
+      </p>
+      <p>
+        <label for="fotorama_ratio">Aspect ratio</label>
+        <input id="fotorama_ratio" name="ratio" value="">
+      </p>
+      <p>
+        <input type="hidden" name="thumbs" value="">
+        <input type="checkbox" id="fotorama_nav" name="thumbs" >
+        <label for="fotorama_nav">Navigation</label>
+      </p>
+      <p>
+        <label for="fotorama_fullscreen">Fullscreen</label>
+        <select id="fotorama_fullscreen" name="fullscreen">
+          <option selected></option>
+          <option >true</option>
+          <option >native</option>
+        </select>
+      </p>
+      <p>
+        <label for="fotorama_transition">Transition</label>
+        <select id="fotorama_transition" name="transition">
+          <option selected>slide</option>
+          <option >crossfade</option>
+          <option >dissolve</option>
+        </select>
+      </p>
+    </fieldset>
+    <input type="hidden" name="gallery_images" value="[]">
+    <fieldset>
+      <legend>Images</legend>
+      <ul>
+      </ul>
+      <p>
+        <button class="fotorama_add" type="button">Add</button>
+      </p>
+    </fieldset>
     <button>Save</button>
   </form>
+  <template class="fotorama_template">
+    <li>
+      <label class="fotorama_path">
+        <span>Path</span>
+        <input>
+      </label>
+      <label class="fotorama_caption">
+        <span>Caption</span>
+        <input>
+      </label>
+      <button class="fotorama_move" type="button">Move</button>
+      <button class="fotorama_delete" type="button">Delete</button>
+    </li>
+  </template>
 </article>

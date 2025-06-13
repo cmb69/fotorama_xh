@@ -123,9 +123,34 @@ final class Gallery implements Document
         return $this->images;
     }
 
-    public function addImage(string $path): void
+    public function setCaption(string $caption): void
     {
-        $this->images[] = new Image($path);
+        $this->caption = $caption ?: null;
+    }
+
+    public function setDimensions(string $width, string $ratio): void
+    {
+        $this->width = $width ?: null;
+        $this->ratio = $ratio ?: null;
+    }
+
+    public function setOptions(bool $thumbs, string $fullscreen, string $transition): void
+    {
+        $this->thumbs = $thumbs;
+        $this->fullscreen = $fullscreen ?: null;
+        $this->transition = $transition;
+    }
+
+    public function purgeImages(): void
+    {
+        $this->images = [];
+    }
+
+    public function addImage(string $path): Image
+    {
+        $image = new Image($path);
+        $this->images[] = $image;
+        return $image;
     }
 
     public function updateFromXml(string $xml): bool
@@ -184,7 +209,7 @@ final class Gallery implements Document
             $gallery->appendChild($image->toElement($document));
         }
         $document->appendChild($gallery);
-        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
+        if (!$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
             return null;
         }
         $document->formatOutput = true;

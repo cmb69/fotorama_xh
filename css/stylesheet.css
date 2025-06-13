@@ -52,6 +52,17 @@ article.fotorama_overview .fotorama_help {
 /* editor */
 
 article.fotorama_editor {}
+article.fotorama_editor .fotorama_gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0.5em;
+}
+article.fotorama_editor .fotorama_gallery legend {
+    padding: 0 0.2em;
+}
+article.fotorama_editor .fotorama_gallery label {
+    display: block;
+}
 
 /* delete confirmation */
 

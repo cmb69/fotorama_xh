@@ -155,17 +155,43 @@ class GalleryAdminCommand
 
     private function renderEditor(Request $request, Gallery $gallery, string $name, string $error): string
     {
-        if (function_exists("init_codeeditor")) {
-            init_codeeditor(["fotorama_xml"], '{"mode":"application/xml"}');
-        }
-        $xml = $request->post("fotorama_text") ?? $gallery->toString();
         return $this->view->render("editor", [
+            "script" => "./plugins/fotorama/admin.js",
             "error" => $error,
             "name" => $name,
             "action" => $request->url()->with("action", "save")->relative(),
             "token" => $this->csrfProtector->token(),
-            "xml" => $xml,
+            "gallery" => $this->galleryDto($request, $gallery),
         ]);
+    }
+
+    /** @return object{caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} */
+    private function galleryDto(Request $request, Gallery $gallery): object
+    {
+        return (object) [
+            "caption" => $request->post("caption") ?? $gallery->caption() ?? "",
+            "width" => $request->post("width") ?? $gallery->width() ?? "",
+            "ratio" => $request->post("ratio") ?? $gallery->ratio() ?? "",
+            "thumbs" => (bool) ($request->post("thumbs") ?? $gallery->thumbs()),
+            "fullscreen" => $request->post("fullscreen") ?? $gallery->fullscreen() ?? "",
+            "transition" => $request->post("transition") ?? $gallery->transition(),
+            "images" => $this->images($request, $gallery),
+        ];
+    }
+
+    private function images(Request $request, Gallery $gallery): string
+    {
+        if ($request->post("gallery_images") !== null) {
+            return $request->post("gallery_images");
+        }
+        $records = [];
+        foreach ($gallery->images() as $image) {
+            $records[] = [
+                "path" => $image->path(),
+                "caption" => $image->caption() ?? "",
+            ];
+        }
+        return $this->view->json($records);
     }
 
     private function save(Request $request): Response
@@ -174,12 +200,11 @@ class GalleryAdminCommand
             return Response::error(403);
         }
         $name = $request->get("fotorama_gallery") ?? "";
-        $text = $request->post("fotorama_text") ?? "";
         if (($gallery = Gallery::update($name, $this->store)) === null) {
             $error = $this->view->message("fail", "error_no_gallery", $name);
             return $this->respondWithOverview($request, $error);
         }
-        if (!$gallery->updateFromXml($text)) {
+        if (!$this->updateGallery($request, $gallery)) {
             $this->store->rollback();
             $error = $this->view->message("fail", "error_invalid_xml");
             return $this->respondWithEditor($request, $error);
@@ -189,6 +214,24 @@ class GalleryAdminCommand
             return $this->respondWithEditor($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
+    }
+
+    private function updateGallery(Request $request, Gallery $gallery): bool
+    {
+        $dto = $this->galleryDto($request, $gallery);
+        $gallery->setCaption($dto->caption);
+        $gallery->setDimensions($dto->width, $dto->ratio);
+        $gallery->setOptions($dto->thumbs, $dto->fullscreen, $dto->transition);
+        $gallery->purgeImages();
+        $images = json_decode($dto->images, true);
+        if (!is_array($images)) {
+            return false;
+        }
+        foreach ($images as $image) {
+            $im = $gallery->addImage($image["path"]);
+            $im->setCaption($image["caption"]);
+        }
+        return true;
     }
 
     private function delete(Request $request): Response
