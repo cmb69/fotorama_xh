@@ -21,18 +21,18 @@
     <fieldset>
       <legend>Create new gallery</legend>
       <p>
-        <label>
+        <label for="fotorama_gallery">
           <span>Name</span>
-          <input type="text" name="fotorama_gallery" value=""></label>
+          <span class="fotorama_help">(only a-z, 0-9 and hyphens)</span>
+        </label>
+        <input type="text" name="fotorama_gallery" id="fotorama_gallery" value="" required pattern="[a-z0-9\-]+">
       </p>
       <p>
-        <label>
-          <span>Folder</span>
-          <select name="fotorama_folder">
-            <option >folder1</option>
-            <option >folder2</option>
-          </select>
-        </label>
+        <label for="fotorama_folder">Folder</label>
+        <select name="fotorama_folder" id="fotorama_folder">
+          <option >folder1</option>
+          <option >folder2</option>
+        </select>
       </p>
       <p>
         <button class="submit">Create</button>

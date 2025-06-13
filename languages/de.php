@@ -11,6 +11,8 @@ $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
 
+$plugin_tx['fotorama']['help_name'] = "(nur a-z, 0-9 und minus)";
+
 $plugin_tx['fotorama']['message_delete'] = "Galerie \"%s\" löschen?";
 
 $plugin_tx['fotorama']['error_invalid_xml'] = "Ungültiges XML!";

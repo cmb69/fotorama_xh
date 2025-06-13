@@ -43,19 +43,19 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <fieldset>
       <legend><?=$this->text("label_create_gallery")?></legend>
       <p>
-        <label>
+        <label for="fotorama_gallery">
           <span><?=$this->text("label_name")?></span>
-          <input type="text" name="fotorama_gallery" value="<?=$this->esc($name)?>"></label>
+          <span class="fotorama_help"><?=$this->text("help_name")?></span>
+        </label>
+        <input type="text" name="fotorama_gallery" id="fotorama_gallery" value="<?=$this->esc($name)?>" required pattern="[a-z0-9\-]+">
       </p>
       <p>
-        <label>
-          <span><?=$this->text("label_folder")?></span>
-          <select name="fotorama_folder">
+        <label for="fotorama_folder"><?=$this->text("label_folder")?></label>
+        <select name="fotorama_folder" id="fotorama_folder">
 <?foreach ($folders as $folder):?>
-            <option <?=$this->selected($folder, $path)?>><?=$this->esc($folder)?></option>
+          <option <?=$this->selected($folder, $path)?>><?=$this->esc($folder)?></option>
 <?endforeach?>
-          </select>
-        </label>
+        </select>
       </p>
       <p>
         <button class="submit"><?=$this->text("label_create")?></button>

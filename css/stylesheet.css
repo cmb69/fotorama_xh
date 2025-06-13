@@ -14,7 +14,8 @@ article.fotorama_overview ul {
     display: grid;
     grid-template-columns: 1em auto;
     justify-content: start;
-    margin: 1em;
+    margin: 1em 0;
+    padding-left: 2em;
 }
 article.fotorama_overview li {
     grid-column: 1/3;
@@ -31,6 +32,21 @@ article.fotorama_overview .fotorama_controls {
     display: flex;
     justify-content: space-evenly;
     margin: 1em;
+}
+article.fotorama_overview fieldset {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0.5em;
+}
+article.fotorama_overview legend {
+    padding: 0 0.2em;
+}
+article.fotorama_overview fieldset label {
+    display: block;
+}
+article.fotorama_overview .fotorama_help {
+    font-size: smaller;
 }
 
 /* editor */
