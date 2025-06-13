@@ -1,10 +1,20 @@
 
 <article class="fotorama_overview">
   <h1>Fotorama – Galleries</h1>
-  <ul>
-    <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery1">gallery1</a></li>
-    <li><a href="/?&amp;fotorama&amp;admin=plugin_main&amp;action=edit&amp;normal&amp;fotorama_gallery=gallery2">gallery2</a></li>
-  </ul>
+  <form action="/?&amp;fotorama&amp;admin=plugin_main&amp;action=plugin_tx&amp;normal" method="get">
+    <input type="hidden" name="selected" value="fotorama">
+    <input type="hidden" name="admin" value="plugin_main">
+    <ul>
+      <li>
+        <input type="radio" name="fotorama_gallery" value="gallery1" id="fotorama_gallery_gallery1" />
+        <label for="fotorama_gallery_gallery1">gallery1      </li>
+      <li>
+        <input type="radio" name="fotorama_gallery" value="gallery2" id="fotorama_gallery_gallery2" />
+        <label for="fotorama_gallery_gallery2">gallery2      </li>
+    </ul>
+    <p class="fotorama_controls">
+      <button name="action" value="edit">Edit</button>
+  </form>
   <form action="/?&amp;fotorama&amp;admin=plugin_main&amp;action=create&amp;normal" method="post">
     <input type="hidden" name="fotorama_token" value="1234">
     <fieldset>

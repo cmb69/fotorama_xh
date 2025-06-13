@@ -4,6 +4,7 @@ $plugin_tx['fotorama']['menu_main'] = "Galerien";
 $plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
+$plugin_tx['fotorama']['label_edit'] = "Bearbeiten";
 $plugin_tx['fotorama']['label_folder'] = "Ordner";
 $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_save'] = "Speichern";

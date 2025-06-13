@@ -7,8 +7,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $error
- * @var string $url
- * @var list<object{name:string,url:string}> $galleries
+ * @var string $get_action
+ * @var string $sel_gallery
+ * @var list<object{name:string,id:string}> $galleries
  * @var string $action
  * @var string $token
  * @var string $name
@@ -22,11 +23,20 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <?if ($error):?>
     <?=$this->raw($error)?>
 <?endif?>
-  <ul>
+  <form action="<?=$this->esc($get_action)?>" method="get">
+    <input type="hidden" name="selected" value="fotorama">
+    <input type="hidden" name="admin" value="plugin_main">
+    <ul>
 <?foreach ($galleries as $gallery):?>
-    <li><a href="<?=$this->esc($gallery->url)?>"><?=$this->esc($gallery->name)?></a></li>
+      <li>
+        <input type="radio" name="fotorama_gallery" value="<?=$this->esc($gallery->name)?>" id="<?=$this->esc($gallery->id)?>" <?=$this->checked($gallery->name, $sel_gallery)?>/>
+        <label for="<?=$this->esc($gallery->id)?>"><?=$this->esc($gallery->name)?>
+      </li>
 <?endforeach?>
-  </ul>
+    </ul>
+    <p class="fotorama_controls">
+      <button name="action" value="edit"><?=$this->text("label_edit")?></button>
+  </form>
   <form action="<?=$this->esc($action)?>" method="post">
     <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
     <fieldset>

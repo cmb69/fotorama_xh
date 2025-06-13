@@ -74,6 +74,8 @@ class GalleryAdminCommand
         $path = $request->post("fotorama_path") ?? "";
         return $this->view->render("overview", [
             "error" => $error,
+            "get_action" => $request->url()->relative(),
+            "sel_gallery" => $request->get("fotorama_gallery") ?? "",
             "galleries" => $this->galleryDtos($request),
             "action" => $request->url()->with("action", "create")->relative(),
             "token" => $this->csrfProtector->token(),
@@ -83,14 +85,13 @@ class GalleryAdminCommand
         ]);
     }
 
-    /** @return iterable<object{name:string,url:string}> */
+    /** @return iterable<object{name:string,id:string}> */
     private function galleryDtos(Request $request): iterable
     {
-        $url = $request->url()->with("action", "edit");
         foreach ($this->findGalleries() as $gallery) {
             yield (object) [
                 "name" => $gallery,
-                "url" => $url->with("fotorama_gallery", $gallery)->relative(),
+                "id" => "fotorama_gallery_$gallery",
             ];
         }
     }
