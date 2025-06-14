@@ -72,6 +72,10 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       <ul data-base-url="<?=$this->esc($base_url)?>">
       </ul>
       <p class="fotorama_controls">
+        <label>
+          <input type="checkbox" class="fotorama_hide_details">
+          <span><?=$this->text("label_hide_details")?></span>
+        </label>
         <button class="fotorama_add_image" type="button"><?=$this->text("label_add")?></button>
       </p>
     </fieldset>

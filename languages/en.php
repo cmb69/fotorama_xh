@@ -17,6 +17,7 @@ $plugin_tx['fotorama']['label_fullscreen'] = "Fullscreen";
 $plugin_tx['fotorama']['label_fullscreen_false'] = "no";
 $plugin_tx['fotorama']['label_fullscreen_true'] = "Viewport";
 $plugin_tx['fotorama']['label_fullscreen_native'] = "Screen";
+$plugin_tx['fotorama']['label_hide_details'] = "Hide details";
 $plugin_tx['fotorama']['label_images'] = "Images";
 $plugin_tx['fotorama']['label_move_up'] = "Move up";
 $plugin_tx['fotorama']['label_name'] = "Name";

@@ -23,15 +23,24 @@ var fotorama = (function () {
             if (event.target.nodeName !== "INPUT" || event.target.type !== "image") {
                 return;
             }
+            const checkbox = form.querySelector(".fotorama_hide_details");
             const li = event.target.parentElement;
             switch (event.code) {
+                case "ArrowRight":
                 case "ArrowDown":
+                    if (checkbox.checked ? event.code === "ArrowDown" : event.code === "ArrowRight") {
+                        return;
+                    }
                     const reference = li.nextElementSibling
                         ? li.nextElementSibling.nextElementSibling
                         : li.parentElement.firstElementChild;
                     li.parentElement.insertBefore(li, reference);
                     break;
+                case "ArrowLeft":
                 case "ArrowUp":
+                    if (checkbox.checked ? event.code === "ArrowUp" : event.code === "ArrowLeft") {
+                        return;
+                    }
                     li.parentElement.insertBefore(li, li.previousElementSibling);
                     break;
             }
