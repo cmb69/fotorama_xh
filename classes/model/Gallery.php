@@ -123,6 +123,11 @@ final class Gallery implements Document
         return $this->images;
     }
 
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
     public function setCaption(string $caption): void
     {
         $this->caption = $caption ?: null;

@@ -163,7 +163,7 @@ class GalleryAdminCommand
             "name" => $name,
             "action" => $request->url()->with("action", "save")->relative(),
             "token" => $this->csrfProtector->token(),
-            "base_url" => $this->galleryService->getImageFoldername($gallery->path()) . "/",
+            "base_url" => $this->galleryService->getImageFoldername(""),
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
     }
@@ -176,10 +176,11 @@ class GalleryAdminCommand
         return $this->pluginFolder . "admin.js";
     }
 
-    /** @return object{caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} */
+    /** @return object{path:string,caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} */
     private function galleryDto(Request $request, Gallery $gallery): object
     {
         return (object) [
+            "path" => $request->post("path") ?? $gallery->path(),
             "caption" => $request->post("caption") ?? $gallery->caption() ?? "",
             "width" => $request->post("width") ?? $gallery->width() ?? "",
             "ratio" => $request->post("ratio") ?? $gallery->ratio() ?? "",
@@ -230,6 +231,7 @@ class GalleryAdminCommand
     private function updateGallery(Request $request, Gallery $gallery): bool
     {
         $dto = $this->galleryDto($request, $gallery);
+        $gallery->setPath($dto->path);
         $gallery->setCaption($dto->caption);
         $gallery->setDimensions($dto->width, $dto->ratio);
         $gallery->setOptions($dto->thumbs, $dto->fullscreen, $dto->transition);

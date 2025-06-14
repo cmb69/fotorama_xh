@@ -15,10 +15,16 @@ var fotorama = (function () {
         const imagesInput = article.querySelector("input[name=gallery_images]");
         const images = JSON.parse(imagesInput.value);
         const ul = article.querySelector("ul");
-        const baseUrl = ul.dataset.baseUrl;
+        let baseUrl = ul.dataset.baseUrl + form.querySelector(".fotorama_path").value + "/";
         const template = article.querySelector(".fotorama_template");
         const filebrowser = article.querySelector(".fotorama_filebrowser");
         images.forEach(image);
+        form.querySelector(".fotorama_path").addEventListener("change", event => {
+            baseUrl = ul.dataset.baseUrl + event.currentTarget.value + "/";
+            ul.querySelectorAll("li .fotorama_thumb").forEach(input => {
+                input.src = baseUrl + input.parentElement.querySelector(".fotorama_path").value;
+            });
+        });
         ul.addEventListener("keydown", event => {
             if (event.target.nodeName !== "INPUT" || event.target.type !== "image") {
                 return;
