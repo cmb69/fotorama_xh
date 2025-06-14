@@ -46,9 +46,29 @@ final class Gallery implements Document
 
     public static function fromString(string $contents, string $key): ?self
     {
-        $that = new self("");
-        if (!$that->updateFromXml($contents)) {
+        $document = new DOMDocument();
+        if (!@$document->loadXML($contents)) {
             return null;
+        }
+        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
+            return null;
+        }
+        $gallery = $document->documentElement;
+        assert($gallery !== null);
+        $that = new self($gallery->getAttribute("path"));
+        $that->caption = $gallery->hasAttribute("caption") ? $gallery->getAttribute("caption") : null;
+        $that->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
+        $that->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
+        $that->thumbs = $gallery->hasAttribute("nav");
+        $that->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
+        $that->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
+        $that->images = [];
+        foreach ($gallery->childNodes as $childNode) {
+            assert($childNode instanceof DOMNode);
+            if ($childNode->nodeName === "pic") {
+                assert($childNode instanceof DOMElement);
+                $that->images[] = Image::fromElement($childNode);
+            }
         }
         return $that;
     }
@@ -156,35 +176,6 @@ final class Gallery implements Document
         $image = new Image($path);
         $this->images[] = $image;
         return $image;
-    }
-
-    public function updateFromXml(string $xml): bool
-    {
-        $document = new DOMDocument();
-        if (!@$document->loadXML($xml)) {
-            return false;
-        }
-        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
-            return false;
-        }
-        $gallery = $document->documentElement;
-        assert($gallery !== null);
-        $this->path = $gallery->getAttribute("path");
-        $this->caption = $gallery->hasAttribute("caption") ? $gallery->getAttribute("caption") : null;
-        $this->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
-        $this->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
-        $this->thumbs = $gallery->hasAttribute("nav");
-        $this->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
-        $this->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
-        $this->images = [];
-        foreach ($gallery->childNodes as $childNode) {
-            assert($childNode instanceof DOMNode);
-            if ($childNode->nodeName === "pic") {
-                assert($childNode instanceof DOMElement);
-                $this->images[] = Image::fromElement($childNode);
-            }
-        }
-        return true;
     }
 
     public function toString(): ?string
