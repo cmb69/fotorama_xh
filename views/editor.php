@@ -70,6 +70,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         </select>
       </p>
     </div>
+    <p class="fotorama_controls">
+      <button><?=$this->text("label_save")?></button>
+    </p>
     <input type="hidden" name="gallery_images" value="<?=$this->esc($gallery->images)?>">
     <fieldset class="fotorama_images">
       <legend><?=$this->text("label_images")?></legend>
