@@ -125,8 +125,8 @@ article.fotorama_editor .fotorama_images textarea {
 }
 article.fotorama_editor .fotorama_images .fotorama_image_controls {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 article.fotorama_editor .fotorama_images .fotorama_controls span {
     display: inline;
