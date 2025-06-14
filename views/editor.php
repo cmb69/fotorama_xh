@@ -85,7 +85,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
   </form>
   <template class="fotorama_template">
     <li>
-      <input type="image" class="fotorama_thumb" src="">
+      <input type="image" class="fotorama_thumb" src="" alt="<?=$this->text("label_thumbnail")?>">
       <div class="fotorama_image_details">
         <label>
           <span><?=$this->text("label_path")?></span>

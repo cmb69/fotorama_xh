@@ -27,6 +27,7 @@ $plugin_tx['fotorama']['label_pick'] = "Bild auswählen";
 $plugin_tx['fotorama']['label_ratio'] = "Seitenverhältnis";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
 $plugin_tx['fotorama']['label_slide'] = "Gleiten";
+$plugin_tx['fotorama']['label_thumbnail'] = "Vorschaubild";
 $plugin_tx['fotorama']['label_transition'] = "Übergang";
 $plugin_tx['fotorama']['label_width'] = "Breite";
 

@@ -27,6 +27,7 @@ $plugin_tx['fotorama']['label_pick'] = "Pick image";
 $plugin_tx['fotorama']['label_ratio'] = "Aspect ratio";
 $plugin_tx['fotorama']['label_save'] = "Save";
 $plugin_tx['fotorama']['label_slide'] = "Slide";
+$plugin_tx['fotorama']['label_thumbnail'] = "Thumbnail";
 $plugin_tx['fotorama']['label_transition'] = "Transition";
 $plugin_tx['fotorama']['label_width'] = "Width";
 
