@@ -26,8 +26,8 @@ var fotorama = (function () {
             let records = [];
             ul.querySelectorAll("li").forEach(li => {
                 records.push({
-                    path: li.querySelector(".fotorama_path input").value,
-                    caption: li.querySelector(".fotorama_caption input").value,
+                    path: li.querySelector(".fotorama_path").value,
+                    caption: li.querySelector(".fotorama_caption").value,
                 });
             });
             imagesInput.value = JSON.stringify(records);
@@ -49,12 +49,12 @@ var fotorama = (function () {
             const li = clone.querySelector("li");
             const thumb = clone.querySelector(".fotorama_thumb");
             thumb.src = image ? baseUrl + image.path : "";
-            const path = clone.querySelector(".fotorama_path input");
+            const path = clone.querySelector(".fotorama_path");
             path.value = image ? image.path : "";
             path.addEventListener("change", () => {
                 thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
             });
-            clone.querySelector(".fotorama_caption input").value = image ? image.caption : "";
+            clone.querySelector(".fotorama_caption").value = image ? image.caption : "";
             clone.querySelector(".fotorama_pick_image").addEventListener("click", () => {
                 openFilebrowser(path);
             });

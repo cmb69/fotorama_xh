@@ -75,22 +75,38 @@ article.fotorama_editor .fotorama_gallery label {
 }
 article.fotorama_editor .fotorama_images ul {
     list-style: none;
-    margin: 1em 0;
+    margin: 0 0 1em 0;
     padding-left: 0;
-    display: grid;
-    grid-template-columns: 7em auto auto 5em;
 }
 article.fotorama_editor .fotorama_images li {
-    grid-column: 1/5;
     display: grid;
-    grid-template-columns: subgrid;
-    align-items: end;
+    grid-template-columns: 100px 1fr 5em;
+    grid-column-gap: 1em;
+    border: none;
+    border-bottom: 1px dotted #888;
+    padding: 0.5em 0;
 }
-article.fotorama_editor .fotorama_thumb {
-    max-width: 7em;
-    max-height: 7em;
+article.fotorama_editor .fotorama_images .fotorama_thumb {
+    max-height: 100px;
     margin: auto;
 }
+article.fotorama_editor .fotorama_images .fotorama_image_details{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+article.fotorama_editor .fotorama_images .fotorama_input_plus {
+    display: flex;
+}
+article.fotorama_editor .fotorama_images input {
+    width: 100%;
+}
+article.fotorama_editor .fotorama_images .fotorama_image_controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+article.fotorama_editor .fotorama_images label,
 article.fotorama_editor .fotorama_images span {
     display: block;
 }
