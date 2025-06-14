@@ -5,6 +5,7 @@ $plugin_tx['fotorama']['alt_logo'] = "Image folder";
 
 $plugin_tx['fotorama']['label_add'] = "Add";
 $plugin_tx['fotorama']['label_caption'] = "Caption";
+$plugin_tx['fotorama']['label_close'] = "Close";
 $plugin_tx['fotorama']['label_create'] = "Create";
 $plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
 $plugin_tx['fotorama']['label_crossfade'] = "Cross-fade";
@@ -21,6 +22,7 @@ $plugin_tx['fotorama']['label_move_up'] = "Move up";
 $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_nav'] = "Navigation";
 $plugin_tx['fotorama']['label_path'] = "Path";
+$plugin_tx['fotorama']['label_pick'] = "Pick image";
 $plugin_tx['fotorama']['label_ratio'] = "Aspect ratio";
 $plugin_tx['fotorama']['label_save'] = "Save";
 $plugin_tx['fotorama']['label_slide'] = "Slide";

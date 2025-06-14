@@ -5,6 +5,7 @@ $plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 
 $plugin_tx['fotorama']['label_add'] = "Hinzufügen";
 $plugin_tx['fotorama']['label_caption'] = "Beschriftung";
+$plugin_tx['fotorama']['label_close'] = "Schließen";
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
 $plugin_tx['fotorama']['label_crossfade'] = "Überblenden";
@@ -21,6 +22,7 @@ $plugin_tx['fotorama']['label_move_up'] = "nach oben";
 $plugin_tx['fotorama']['label_name'] = "Name";
 $plugin_tx['fotorama']['label_nav'] = "Navigation";
 $plugin_tx['fotorama']['label_path'] = "Pfad";
+$plugin_tx['fotorama']['label_pick'] = "Bild auswählen";
 $plugin_tx['fotorama']['label_ratio'] = "Seitenverhältnis";
 $plugin_tx['fotorama']['label_save'] = "Speichern";
 $plugin_tx['fotorama']['label_slide'] = "Gleiten";

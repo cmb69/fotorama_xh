@@ -1,46 +1,102 @@
-document.querySelectorAll("article.fotorama_editor").forEach(article => {
-    editor(article);
-});
+"use strict";
 
-function editor(article) {
-    const form = article.querySelector("form");
-    const imagesInput = article.querySelector("input[name=gallery_images]");
-    const images = JSON.parse(imagesInput.value);
-    const ul = article.querySelector("ul");
-    const baseUrl = ul.dataset.baseUrl;
-    const template = article.querySelector(".fotorama_template");
-    images.forEach(image);
-    form.querySelector(".fotorama_add_image").addEventListener("click", () => {
-        image(null);
+var fotorama = (function () {
+    var currentFilebrowser, currentBaseUrl, currentPath;
+
+    document.querySelectorAll("article.fotorama_editor").forEach(article => {
+        editor(article);
     });
-    form.addEventListener("submit", () => {
-        let records = [];
-        ul.querySelectorAll("li").forEach(li => {
-            records.push({
-                path: li.querySelector(".fotorama_path input").value,
-                caption: li.querySelector(".fotorama_caption input").value,
+    return {
+        setLink: setLink,
+    };
+
+    function editor (article) {
+        const form = article.querySelector("form");
+        const imagesInput = article.querySelector("input[name=gallery_images]");
+        const images = JSON.parse(imagesInput.value);
+        const ul = article.querySelector("ul");
+        const baseUrl = ul.dataset.baseUrl;
+        const template = article.querySelector(".fotorama_template");
+        const filebrowser = article.querySelector(".fotorama_filebrowser");
+        images.forEach(image);
+        form.querySelector(".fotorama_add_image").addEventListener("click", () => {
+            image(null);
+        });
+        form.addEventListener("submit", () => {
+            let records = [];
+            ul.querySelectorAll("li").forEach(li => {
+                records.push({
+                    path: li.querySelector(".fotorama_path input").value,
+                    caption: li.querySelector(".fotorama_caption input").value,
+                });
             });
+            imagesInput.value = JSON.stringify(records);
         });
-        imagesInput.value = JSON.stringify(records);
-    });
+        filebrowser.querySelector(".fotorama_close").addEventListener("click", () => {
+            filebrowser.close();
+        });
+        filebrowser.querySelector("iframe").addEventListener("load", event => {
+            const figcaption = filebrowser.querySelector("figcaption");
+            const controls = filebrowser.querySelector("p");
+            const height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
+            const iframe = event.currentTarget;
+            iframe.width = filebrowser.clientWidth - 20;
+            iframe.height = filebrowser.clientHeight - height - 20;
+        });
 
-    function image(image) {
-        const clone = template.content.cloneNode(true);
-        const li = clone.querySelector("li");
-        const thumb = clone.querySelector(".fotorama_thumb");
-        thumb.src = image ? baseUrl + image.path : "";
-        const path = clone.querySelector(".fotorama_path input");
-        path.value = image ? image.path : "";
-        path.addEventListener("change", () => {
-            thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
-        });
-        clone.querySelector(".fotorama_caption input").value = image ? image.caption : "";
-        clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
-            li.parentElement.insertBefore(li, li.previousElementSibling);
-        });
-        clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
-            li.remove();
-        });
-        ul.appendChild(clone);
+        function image(image) {
+            const clone = template.content.cloneNode(true);
+            const li = clone.querySelector("li");
+            const thumb = clone.querySelector(".fotorama_thumb");
+            thumb.src = image ? baseUrl + image.path : "";
+            const path = clone.querySelector(".fotorama_path input");
+            path.value = image ? image.path : "";
+            path.addEventListener("change", () => {
+                thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
+            });
+            clone.querySelector(".fotorama_caption input").value = image ? image.caption : "";
+            clone.querySelector(".fotorama_pick_image").addEventListener("click", () => {
+                openFilebrowser(path);
+            });
+            clone.querySelector(".fotorama_move_image").addEventListener("click", () => {
+                li.parentElement.insertBefore(li, li.previousElementSibling);
+            });
+            clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
+                li.remove();
+            });
+            ul.appendChild(clone);
+        }
+
+        function openFilebrowser(path) {
+            const iframe = filebrowser.querySelector("iframe");
+            const matches = baseUrl.match(/^(\.+\/)(.*)$/);
+            const p = matches[1];
+            const prefix = encodeURIComponent(matches[1]);
+            const subdir = encodeURIComponent(matches[2].slice(0, -1));
+            const url = `${p}?filebrowser=editorbrowser&editor=fotorama&prefix=${prefix}&type=image&subdir=${subdir}`;
+            iframe.src = url;
+            filebrowser.showModal();
+            currentFilebrowser = filebrowser;
+            currentBaseUrl = baseUrl;
+            currentPath = path;
+        }
     }
-}
+
+    function setLink (url) {
+        currentFilebrowser.close();
+        const prefix = commonPrefix(currentBaseUrl, url);
+        const rest = currentBaseUrl.substring(prefix.length);
+        const slashes = rest ? rest.match(/\//g).length : 0;
+        currentPath.value = "../".repeat(slashes) + url.substring(prefix.length);
+        currentPath.dispatchEvent(new Event("change"));
+
+        function commonPrefix(str1, str2) {
+            let res = "";
+            for (let i = 0; i < str1.length && i < str2.length; i++) {
+                if (str1[i] !== str2[i]) break;
+                res += str1[i];
+            }
+            return res;
+        }
+    }
+}());

@@ -95,6 +95,35 @@ article.fotorama_editor .fotorama_images span {
     display: block;
 }
 
+/* filebrowser dialog */
+
+article.fotorama_editor .fotorama_filebrowser {
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    border: 0;
+    padding: 0;
+}
+article.fotorama_editor .fotorama_filebrowser figure {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+article.fotorama_editor .fotorama_filebrowser figcaption {
+    font-size: larger;
+    /* float: left; */
+    margin: 0.5em;
+}
+article.fotorama_editor .fotorama_filebrowser p {
+    /* float: right; */
+    text-align: right;
+    margin: 0.5em;
+}
+article.fotorama_editor .fotorama_filebrowser iframe {
+    border: 0;
+    grid-column: 1/3;
+}
+
 /* delete confirmation */
 
 article.fotorama_delete {}
