@@ -19,10 +19,33 @@ var fotorama = (function () {
         const template = article.querySelector(".fotorama_template");
         const filebrowser = article.querySelector(".fotorama_filebrowser");
         images.forEach(image);
+        ul.addEventListener("keydown", event => {
+            if (event.target.nodeName !== "INPUT" || event.target.type !== "image") {
+                return;
+            }
+            const li = event.target.parentElement;
+            switch (event.code) {
+                case "ArrowDown":
+                    const reference = li.nextElementSibling
+                        ? li.nextElementSibling.nextElementSibling
+                        : li.parentElement.firstElementChild;
+                    li.parentElement.insertBefore(li, reference);
+                    break;
+                case "ArrowUp":
+                    li.parentElement.insertBefore(li, li.previousElementSibling);
+                    break;
+            }
+            event.target.focus();
+        });
         form.querySelector(".fotorama_add_image").addEventListener("click", () => {
             image(null);
         });
-        form.addEventListener("submit", () => {
+        form.addEventListener("submit", event => {
+            if (event.submitter.nodeName === "INPUT" && event.submitter.type === "image") {
+                event.preventDefault();
+                event.submitter.focus();
+                return;
+            }
             let records = [];
             ul.querySelectorAll("li").forEach(li => {
                 records.push({
