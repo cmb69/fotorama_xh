@@ -69,9 +69,15 @@ article.fotorama_editor .fotorama_controls {
 article.fotorama_editor .fotorama_gallery {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
 }
 article.fotorama_editor .fotorama_gallery label {
     display: block;
+}
+article.fotorama_editor .fotorama_gallery input:not([type]),
+article.fotorama_editor .fotorama_gallery textarea {
+    width: 100%;
+    box-sizing: border-box;
 }
 article.fotorama_editor .fotorama_images ul {
     list-style: none;
@@ -112,8 +118,10 @@ article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images li 
 article.fotorama_editor .fotorama_images .fotorama_input_plus {
     display: flex;
 }
-article.fotorama_editor .fotorama_images input:not([type]) {
+article.fotorama_editor .fotorama_images input:not([type]),
+article.fotorama_editor .fotorama_images textarea {
     width: 100%;
+    box-sizing: border-box;
 }
 article.fotorama_editor .fotorama_images .fotorama_image_controls {
     display: flex;

@@ -28,7 +28,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       <input type="hidden" name="fotorama_gallery" value="<?=$this->esc($name)?>">
       <p>
         <label for="fotorama_caption"><?=$this->text("label_caption")?></label>
-        <input id="fotorama_caption" name="caption" value="<?=$this->esc($gallery->caption)?>">
+        <textarea id="fotorama_caption" name="caption" rows="2"><?=$this->esc($gallery->caption)?></textarea>
       </p>
       <p>
         <label for="fotorama_width">
@@ -97,7 +97,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         <label>
           <span><?=$this->text("label_caption")?></span>
           <div class="fotorama_input_plus">
-            <input class="fotorama_caption">
+            <textarea class="fotorama_caption" rows="1"></textarea>
             <div></div>
           </div>
         </label>
