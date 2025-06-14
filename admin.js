@@ -48,6 +48,7 @@ var fotorama = (function () {
         });
         form.querySelector(".fotorama_add_image").addEventListener("click", () => {
             image(null);
+            ul.querySelector("li:last-child .fotorama_thumb").focus();
         });
         form.addEventListener("submit", event => {
             if (event.submitter.nodeName === "INPUT" && event.submitter.type === "image") {

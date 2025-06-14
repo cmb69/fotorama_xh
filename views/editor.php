@@ -69,8 +69,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <input type="hidden" name="gallery_images" value="<?=$this->esc($gallery->images)?>">
     <fieldset class="fotorama_images">
       <legend><?=$this->text("label_images")?></legend>
-      <ul data-base-url="<?=$this->esc($base_url)?>">
-      </ul>
       <p class="fotorama_controls">
         <label>
           <input type="checkbox" class="fotorama_hide_details">
@@ -78,6 +76,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         </label>
         <button class="fotorama_add_image" type="button"><?=$this->text("label_add")?></button>
       </p>
+      <ul data-base-url="<?=$this->esc($base_url)?>">
+      </ul>
     </fieldset>
     <p class="fotorama_controls">
       <button><?=$this->text("label_save")?></button>

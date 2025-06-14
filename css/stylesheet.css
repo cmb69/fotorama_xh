@@ -75,7 +75,7 @@ article.fotorama_editor .fotorama_gallery label {
 }
 article.fotorama_editor .fotorama_images ul {
     list-style: none;
-    margin: 0 0 1em 0;
+    margin: 0;
     padding-left: 0;
 }
 article.fotorama_editor .fotorama_images li {
@@ -83,7 +83,7 @@ article.fotorama_editor .fotorama_images li {
     grid-template-columns: 100px 1fr 5em;
     grid-column-gap: 1em;
     border: none;
-    border-bottom: 1px dotted #888;
+    border-top: 1px dotted #888;
     padding: 0.5em 0;
 }
 article.fotorama_editor .fotorama_images .fotorama_thumb {
