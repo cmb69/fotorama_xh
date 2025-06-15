@@ -60,12 +60,12 @@ class Image
 
     public function setCaption(string $caption): void
     {
-        $this->caption = $caption;
+        $this->caption = $caption ?: null;
     }
 
     public function setDescription(string $description): void
     {
-        $this->description = $description;
+        $this->description = $description ?: null;
     }
 
     public function toElement(DOMDocument $document): DOMElement
