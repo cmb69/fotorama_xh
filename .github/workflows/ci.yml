@@ -37,7 +37,7 @@ jobs:
         id: cache-tools
         uses: actions/cache@v4
         with:
-          path: cmsimplexh/plugins/marfotoramakdown/tools
+          path: cmsimplexh/plugins/fotorama/tools
           key: tools-${{hashFiles('cmsimplexh/plugins/fotorama/.phive')}}
       - if: ${{steps.cache-tools.outputs.cache-hit != 'true'}}
         name: phive install
