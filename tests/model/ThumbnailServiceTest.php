@@ -21,7 +21,7 @@ class ThumbnailServiceTest extends TestCase
     public function testMakesHorizontalThumbnail(): void
     {
         $path = __DIR__ . "/../data/XH2.jpg";
-        $this->sut()->makeThumbnail($path, 64);
+        $this->sut()->thumbnail($path, 64);
         $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
         $this->assertFileExists($path);
         $size = getimagesize($path);
@@ -32,7 +32,7 @@ class ThumbnailServiceTest extends TestCase
     public function testMakesVerticalThumbnail(): void
     {
         $path = __DIR__ . "/../data/XH2_vertical.jpg";
-        $this->sut()->makeThumbnail($path, 64);
+        $this->sut()->thumbnail($path, 64);
         $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
         $this->assertFileExists($path);
         $size = getimagesize($path);

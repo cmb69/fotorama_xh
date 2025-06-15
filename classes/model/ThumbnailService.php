@@ -30,7 +30,7 @@ class ThumbnailService
         $this->cacheFolder = $cacheFolder;
     }
 
-    public function makeThumbnail(string $path, int $size): string
+    public function thumbnail(string $path, int $size): string
     {
         $md5 = md5($path);
         $thumb = $this->cacheFolder . "{$md5}_{$size}.jpg";
