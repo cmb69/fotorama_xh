@@ -28,11 +28,13 @@ class Image
 {
     private string $path;
     private ?string $caption = null;
+    private ?string $description = null;
 
     public static function fromElement(DOMElement $element): self
     {
         $that = new self($element->getAttribute("path"));
         $that->caption = $element->hasAttribute("caption") ? $element->getAttribute("caption") : null;
+        $that->description = $element->hasAttribute("description") ? $element->getAttribute("description") : null;
         return $that;
     }
 
@@ -51,9 +53,19 @@ class Image
         return $this->caption;
     }
 
+    public function description(): ?string
+    {
+        return $this->description;
+    }
+
     public function setCaption(string $caption): void
     {
         $this->caption = $caption;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     public function toElement(DOMDocument $document): DOMElement
@@ -62,6 +74,9 @@ class Image
         $image->setAttribute("path", $this->path);
         if ($this->caption !== null) {
             $image->setAttribute("caption", $this->caption);
+        }
+        if ($this->description !== null) {
+            $image->setAttribute("description", $this->description);
         }
         return $image;
     }

@@ -10,7 +10,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $stylesheet
  * @var string $caption
  * @var array<string,mixed> $config
- * @var list<object{filename:string,caption:string,thumbnail:string}> $images
+ * @var list<object{filename:string,caption:string,description:string,thumbnail:string}> $images
  * @var bool $thumbnails
  */
 ?>
@@ -26,7 +26,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <?if ($thumbnails):?>
     <a href="<?=$this->esc($image->filename)?>" data-caption="<?=$this->esc($image->caption)?>">
 <?endif?>
-      <img src="<?=$this->esc($image->thumbnail)?>" data-caption="<?=$this->esc($image->caption)?>" alt="<?=$this->esc($image->caption)?>">
+      <img src="<?=$this->esc($image->thumbnail)?>" data-caption="<?=$this->esc($image->caption)?>" alt="<?=$this->esc($image->description)?>">
 <?if ($thumbnails):?>
     </a>
 <?endif?>

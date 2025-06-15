@@ -208,6 +208,7 @@ class GalleryAdminCommand
             $records[] = [
                 "path" => $image->path(),
                 "caption" => $image->caption() ?? "",
+                "description" => $image->description() ?? "",
             ];
         }
         return $this->view->json($records);
@@ -250,6 +251,7 @@ class GalleryAdminCommand
         foreach ($images as $image) {
             $im = $gallery->addImage($image["path"]);
             $im->setCaption($image["caption"]);
+            $im->setDescription($image["description"]);
         }
         return true;
     }

@@ -67,6 +67,7 @@ var fotorama = (function () {
                 records.push({
                     path: li.querySelector(".fotorama_path").value,
                     caption: li.querySelector(".fotorama_caption").value,
+                    description: li.querySelector(".fotorama_description").value,
                 });
             });
             imagesInput.value = JSON.stringify(records);
@@ -94,6 +95,7 @@ var fotorama = (function () {
                 thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
             });
             clone.querySelector(".fotorama_caption").value = image ? image.caption : "";
+            clone.querySelector(".fotorama_description").value = image ? image.description : "";
             clone.querySelector(".fotorama_pick_image").addEventListener("click", () => {
                 openFilebrowser(path);
             });

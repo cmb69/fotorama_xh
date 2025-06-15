@@ -11,6 +11,7 @@ $plugin_tx['fotorama']['label_create'] = "Create";
 $plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
 $plugin_tx['fotorama']['label_crossfade'] = "Cross-fade";
 $plugin_tx['fotorama']['label_delete'] = "Delete";
+$plugin_tx['fotorama']['label_description'] = "Description";
 $plugin_tx['fotorama']['label_dissolve'] = "Dissolve";
 $plugin_tx['fotorama']['label_edit'] = "Edit";
 $plugin_tx['fotorama']['label_folder'] = "Folder";

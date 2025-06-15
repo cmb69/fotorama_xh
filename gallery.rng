@@ -47,6 +47,9 @@
       <optional>
         <attribute name="caption"/>
       </optional>
+      <optional>
+        <attribute name="description"/>
+      </optional>
     </element>
   </zeroOrMore>
 </element>

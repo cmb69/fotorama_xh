@@ -113,7 +113,12 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
           <span><?=$this->text("label_caption")?></span>
           <div class="fotorama_input_plus">
             <textarea class="fotorama_caption" rows="1"></textarea>
-            <div></div>
+          </div>
+        </label>
+        <label>
+          <span><?=$this->text("label_description")?></span>
+          <div class="fotorama_input_plus">
+            <textarea class="fotorama_description" rows="1"></textarea>
           </div>
         </label>
       </div>

@@ -109,7 +109,6 @@ class GalleryCommand
     private function pictureDtos(Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
-            $caption = $pic->caption() ?? "";
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
             } else {
@@ -126,7 +125,8 @@ class GalleryCommand
             }
             yield (object) [
                 "filename" => $filename,
-                "caption" => $caption,
+                "caption" => $pic->caption() ?? "",
+                "description" => $pic->description() ?? $pic->caption() ?? "",
                 "thumbnail" => $thumbnail,
             ];
         }
