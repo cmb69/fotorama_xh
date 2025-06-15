@@ -96,7 +96,7 @@ class GalleryCommand
             $config["nav"] = "thumbs";
         }
         if ($gallery->fullscreen()) {
-            $config["fullscreen"] = $gallery->fullscreen();
+            $config["allowFullscreen"] = $gallery->fullscreen();
         }
         $config["transition"] = $gallery->transition();
         return $config;
