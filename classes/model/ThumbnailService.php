@@ -42,10 +42,10 @@ class ThumbnailService
             $h1 = imagesy($source);
             if ($w1 < $h1) {
                 $w2 = $size;
-                $h2 = $w2 / $w1 * $h1;
+                $h2 = (int) round($w2 / $w1 * $h1);
             } else {
                 $h2 = $size;
-                $w2 = $h2 / $h1 * $w1;
+                $w2 = (int) round($h2 / $h1 * $w1);
             }
             if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
                 return $path;
