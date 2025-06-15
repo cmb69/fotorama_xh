@@ -159,11 +159,9 @@ article.fotorama_editor .fotorama_filebrowser figure {
 }
 article.fotorama_editor .fotorama_filebrowser figcaption {
     font-size: larger;
-    /* float: left; */
     margin: 0.5em;
 }
 article.fotorama_editor .fotorama_filebrowser p {
-    /* float: right; */
     text-align: right;
     margin: 0.5em;
 }
