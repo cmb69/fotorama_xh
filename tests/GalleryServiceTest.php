@@ -15,6 +15,7 @@ class GalleryServiceTest extends TestCase
 XML;
 
     private $sut;
+    private $root;
 
     public function setUp(): void
     {
