@@ -39,4 +39,45 @@ class ThumbnailServiceTest extends TestCase
         $this->assertSame(64, $size[0]);
         $this->assertSame(144, $size[1]);
     }
+
+    /** @dataProvider orientation */
+    public function testHeedsOrientation(string $basename, string $col1, string $col2, string $col3, string $col4): void
+    {
+        $path = __DIR__ . "/../data/$basename";
+        $this->sut()->thumbnail($path, 64);
+        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
+        $im = imagecreatefromjpeg($path);
+        $this->assertSame(128, imagesx($im));
+        $this->assertSame(64, imagesy($im));
+        imagetruecolortopalette($im, false, 4);
+        $colors = $this->colors($im);
+        $this->assertSame($colors[$col1], imagecolorat($im, 31, 15));
+        $this->assertSame($colors[$col2], imagecolorat($im, 95, 15));
+        $this->assertSame($colors[$col3], imagecolorat($im, 31, 47));
+        $this->assertSame($colors[$col4], imagecolorat($im, 95, 47));
+    }
+
+    public function orientation(): array
+    {
+        return [
+            ["orientation1.jpg", "red", "green", "blue", "white"],
+            ["orientation2.jpg", "green", "red", "white", "blue"],
+            ["orientation3.jpg", "white", "blue", "green", "red"],
+            ["orientation4.jpg", "blue", "white", "red", "green"],
+            ["orientation5.jpg", "red", "blue", "green", "white"],
+            ["orientation6.jpg", "blue", "red", "white", "green"],
+            ["orientation7.jpg", "white", "green", "blue", "red"],
+            ["orientation8.jpg", "green", "white", "red", "blue"],
+        ];
+    }
+
+    private function colors($im): array
+    {
+        return [
+            "red" => imagecolorclosest($im, 0xff, 0x00, 0x00),
+            "green" => imagecolorclosest($im, 0x00, 0xff, 0x00),
+            "blue" => imagecolorclosest($im, 0x00, 0x00, 0xff),
+            "white" => imagecolorclosest($im, 0xff, 0xff, 0xff),
+        ];
+    }
 }

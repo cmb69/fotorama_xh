@@ -21,6 +21,8 @@
 
 namespace Fotorama\Model;
 
+use GdImage;
+
 class ThumbnailService
 {
     private string $cacheFolder;
@@ -36,6 +38,9 @@ class ThumbnailService
         $thumb = $this->cacheFolder . "{$md5}_{$size}.jpg";
         if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
             if (($source = imagecreatefromjpeg($path)) === false) {
+                return $path;
+            }
+            if (($source = $this->normalize($source, $this->orientation($path))) === null) {
                 return $path;
             }
             $w1 = imagesx($source);
@@ -58,5 +63,52 @@ class ThumbnailService
             imagedestroy($dest);
         }
         return $thumb;
+    }
+
+    private function orientation(string $path): int
+    {
+        $orientation = 0;
+        if (extension_loaded("exif") && ($exif = exif_read_data($path))) {
+            $orientation = $exif["Orientation"] ?? 0;
+        }
+        return $orientation;
+    }
+
+    /**
+     * @param GdImage $image
+     * @return ?GdImage
+     */
+    private function normalize($image, int $orientation)
+    {
+        switch ($orientation) {
+            default:
+                return $image;
+            case 2:
+                if (!imageflip($image, IMG_FLIP_HORIZONTAL)) {
+                    return null;
+                }
+                return $image;
+            case 3:
+                return imagerotate($image, 180, 0) ?: null;
+            case 4:
+                if (!imageflip($image, IMG_FLIP_VERTICAL)) {
+                    return null;
+                }
+                return $image;
+            case 5:
+                if (!imageflip($image, IMG_FLIP_VERTICAL)) {
+                    return null;
+                }
+                return imagerotate($image, 270, 0) ?: null;
+            case 6:
+                return imagerotate($image, 270, 0) ?: null;
+            case 7:
+                if (!imageflip($image, IMG_FLIP_VERTICAL)) {
+                    return null;
+                }
+                return imagerotate($image, 90, 0) ?: null;
+            case 8:
+                return imagerotate($image, 90, 0) ?: null;
+        }
     }
 }

@@ -24,8 +24,8 @@ und jedes Bild kann eine zusätzliche Beschriftung erhalten.
 ## Voraussetzungen
 
 Fotorama_XH ist ein Plugin für [CMSimple_XH](https://cmsimple-xh.org/de/).
-Es benötigt PHP ≥ 7.4.0 mit den dom und gd Erweiterungen,
-und CMSimple_XH ≥ 1.7.0.
+Es benötigt PHP ≥ 7.4.0 mit der dom Erweiterung, und CMSimple_XH ≥ 1.7.0.
+Um Vorschaubilder zu erzeugen, werden die PHP Erweiterungen gd und exif empfohlen.
 Fotorama_XH benötigt weiterhin [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.10;
 ist dieses noch nicht installiert (siehe `Einstellungen` → `Info`),
 laden Sie das [aktuelle Release](https://github.com/cmb69/plib_xh/releases/latest)
@@ -147,6 +147,10 @@ in der Pluginverwaltung genutzt werden, um herauszufinden wo der Fehler liegt.
 
 Damit die Galerien *voll* funktionstüchtig sind,
 muss JavaScript im Browser des Besuchers aktiviert sein.
+
+Ist die PHP exif Erweiterung nicht verfügbar, werden Vorschaubilder von Bildern
+mit Exif `Orientation` Markern nicht korrekt angezeigt (sie sind dann rotiert
+oder seitenverkehrt).
 
 ## Fehlerbehebung
 

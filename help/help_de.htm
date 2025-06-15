@@ -48,7 +48,7 @@
 <li><a href="#danksagung">Danksagung</a></li>
 </ul>
 <h2 id="voraussetzungen">Voraussetzungen</h2>
-<p>Fotorama_XH ist ein Plugin für <a href="https://cmsimple-xh.org/de/">CMSimple_XH</a>. Es benötigt PHP ≥ 7.4.0 mit den dom und gd Erweiterungen, und CMSimple_XH ≥ 1.7.0. Fotorama_XH benötigt weiterhin <a href="https://github.com/cmb69/plib_xh">Plib_XH</a> ≥ 1.10; ist dieses noch nicht installiert (siehe <code>Einstellungen</code> → <code>Info</code>), laden Sie das <a href="https://github.com/cmb69/plib_xh/releases/latest">aktuelle Release</a> herunter, und installieren Sie es.</p>
+<p>Fotorama_XH ist ein Plugin für <a href="https://cmsimple-xh.org/de/">CMSimple_XH</a>. Es benötigt PHP ≥ 7.4.0 mit der dom Erweiterung, und CMSimple_XH ≥ 1.7.0. Um Vorschaubilder zu erzeugen, werden die PHP Erweiterungen gd und exif empfohlen. Fotorama_XH benötigt weiterhin <a href="https://github.com/cmb69/plib_xh">Plib_XH</a> ≥ 1.10; ist dieses noch nicht installiert (siehe <code>Einstellungen</code> → <code>Info</code>), laden Sie das <a href="https://github.com/cmb69/plib_xh/releases/latest">aktuelle Release</a> herunter, und installieren Sie es.</p>
 <h2 id="download">Download</h2>
 <p>Das <a href="https://github.com/cmb69/fotorama_xh/releases/latest">aktuelle Release</a> kann von Github herunter geladen werden.</p>
 <h2 id="installation">Installation</h2>
@@ -92,6 +92,7 @@ werden Hinweise zu den Einstellungen angezeigt.
 <p>Werden Galeriedateien manuell bearbeitet, wird empfohlen einen Editor mit Unterstützung von RelaxNG-Schemata zu verwenden, und gegen <code>gallery.rng</code> im Wurzelordner des Plugins zu validieren. Wird das nicht getan, kann es passieren, dass die Galerien nicht geladen werden können. In diesem Fall kann der <code>Prüfen</code> Schalter in der Pluginverwaltung genutzt werden, um herauszufinden wo der Fehler liegt.</p>
 <h2 id="einschränkungen">Einschränkungen</h2>
 <p>Damit die Galerien <em>voll</em> funktionstüchtig sind, muss JavaScript im Browser des Besuchers aktiviert sein.</p>
+<p>Ist die PHP exif Erweiterung nicht verfügbar, werden Vorschaubilder von Bildern mit Exif <code>Orientation</code> Markern nicht korrekt angezeigt (sie sind dann rotiert oder seitenverkehrt).</p>
 <h2 id="fehlerbehebung">Fehlerbehebung</h2>
 <p>Melden Sie Programmfehler und stellen Sie Supportanfragen entweder auf <a href="https://github.com/cmb69/fotorama_xh/issues">Github</a> oder im <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
 <h2 id="lizenz">Lizenz</h2>

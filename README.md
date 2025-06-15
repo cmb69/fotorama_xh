@@ -27,8 +27,8 @@ and every image can have an additional caption.
 ## Requirements
 
 Fotorama_XH is a plugin for [CMSimple_XH](https://cmsimple-xh.org/).
-It requires PHP ≥ 7.4.0 with the dom and gd extensions,
-and CMSimple_XH ≥ 1.7.0.
+It requires PHP ≥ 7.4.0 with the dom extension, and CMSimple_XH ≥ 1.7.0.
+To create thumbnails, the PHP extensions gd and exif are recommended.
 Fotorama_XH also requires [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.10;
 if that is not already installed (see `Settings` → `Info`),
 get the [lastest release](https://github.com/cmb69/plib_xh/releases/latest),
@@ -144,6 +144,9 @@ what is wrong with the gallery.
 
 For the galleries to be *fully* functional,
 JavaScript has to be enabled in the browser of the visitor.
+
+If the PHP exif extension is not available, thumbnails of images with Exif
+`Orientation` tags will not be displayed properly (they are rotated and or flipped).
 
 ## Troubleshooting
 

@@ -49,7 +49,7 @@
 <li><a href="#credits">Credits</a></li>
 </ul>
 <h2 id="requirements">Requirements</h2>
-<p>Fotorama_XH is a plugin for <a href="https://cmsimple-xh.org/">CMSimple_XH</a>. It requires PHP ≥ 7.4.0 with the dom and gd extensions, and CMSimple_XH ≥ 1.7.0. Fotorama_XH also requires <a href="https://github.com/cmb69/plib_xh">Plib_XH</a> ≥ 1.10; if that is not already installed (see <code>Settings</code> → <code>Info</code>), get the <a href="https://github.com/cmb69/plib_xh/releases/latest">lastest release</a>, and install it.</p>
+<p>Fotorama_XH is a plugin for <a href="https://cmsimple-xh.org/">CMSimple_XH</a>. It requires PHP ≥ 7.4.0 with the dom extension, and CMSimple_XH ≥ 1.7.0. To create thumbnails, the PHP extensions gd and exif are recommended. Fotorama_XH also requires <a href="https://github.com/cmb69/plib_xh">Plib_XH</a> ≥ 1.10; if that is not already installed (see <code>Settings</code> → <code>Info</code>), get the <a href="https://github.com/cmb69/plib_xh/releases/latest">lastest release</a>, and install it.</p>
 <h2 id="download">Download</h2>
 <p>The <a href="https://github.com/cmb69/fotorama_xh/releases/latest">lastest release</a> is available for download on Github.</p>
 <h2 id="installation">Installation</h2>
@@ -93,6 +93,7 @@ when hovering over the help icon with your mouse.
 <p>If you edit gallery files manually, it is recommended to use an editor with support for RelaxNG schema, and to validate against <code>gallery.rng</code> in the root folder of the plugin. Failure to do so might cause load errors of the charts. If that happens, you can use the <code>Check</code> button in the plugin administration to find out what is wrong with the gallery.</p>
 <h2 id="limitations">Limitations</h2>
 <p>For the galleries to be <em>fully</em> functional, JavaScript has to be enabled in the browser of the visitor.</p>
+<p>If the PHP exif extension is not available, thumbnails of images with Exif <code>Orientation</code> tags will not be displayed properly (they are rotated and or flipped).</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>Report bugs and ask for support either on <a href="https://github.com/cmb69/fotorama_xh/issues">Github</a> or in the <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
 <h2 id="license">License</h2>

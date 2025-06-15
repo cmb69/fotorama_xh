@@ -54,8 +54,9 @@ class PluginInfoCommand
     {
         return [
             $this->checkPhpVersion("7.4.0"),
-            $this->checkExtension("dom"),
-            $this->checkExtension("gd"),
+            $this->checkExtension("dom", true),
+            $this->checkExtension("gd", false),
+            $this->checkExtension("exif", false),
             $this->checkXHVersion("1.7.0"),
             $this->checkPlibVersion("1.10"),
             $this->checkWritability($this->pluginFolder . "cache/"),
@@ -71,10 +72,10 @@ class PluginInfoCommand
         return $this->view->message($severity, "syscheck_phpversion", $version, $this->state($okay));
     }
 
-    private function checkExtension(string $extension): string
+    private function checkExtension(string $extension, bool $mandatory): string
     {
         $okay = $this->systemChecker->checkExtension($extension);
-        $severity = $okay ? "success" : "fail";
+        $severity = $okay ? "success" : ($mandatory ? "fail" : "warning");
         return $this->view->message($severity, "syscheck_extension", $extension, $this->state($okay));
     }
 
