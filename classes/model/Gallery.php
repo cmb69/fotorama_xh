@@ -46,9 +46,29 @@ final class Gallery implements Document
 
     public static function fromString(string $contents, string $key): ?self
     {
-        $that = new self("");
-        if (!$that->updateFromXml($contents)) {
+        $document = new DOMDocument();
+        if (!@$document->loadXML($contents)) {
             return null;
+        }
+        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
+            return null;
+        }
+        $gallery = $document->documentElement;
+        assert($gallery !== null);
+        $that = new self($gallery->getAttribute("path"));
+        $that->caption = $gallery->hasAttribute("caption") ? $gallery->getAttribute("caption") : null;
+        $that->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
+        $that->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
+        $that->thumbs = $gallery->hasAttribute("nav");
+        $that->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
+        $that->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
+        $that->images = [];
+        foreach ($gallery->childNodes as $childNode) {
+            assert($childNode instanceof DOMNode);
+            if ($childNode->nodeName === "pic") {
+                assert($childNode instanceof DOMElement);
+                $that->images[] = Image::fromElement($childNode);
+            }
         }
         return $that;
     }
@@ -123,38 +143,39 @@ final class Gallery implements Document
         return $this->images;
     }
 
-    public function addImage(string $path): void
+    public function setPath(string $path): void
     {
-        $this->images[] = new Image($path);
+        $this->path = $path;
     }
 
-    public function updateFromXml(string $xml): bool
+    public function setCaption(string $caption): void
     {
-        $document = new DOMDocument();
-        if (!@$document->loadXML($xml)) {
-            return false;
-        }
-        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
-            return false;
-        }
-        $gallery = $document->documentElement;
-        assert($gallery !== null);
-        $this->path = $gallery->getAttribute("path");
-        $this->caption = $gallery->hasAttribute("caption") ? $gallery->getAttribute("caption") : null;
-        $this->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
-        $this->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
-        $this->thumbs = $gallery->hasAttribute("nav");
-        $this->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
-        $this->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
+        $this->caption = $caption ?: null;
+    }
+
+    public function setDimensions(string $width, string $ratio): void
+    {
+        $this->width = $width ?: null;
+        $this->ratio = $ratio ?: null;
+    }
+
+    public function setOptions(bool $thumbs, string $fullscreen, string $transition): void
+    {
+        $this->thumbs = $thumbs;
+        $this->fullscreen = $fullscreen ?: null;
+        $this->transition = $transition;
+    }
+
+    public function purgeImages(): void
+    {
         $this->images = [];
-        foreach ($gallery->childNodes as $childNode) {
-            assert($childNode instanceof DOMNode);
-            if ($childNode->nodeName === "pic") {
-                assert($childNode instanceof DOMElement);
-                $this->images[] = Image::fromElement($childNode);
-            }
-        }
-        return true;
+    }
+
+    public function addImage(string $path): Image
+    {
+        $image = new Image($path);
+        $this->images[] = $image;
+        return $image;
     }
 
     public function toString(): ?string
@@ -184,7 +205,7 @@ final class Gallery implements Document
             $gallery->appendChild($image->toElement($document));
         }
         $document->appendChild($gallery);
-        if (!@$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
+        if (!$document->relaxNGValidate(__DIR__ . "/../../gallery.rng")) {
             return null;
         }
         $document->formatOutput = true;

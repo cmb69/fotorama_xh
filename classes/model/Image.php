@@ -51,6 +51,11 @@ class Image
         return $this->caption;
     }
 
+    public function setCaption(string $caption): void
+    {
+        $this->caption = $caption;
+    }
+
     public function toElement(DOMDocument $document): DOMElement
     {
         $image = $document->createElement("pic");

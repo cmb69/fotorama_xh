@@ -48,6 +48,8 @@ The installation is done as with many other CMSimple_XH plugins.
    the `plugins/` directory of CMSimple_XH.
 1. Set write permissions for the subdirectories `cache/`, <!-- `config/`, --> `css/` and
    `languages/`.
+1. Move `plugins/fotorama/editorhook.php` to `plugins/filebrowser/editorhooks/fotorama/script.php`
+   so that the filebrowser is available when editing galleries.
 
 ## Settings
 
@@ -72,58 +74,26 @@ The look of Fotorama_XH can be customized under `Stylesheet`.
 
 ### Prepare a gallery
 
-At first you have to upload some images into a subfolder
-the image folder of CMSimple_XH.
-You can either use the filebrowser of CMSimple_XH
-or your favorite FTP client.
-Then you have to create the gallery definition XML file in the back-end.
 Navigate to `Plugins` → `Fotorama` → `Galleries` and use the form to create
-an initial XML file with all images of the chosen folder.
-The name of the gallery may only contain lower case Roman characters
-(`a`-`z`), Arabic digits (`0`-`9`) and hyphens (`-`).
-The name of the gallery will be used as filename (`.xml` is appended),
-and the file is stored in the content folder of CMSimple_XH.
-Each language has its own set of gallery definition files,
+an initial gallery with all images of the chosen folder.
+The gallery will be stored in the `content/` folder of CMSimple_XH.
+Each language has its own set of gallery definitions,
 so you can localize the image captions.
 
-After having successfully created the XML file,
+After having successfully created the gallery,
 you are redirected to the gallery editor
-where you can fine-tune the gallery by editing the XML file.
-You can remove and add `<pic>` elements, and reorder them.
-For every `<pic>` element you can optionally specify
-a `caption` attribute whose value will be shown in the gallery;
-the caption will also be used as `alt` attribute of the HTML `<img>`.
-You can change the value of the `path` attribute,
-but you must not remove the attribute completely.
-Note that you should not touch the first
-line of the file (the XML declaration).
+where you can fine-tune the gallery.
+You can add and remove images, and reorder them.
 
-Furthermore you can specify additional attributes
-(the `path` attribute is mandatory again)
-for the `<gallery>` element which affect the functionality
-and look-and-feel of the gallery.
-The following attributes are supported:
-
-- `caption`:
-  The caption will be shown above the gallery as accessible name.
 - `width` and `ratio`:
-  These attributes specify the width and aspect ratio of the gallery,
-  respectively.
-  The width is either a plain number giving the width in pixels (e.g. `400`)
-  or a percentage of the available horizontal space (e.g. `100%`),
-  which is especially useful for responsive layouts.
-  The ratio is either a fraction (e.g. `400/300` or `16/9`)
-  or a decimal numer (e.g. `1.3333`).
   If these attributes are omitted,
   the width and aspect ratio are determined by the first image.
   Note that the images will be resized to fit within the width/ratio,
   so that it is possible to have portrait and landscape images
   mixed in the same gallery without distortion.
 - `nav`:
-  Only `thumbs` is allowed if the attribute is specified.
-  This will turn the slim dot navigation into a thumbnail navigation.
   The required thumbnails are automatically generated on demand,
-  and stored in the cache directory of the plugin.
+  and stored in the `cache/` folder of the plugin.
 - `fullscreen`:
   This allows the visitor to enter fullscreen mode.
   Choose either `true`,
@@ -131,25 +101,15 @@ The following attributes are supported:
   but also works for older browsers,
   or `native` what uses the full screen size
   if supported by the browser.
-- `transition`:
-  Either `slide` (the default if the attribute is omitted),
-  `crossfade` or `dissolve`.
-  The latter is probably only useful if you have images
-  that differ only slightly;
-  otherwise `crossfade` is preferable.
 
-When the file is saved, it is automatically validated against the RelaxNG schema
+When the gallery is saved, it is automatically validated against the RelaxNG schema
 (`gallery.rng`).
-
-If you have [Codeeditor_XH](https://github.com/cmb69/codeeditor_xh/releases)
-installed, editing the XML is a bit more bearable.
 
 ### External images
 
 It is also possible to show external images
 (i.e. images outside your images folder)
-by specifying the fully qualified absolute URL
-of the image as `path` of the `<pic>` element.
+by specifying the fully qualified absolute URL.
 The usual caveats apply in this case,
 for instance, the image might not be available,
 and there might be legal constraints.

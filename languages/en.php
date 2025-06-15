@@ -3,15 +3,37 @@
 $plugin_tx['fotorama']['menu_main'] = "Galleries";
 $plugin_tx['fotorama']['alt_logo'] = "Image folder";
 
+$plugin_tx['fotorama']['label_add'] = "Add";
+$plugin_tx['fotorama']['label_caption'] = "Caption";
+$plugin_tx['fotorama']['label_close'] = "Close";
 $plugin_tx['fotorama']['label_create'] = "Create";
+$plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
+$plugin_tx['fotorama']['label_crossfade'] = "Cross-fade";
 $plugin_tx['fotorama']['label_delete'] = "Delete";
+$plugin_tx['fotorama']['label_dissolve'] = "Dissolve";
 $plugin_tx['fotorama']['label_edit'] = "Edit";
 $plugin_tx['fotorama']['label_folder'] = "Folder";
+$plugin_tx['fotorama']['label_fullscreen'] = "Fullscreen";
+$plugin_tx['fotorama']['label_fullscreen_false'] = "no";
+$plugin_tx['fotorama']['label_fullscreen_true'] = "Viewport";
+$plugin_tx['fotorama']['label_fullscreen_native'] = "Screen";
+$plugin_tx['fotorama']['label_hide_details'] = "Hide details";
+$plugin_tx['fotorama']['label_images'] = "Images";
+$plugin_tx['fotorama']['label_move_up'] = "Move up";
 $plugin_tx['fotorama']['label_name'] = "Name";
+$plugin_tx['fotorama']['label_nav'] = "Thumnnail navigation";
+$plugin_tx['fotorama']['label_path'] = "Path";
+$plugin_tx['fotorama']['label_pick'] = "Pick image";
+$plugin_tx['fotorama']['label_ratio'] = "Aspect ratio";
 $plugin_tx['fotorama']['label_save'] = "Save";
-$plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
+$plugin_tx['fotorama']['label_slide'] = "Slide";
+$plugin_tx['fotorama']['label_thumbnail'] = "Thumbnail";
+$plugin_tx['fotorama']['label_transition'] = "Transition";
+$plugin_tx['fotorama']['label_width'] = "Width";
 
 $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
+$plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
+$plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
 
