@@ -163,7 +163,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsNonWellFormedXML(): void
     {
-        file_put_contents(vfsStream::url("root/test.xml"), "");
+        file_put_contents(vfsStream::url("root/test.xml"), '<?xml version="1.0" encoding="UTF-8"?><gallery>');
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=check&fotorama_gallery=test",
         ]);

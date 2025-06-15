@@ -156,12 +156,12 @@ class GalleryAdminCommand
         }
         libxml_use_internal_errors(true);
         $doc = new DOMDocument("1.0", "UTF-8");
-        if (!@$doc->loadXML($contents)) {
+        if (!$doc->loadXML($contents)) {
             $errors = libxml_get_errors();
             libxml_use_internal_errors(false);
             return $this->respondWithCheckResult($this->view->message("fail", "error_well-formed", $basename), $errors);
         }
-        if (!@$doc->relaxNGValidate(__DIR__ . "/../gallery.rng")) {
+        if (!$doc->relaxNGValidate(__DIR__ . "/../gallery.rng")) {
             $errors = libxml_get_errors();
             libxml_use_internal_errors(false);
             return $this->respondWithCheckResult($this->view->message("fail", "error_invalid", $basename), $errors);

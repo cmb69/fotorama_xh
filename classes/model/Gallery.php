@@ -48,6 +48,9 @@ final class Gallery implements Document
     public static function fromString(string $contents, string $key): ?self
     {
         $document = new DOMDocument();
+        if ($contents === "") {
+            return null;
+        }
         if (!@$document->loadXML($contents)) {
             return null;
         }
