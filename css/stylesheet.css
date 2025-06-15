@@ -114,6 +114,13 @@ article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images ul 
 article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images li {
     display: list-item;
     flex-wrap: wrap;
+    padding: 0;
+    border: none;
+    margin: 0;
+}
+article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_thumb {
+    width: 150px;
+    height: 150px;
 }
 article.fotorama_editor .fotorama_images .fotorama_input_plus {
     display: flex;
