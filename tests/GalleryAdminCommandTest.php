@@ -68,7 +68,7 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertSame("http://example.com/?&action=edit&fotorama_gallery=gallery", $response->location());
+        $this->assertSame("http://example.com/?&action=update&fotorama_gallery=gallery", $response->location());
     }
 
     public function testCreatingIsCsrfProtected(): void
@@ -146,7 +146,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         Gallery::create("test", "test", $this->store);
         $this->store->commit();
-        $request = new FakeRequest(["url" => "http://example.com/?&action=edit&fotorama_gallery=test"]);
+        $request = new FakeRequest(["url" => "http://example.com/?&action=update&fotorama_gallery=test"]);
         $response = $this->sut()($request);
         $this->assertSame("Fotorama – test", $response->title());
         Approvals::verifyHtml($response->output());
@@ -158,8 +158,8 @@ class GalleryAdminCommandTest extends TestCase
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [],
+            "url" => "http://example.com/?&action=update&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
         $this->assertSame("http://example.com/?&fotorama_gallery=test", $response->location());
@@ -168,7 +168,10 @@ class GalleryAdminCommandTest extends TestCase
     public function testSavingIsCsrfProtected(): void
     {
         $this->csrfProtector->method("check")->willReturn(false);
-        $request = new FakeRequest(["url" => "http://example.com/?&action=save"]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=update",
+            "post" => ["fotorama_do" => ""],
+        ]);
         $response = $this->sut()($request);
         $this->assertSame(403, $response->status());
     }
@@ -177,8 +180,8 @@ class GalleryAdminCommandTest extends TestCase
     {
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [],
+            "url" => "http://example.com/?&action=update&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
@@ -190,8 +193,9 @@ class GalleryAdminCommandTest extends TestCase
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
+            "url" => "http://example.com/?&action=update&fotorama_gallery=test",
             "post" => [
+                "fotorama_do" => "",
                 "gallery_images" => "nope",
             ]
         ]);
@@ -206,8 +210,8 @@ class GalleryAdminCommandTest extends TestCase
         vfsStream::setQuota(0);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
-            "url" => "http://example.com/?&action=save&fotorama_gallery=test",
-            "post" => [],
+            "url" => "http://example.com/?&action=update&fotorama_gallery=test",
+            "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Can't save &quot;test&quot;!", $response->output());

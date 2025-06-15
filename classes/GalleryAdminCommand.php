@@ -57,10 +57,8 @@ class GalleryAdminCommand
                 return $this->respondWithOverview($request);
             case "create":
                 return $this->create($request);
-            case "edit":
-                return $this->respondWithEditor($request);
-            case "save":
-                return $this->save($request);
+            case "update":
+                return $this->update($request);
             case "delete":
                 return $this->delete($request);
         }
@@ -135,13 +133,21 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_cant_save", $name);
             return $this->respondWithOverview($request, $error);
         }
-        $url = $request->url()->with("action", "edit")->with("fotorama_gallery", $name);
+        $url = $request->url()->with("action", "update")->with("fotorama_gallery", $name);
         return Response::redirect($url->absolute());
     }
 
     private function isValidName(string $name): bool
     {
         return (bool) preg_match('/^[a-z0-9-]+$/', $name);
+    }
+
+    private function update(Request $request): Response
+    {
+        if ($request->post("fotorama_do") !== null) {
+            return $this->doUpdate($request);
+        }
+        return $this->respondWithEditor($request);
     }
 
     private function respondWithEditor(Request $request, string $error = ""): Response
@@ -161,7 +167,7 @@ class GalleryAdminCommand
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "error" => $error,
             "name" => $name,
-            "action" => $request->url()->with("action", "save")->relative(),
+            "action" => $request->url()->relative(),
             "token" => $this->csrfProtector->token(),
             "base_url" => $this->galleryService->getImageFoldername(""),
             "gallery" => $this->galleryDto($request, $gallery),
@@ -206,7 +212,7 @@ class GalleryAdminCommand
         return $this->view->json($records);
     }
 
-    private function save(Request $request): Response
+    private function doUpdate(Request $request): Response
     {
         if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
             return Response::error(403);

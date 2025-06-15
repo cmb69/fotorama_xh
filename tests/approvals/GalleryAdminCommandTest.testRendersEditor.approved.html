@@ -2,7 +2,7 @@
 <script src="/plugins/fotorama/admin.js?&amp;v=1.0beta2" defer></script>
 <article class="fotorama_editor">
   <h1>Fotorama – test</h1>
-  <form action="/?&action=save&fotorama_gallery=test" method="post">
+  <form action="/?&action=update&fotorama_gallery=test" method="post">
     <div class="fotorama_gallery">
       <input type="hidden" name="fotorama_token" value="1234">
       <input type="hidden" name="fotorama_gallery" value="test">
@@ -51,7 +51,7 @@
       </p>
     </div>
     <p class="fotorama_controls">
-      <button>Save</button>
+      <button name="fotorama_do">Save</button>
     </p>
     <input type="hidden" name="gallery_images" value="[]">
     <fieldset class="fotorama_images">
@@ -67,7 +67,7 @@
       </ol>
     </fieldset>
     <p class="fotorama_controls">
-      <button>Save</button>
+      <button name="fotorama_do">Save</button>
     </p>
   </form>
   <template class="fotorama_template">

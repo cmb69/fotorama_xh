@@ -35,7 +35,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <?endforeach?>
     </ul>
     <p class="fotorama_controls">
-      <button name="action" value="edit"><?=$this->text("label_edit")?></button>
+      <button name="action" value="update"><?=$this->text("label_edit")?></button>
       <button name="action" value="delete"><?=$this->text("label_delete")?></button>
   </form>
   <form action="<?=$this->esc($action)?>" method="post">
