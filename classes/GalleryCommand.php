@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Fotorama\Model\Gallery;
+use Fotorama\Model\ThumbnailService;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\Request;
@@ -118,7 +119,7 @@ class GalleryCommand
                 if ($isAbsoluteUrl) {
                     $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
-                    $thumbnail = $this->thumbnailService->makeThumbnail($filename, 64);
+                    $thumbnail = $this->thumbnailService->thumbnail($filename, 64);
                 }
             } else {
                 $thumbnail = $filename;

@@ -20,11 +20,11 @@ require_once "../plib/classes/FakeSystemChecker.php";
 require_once "./classes/dto/GalleryDto.php";
 require_once "./classes/model/Gallery.php";
 require_once "./classes/model/Image.php";
+require_once "./classes/model/ThumbnailService.php";
 require_once "./classes/GalleryAdminCommand.php";
 require_once "./classes/GalleryCommand.php";
 require_once "./classes/GalleryService.php";
 require_once "./classes/Plugin.php";
 require_once "./classes/PluginInfoCommand.php";
-require_once "./classes/ThumbnailService.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.6";

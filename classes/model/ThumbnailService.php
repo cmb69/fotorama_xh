@@ -16,20 +16,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Fotorama;
+namespace Fotorama\Model;
 
 class ThumbnailService
 {
-    public function makeThumbnail(string $path, int $size): string
-    {
-        global $pth;
+    private string $cacheFolder;
 
+    public function __construct(string $cacheFolder)
+    {
+        $this->cacheFolder = $cacheFolder;
+    }
+
+    public function thumbnail(string $path, int $size): string
+    {
         $md5 = md5($path);
-        $thumb = $pth['folder']['plugins'] . 'fotorama/cache/'
-            . "{$md5}_{$size}.jpg";
+        $thumb = $this->cacheFolder . "{$md5}_{$size}.jpg";
         if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
             if (($source = imagecreatefromjpeg($path)) === false) {
                 return $path;
@@ -38,10 +42,10 @@ class ThumbnailService
             $h1 = imagesy($source);
             if ($w1 < $h1) {
                 $w2 = $size;
-                $h2 = $w2 / $w1 * $h1;
+                $h2 = (int) round($w2 / $w1 * $h1);
             } else {
                 $h2 = $size;
-                $w2 = $h2 / $h1 * $w1;
+                $w2 = (int) round($h2 / $h1 * $w1);
             }
             if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
                 return $path;
