@@ -50,6 +50,8 @@ The installation is done as with many other CMSimple_XH plugins.
    `languages/`.
 1. Move `plugins/fotorama/editorhook.php` to `plugins/filebrowser/editorhooks/fotorama/script.php`
    so that the filebrowser is available when editing galleries.
+1. Check under `Plugins` → `Fotorama` that all requirements for using the
+   plugin are fulfilled.
 
 ## Settings
 

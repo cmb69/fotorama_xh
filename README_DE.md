@@ -48,6 +48,8 @@ Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
 1. Verschieben Sie `plugins/fotorama/editorhook.php` nach
    `plugins/filebrowser/editorhooks/fotorama/script.php`,
    so dass der Dateibrowser beim Bearbeiten der Galerien genutzt werden kann.
+1. Prüfen Sie unter `Plugins` → `Fotorama` ob alle Voraussetzungen für den
+   Betrieb erfüllt sind.
 
 ## Einstellungen
 
