@@ -12,9 +12,10 @@ und jedes Bild kann eine zusätzliche Beschriftung erhalten.
 - [Installation](#installation)
 - [Einstellungen](#einstellungen)
 - [Verwendung](#verwendung)
-    - [Vorbereiten einer Galerie](#vorbereiten-einer-galerie)
-    - [Externe Bilder](#externe-bilder)
-    - [Einbetten einer Galerie](#einbetten-einer-galerie)
+  - [Vorbereiten einer Galerie](#vorbereiten-einer-galerie)
+  - [Externe Bilder](#externe-bilder)
+  - [Einbetten einer Galerie](#einbetten-einer-galerie)
+  - [Manuelle Bearbeitung der Galeriedateien](#manuelle-bearbeitung-der-galeriedateien)
 - [Einschränkungen](#einschränkungen)
 - [Fehlerbehebung](#fehlerbehebung)
 - [Lizenz](#lizenz)
@@ -133,6 +134,14 @@ Um eine Galerie auf einer Seite einzubinden, schreiben Sie einfach:
 wobei `%NAME%` der Name der Galerie ist, z.B.
 
     {{{fotorama('urlaub')}}}
+
+### Manuelle Bearbeitung der Galeriedateien
+
+Werden Galeriedateien manuell bearbeitet, wird empfohlen einen Editor mit
+Unterstützung von RelaxNG-Schemata zu verwenden, und gegen `gallery.rng` im Wurzelordner
+des Plugins zu validieren. Wird das nicht getan, kann es passieren, dass die
+Galerien nicht geladen werden können. In diesem Fall kann der `Prüfen` Schalter
+in der Pluginverwaltung genutzt werden, um herauszufinden wo der Fehler liegt.
 
 ## Einschränkungen
 

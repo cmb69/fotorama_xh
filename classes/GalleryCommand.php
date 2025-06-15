@@ -57,7 +57,7 @@ class GalleryCommand
     public function __invoke(Request $request, string $name): Response
     {
         if (($gallery = Gallery::read($name, $this->store)) === null) {
-            return Response::create($this->view->message("fail", "error_no_gallery", $name));
+            return Response::create($this->view->message("fail", "error_load", $name));
         }
         if (!$this->jqueryIncluded) {
             $this->jquery->include();

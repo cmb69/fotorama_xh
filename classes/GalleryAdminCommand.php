@@ -21,8 +21,10 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use DOMDocument;
 use Fotorama\Dto\GalleryDto;
 use Fotorama\Model\Gallery;
+use LibXMLError;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Request;
@@ -58,6 +60,8 @@ class GalleryAdminCommand
                 return $this->respondWithOverview($request);
             case "create":
                 return $this->create($request);
+            case "check":
+                return $this->check($request);
             case "update":
                 return $this->update($request);
             case "delete":
@@ -131,7 +135,7 @@ class GalleryAdminCommand
             $gallery->addImage($image);
         }
         if (!$this->store->commit()) {
-            $error = $this->view->message("fail", "error_cant_save", $name);
+            $error = $this->view->message("fail", "error_save", $name);
             return $this->respondWithOverview($request, $error);
         }
         $url = $request->url()->with("action", "update")->with("fotorama_gallery", $name);
@@ -141,6 +145,38 @@ class GalleryAdminCommand
     private function isValidName(string $name): bool
     {
         return (bool) preg_match('/^[a-z0-9-]+$/', $name);
+    }
+
+    private function check(Request $request): Response
+    {
+        $basename = $request->get("fotorama_gallery") ?? "";
+        $contents = @file_get_contents($this->store->folder() . $basename . ".xml");
+        if ($contents === false) {
+            return $this->respondWithCheckResult($this->view->message("fail", "error_load", $basename));
+        }
+        libxml_use_internal_errors(true);
+        $doc = new DOMDocument("1.0", "UTF-8");
+        if (!@$doc->loadXML($contents)) {
+            $errors = libxml_get_errors();
+            libxml_use_internal_errors(false);
+            return $this->respondWithCheckResult($this->view->message("fail", "error_well-formed", $basename), $errors);
+        }
+        if (!@$doc->relaxNGValidate(__DIR__ . "/../gallery.rng")) {
+            $errors = libxml_get_errors();
+            libxml_use_internal_errors(false);
+            return $this->respondWithCheckResult($this->view->message("fail", "error_invalid", $basename), $errors);
+        }
+        libxml_use_internal_errors(false);
+        return $this->respondWithCheckResult($this->view->message("success", "message_valid", $basename));
+    }
+
+    /** @param list<LibXMLError> $errors */
+    private function respondWithCheckResult(string $message, array $errors = []): Response
+    {
+        return Response::create($this->view->render("check", [
+            "message" => $message,
+            "errors" => $errors,
+        ]))->withTitle("Fotorama – " . $this->view->text("label_check"));
     }
 
     private function update(Request $request): Response
@@ -155,7 +191,7 @@ class GalleryAdminCommand
     {
         $name = $request->get("fotorama_gallery") ?? "";
         if (($gallery = Gallery::read($name, $this->store)) === null) {
-            $error = $this->view->message("fail", "error_no_gallery", $name);
+            $error = $this->view->message("fail", "error_load", $name);
             return $this->respondWithOverview($request, $error);
         }
         return Response::create($this->renderEditor($request, $gallery, $name, $error))
@@ -221,7 +257,7 @@ class GalleryAdminCommand
         }
         $name = $request->get("fotorama_gallery") ?? "";
         if (($gallery = Gallery::update($name, $this->store)) === null) {
-            $error = $this->view->message("fail", "error_no_gallery", $name);
+            $error = $this->view->message("fail", "error_load", $name);
             return $this->respondWithOverview($request, $error);
         }
         if (!$this->updateGallery($request, $gallery)) {
@@ -230,7 +266,7 @@ class GalleryAdminCommand
             return $this->respondWithEditor($request, $error);
         }
         if (!$this->store->commit()) {
-            $error = $this->view->message("fail", "error_cant_save", $name);
+            $error = $this->view->message("fail", "error_save", $name);
             return $this->respondWithEditor($request, $error);
         }
         return Response::redirect($request->url()->without("action")->absolute());
@@ -268,7 +304,7 @@ class GalleryAdminCommand
     {
         $gallery = $request->get("fotorama_gallery") ?? "";
         if (Gallery::read($gallery, $this->store) === null) {
-            $error = $this->view->message("fail", "error_no_gallery", $gallery);
+            $error = $this->view->message("fail", "error_load", $gallery);
             return $this->respondWithOverview($request, $error);
         }
         return Response::create($this->view->render("delete", [

@@ -15,9 +15,10 @@ and every image can have an additional caption.
 - [Installation](#installation)
 - [Settings](#settings)
 - [Usage](#usage)
-    - [Prepare a gallery](#prepare-a-gallery)
-    - [External images](#external-images)
-    - [Embed a gallery](#embed-a-gallery)
+  - [Prepare a gallery](#prepare-a-gallery)
+  - [External images](#external-images)
+  - [Embed a gallery](#embed-a-gallery)
+  - [Manual Editing of Gallery Files](#manual-editing-of-gallery-files)
 - [Limitations](#limitations)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -130,6 +131,14 @@ To embed a gallery on a page simply write:
 where `%NAME%` is the name of the gallery, e.g.
 
     {{{fotorama('holidays')}}}
+
+### Manual Editing of Gallery Files
+
+If you edit gallery files manually, it is recommended to use an editor with support
+for RelaxNG schema, and to validate against `gallery.rng` in the root folder of
+the plugin.  Failure to do so might cause load errors of the charts.  If that
+happens, you can use the `Check` button in the plugin administration to find out
+what is wrong with the gallery.
 
 ## Limitations
 

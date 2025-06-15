@@ -6,6 +6,7 @@ $plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 $plugin_tx['fotorama']['label_add'] = "Hinzufügen";
 $plugin_tx['fotorama']['label_autoplay'] = "Automatische Wiedergabe";
 $plugin_tx['fotorama']['label_caption'] = "Beschriftung";
+$plugin_tx['fotorama']['label_check'] = "Prüfen";
 $plugin_tx['fotorama']['label_close'] = "Schließen";
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
@@ -39,14 +40,17 @@ $plugin_tx['fotorama']['help_ratio'] = "(Bruch oder Dezimalzahl)";
 $plugin_tx['fotorama']['help_width'] = "(Zahl oder Prozentwert)";
 
 $plugin_tx['fotorama']['message_delete'] = "Galerie \"%s\" löschen?";
+$plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
 $plugin_tx['fotorama']['error_invalid_xml'] = "Ungültiges XML!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Der Galeriename \"%s\" ist ungültig!";
-$plugin_tx['fotorama']['error_cant_save'] = "Kann \"%s\" nicht speichern!";
+$plugin_tx['fotorama']['error_save'] = "Die Galerie „%s“ kann nicht gespeichert werden!";
 $plugin_tx['fotorama']['error_delete'] = "Die Galerie \"%s\" kann nicht gelöscht werden!";
 $plugin_tx['fotorama']['error_exists'] = "Die Galerie \"%s\" existiert bereits!";
+$plugin_tx['fotorama']['error_invalid'] = "Die Galerie „%s“ ist ungültig!";
+$plugin_tx['fotorama']['error_load'] = "Die Galerie „%s“ kann nicht geladen werden!";
 $plugin_tx['fotorama']['error_no_folder'] = "Der Ordner \"%s\" existiert nicht!";
-$plugin_tx['fotorama']['error_no_gallery'] = "Die Galerie \"%s\" existiert nicht!";
+$plugin_tx['fotorama']['error_well-formed'] = "Die Galerie „%s“ ist nicht wohlgeformt!";
 
 $plugin_tx['fotorama']['syscheck_title'] = "System-Prüfung";
 $plugin_tx['fotorama']['syscheck_extension'] = "PHP Erweiterung %s verfügbar: %s";

@@ -139,7 +139,46 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Can't save &quot;gallery&quot;!", $response->output());
+        $this->assertStringContainsString("Cannot save the gallery “gallery”!", $response->output());
+    }
+
+    public function testRendersCheckResult(): void
+    {
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
+        $request = new FakeRequest(["url" => "http://example.com/?&action=check&fotorama_gallery=test"]);
+        $response = $this->sut()($request);
+        $this->assertSame("Fotorama – Check", $response->title());
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testReportsNonExistingGalleryWhenChecking(): void
+    {
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=check&fotorama_gallery=test",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Cannot load the gallery “test”!", $response->output());
+    }
+
+    public function testReportsNonWellFormedXML(): void
+    {
+        file_put_contents(vfsStream::url("root/test.xml"), "");
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=check&fotorama_gallery=test",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery “test” is not well-formed!", $response->output());
+    }
+
+    public function testReportsValidationErrors(): void
+    {
+        file_put_contents(vfsStream::url("root/test.xml"), '<?xml version="1.0" encoding="UTF-8"?><gallery/>');
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=check&fotorama_gallery=test",
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery “test” is invalid!", $response->output());
     }
 
     public function testRendersEditor(): void
@@ -184,7 +223,7 @@ class GalleryAdminCommandTest extends TestCase
             "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
+        $this->assertStringContainsString("Cannot load the gallery “test”!", $response->output());
     }
 
     public function testReportsInvalidXML(): void
@@ -214,7 +253,7 @@ class GalleryAdminCommandTest extends TestCase
             "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Can't save &quot;test&quot;!", $response->output());
+        $this->assertStringContainsString("Cannot save the gallery “test”!", $response->output());
     }
 
     public function testRendersDeleteConfirmation(): void
@@ -233,7 +272,7 @@ class GalleryAdminCommandTest extends TestCase
             "url" => "http://example.com/?&fotorama&admin=plugin_main&action=delete&fotorama_gallery=test",
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("The gallery &quot;test&quot; does not exist!", $response->output());
+        $this->assertStringContainsString("Cannot load the gallery “test”!", $response->output());
     }
 
     public function testDeletesGallery(): void

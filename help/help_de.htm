@@ -40,6 +40,7 @@
 <li><a href="#vorbereiten-einer-galerie">Vorbereiten einer Galerie</a></li>
 <li><a href="#externe-bilder">Externe Bilder</a></li>
 <li><a href="#einbetten-einer-galerie">Einbetten einer Galerie</a></li>
+<li><a href="#manuelle-bearbeitung-der-galeriedateien">Manuelle Bearbeitung der Galeriedateien</a></li>
 </ul></li>
 <li><a href="#einschränkungen">Einschränkungen</a></li>
 <li><a href="#fehlerbehebung">Fehlerbehebung</a></li>
@@ -87,6 +88,8 @@ werden Hinweise zu den Einstellungen angezeigt.
 <pre><code>{{{fotorama(&#39;%NAME%&#39;)}}}</code></pre>
 <p>wobei <code>%NAME%</code> der Name der Galerie ist, z.B.</p>
 <pre><code>{{{fotorama(&#39;urlaub&#39;)}}}</code></pre>
+<h3 id="manuelle-bearbeitung-der-galeriedateien">Manuelle Bearbeitung der Galeriedateien</h3>
+<p>Werden Galeriedateien manuell bearbeitet, wird empfohlen einen Editor mit Unterstützung von RelaxNG-Schemata zu verwenden, und gegen <code>gallery.rng</code> im Wurzelordner des Plugins zu validieren. Wird das nicht getan, kann es passieren, dass die Galerien nicht geladen werden können. In diesem Fall kann der <code>Prüfen</code> Schalter in der Pluginverwaltung genutzt werden, um herauszufinden wo der Fehler liegt.</p>
 <h2 id="einschränkungen">Einschränkungen</h2>
 <p>Damit die Galerien <em>voll</em> funktionstüchtig sind, muss JavaScript im Browser des Besuchers aktiviert sein.</p>
 <h2 id="fehlerbehebung">Fehlerbehebung</h2>

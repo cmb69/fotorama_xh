@@ -6,6 +6,7 @@ $plugin_tx['fotorama']['alt_logo'] = "Image folder";
 $plugin_tx['fotorama']['label_add'] = "Add";
 $plugin_tx['fotorama']['label_autoplay'] = "Auto-Play";
 $plugin_tx['fotorama']['label_caption'] = "Caption";
+$plugin_tx['fotorama']['label_check'] = "Check";
 $plugin_tx['fotorama']['label_close'] = "Close";
 $plugin_tx['fotorama']['label_create'] = "Create";
 $plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
@@ -39,14 +40,17 @@ $plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
 $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
+$plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
 $plugin_tx['fotorama']['error_invalid_xml'] = "Invalid XML!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Gallery name \"%s\" is invalid!";
-$plugin_tx['fotorama']['error_cant_save'] = "Can't save \"%s\"!";
+$plugin_tx['fotorama']['error_save'] = "Cannot save the gallery “%s”!";
 $plugin_tx['fotorama']['error_delete'] = "Cannot delete the \"%s\" gallery!";
 $plugin_tx['fotorama']['error_exists'] = "The gallery \"%s\" does already exist!";
+$plugin_tx['fotorama']['error_invalid'] = "The gallery “%s” is invalid!";
+$plugin_tx['fotorama']['error_load'] = "Cannot load the gallery “%s”!";
 $plugin_tx['fotorama']['error_no_folder'] = "The folder \"%s\" does not exist!";
-$plugin_tx['fotorama']['error_no_gallery'] = "The gallery \"%s\" does not exist!";
+$plugin_tx['fotorama']['error_well-formed'] = "The gallery “%s” is not well-formed!";
 
 $plugin_tx['fotorama']['syscheck_title'] = "System Check";
 $plugin_tx['fotorama']['syscheck_extension'] = "PHP extension %s available: %s";
