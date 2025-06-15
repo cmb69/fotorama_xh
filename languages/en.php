@@ -4,6 +4,7 @@ $plugin_tx['fotorama']['menu_main'] = "Galleries";
 $plugin_tx['fotorama']['alt_logo'] = "Image folder";
 
 $plugin_tx['fotorama']['label_add'] = "Add";
+$plugin_tx['fotorama']['label_autoplay'] = "Auto-Play";
 $plugin_tx['fotorama']['label_caption'] = "Caption";
 $plugin_tx['fotorama']['label_close'] = "Close";
 $plugin_tx['fotorama']['label_create'] = "Create";
@@ -31,6 +32,7 @@ $plugin_tx['fotorama']['label_thumbnail'] = "Thumbnail";
 $plugin_tx['fotorama']['label_transition'] = "Transition";
 $plugin_tx['fotorama']['label_width'] = "Width";
 
+$plugin_tx['fotorama']['help_autoplay'] = "(interval in deciseconds; 0 means off)";
 $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
 $plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
 $plugin_tx['fotorama']['help_width'] = "(number or percentage)";

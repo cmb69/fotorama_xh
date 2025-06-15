@@ -182,7 +182,7 @@ class GalleryAdminCommand
         return $this->pluginFolder . "admin.js";
     }
 
-    /** @return object{path:string,caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} */
+    /** @return object{path:string,caption:string,width:string,ratio:string,thumbs:bool,autoplay:int,fullscreen:string,transition:string,images:string} */
     private function galleryDto(Request $request, Gallery $gallery): object
     {
         return (object) [
@@ -191,6 +191,7 @@ class GalleryAdminCommand
             "width" => $request->post("width") ?? $gallery->width() ?? "",
             "ratio" => $request->post("ratio") ?? $gallery->ratio() ?? "",
             "thumbs" => (bool) ($request->post("thumbs") ?? $gallery->thumbs()),
+            "autoplay" => (int) ($request->post("autoplay") ?? $gallery->autoplay()),
             "fullscreen" => $request->post("fullscreen") ?? $gallery->fullscreen() ?? "",
             "transition" => $request->post("transition") ?? $gallery->transition(),
             "images" => $this->images($request, $gallery),
@@ -240,7 +241,7 @@ class GalleryAdminCommand
         $gallery->setPath($dto->path);
         $gallery->setCaption($dto->caption);
         $gallery->setDimensions($dto->width, $dto->ratio);
-        $gallery->setOptions($dto->thumbs, $dto->fullscreen, $dto->transition);
+        $gallery->setOptions($dto->thumbs, $dto->autoplay, $dto->fullscreen, $dto->transition);
         $gallery->purgeImages();
         $images = json_decode($dto->images, true);
         if (!is_array($images)) {

@@ -12,7 +12,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $action
  * @var string $token
  * @var string $base_url
- * @var object{path:string,caption:string,width:string,ratio:string,thumbs:bool,fullscreen:string,transition:string,images:string} $gallery
+ * @var object{path:string,caption:string,width:string,ratio:string,thumbs:bool,autoplay:int,fullscreen:string,transition:string,images:string} $gallery
  */
 ?>
 
@@ -52,6 +52,13 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         <input type="hidden" name="thumbs" value="">
         <input type="checkbox" id="fotorama_nav" name="thumbs" <?=$this->checked($gallery->thumbs)?>>
         <label for="fotorama_nav"><?=$this->text("label_nav")?></label>
+      </p>
+      <p>
+        <label for="fotorama_autoplay">
+          <span><?=$this->text("label_autoplay")?></span>
+          <span class="fotorama_help"><?=$this->text("help_autoplay")?></span>
+        </label>
+        <input type="number" id="fotorama_autoplay" name="autoplay" value="<?=$this->esc($gallery->autoplay)?>" min="0">
       </p>
       <p>
         <label for="fotorama_fullscreen"><?=$this->text("label_fullscreen")?></label>

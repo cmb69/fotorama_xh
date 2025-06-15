@@ -34,6 +34,7 @@ final class Gallery implements Document
     private ?string $width = null;
     private ?string $ratio = null;
     private bool $thumbs = false;
+    private ?int $autoplay = null;
     private ?string $fullscreen = null;
     private string $transition = "slide";
     /** @var list<Image> */
@@ -60,6 +61,7 @@ final class Gallery implements Document
         $that->width = $gallery->hasAttribute("width") ? $gallery->getAttribute("width") : null;
         $that->ratio = $gallery->hasAttribute("ratio") ? $gallery->getAttribute("ratio") : null;
         $that->thumbs = $gallery->hasAttribute("nav");
+        $that->autoplay = $gallery->hasAttribute("autoplay") ? (int) $gallery->getAttribute("autoplay") : null;
         $that->fullscreen = $gallery->hasAttribute("fullscreen") ? $gallery->getAttribute("fullscreen") : null;
         $that->transition = $gallery->hasAttribute("transition") ? $gallery->getAttribute("transition") : "slide";
         $that->images = [];
@@ -127,6 +129,11 @@ final class Gallery implements Document
         return $this->thumbs;
     }
 
+    public function autoplay(): ?int
+    {
+        return $this->autoplay;
+    }
+
     public function fullscreen(): ?string
     {
         return $this->fullscreen;
@@ -159,9 +166,10 @@ final class Gallery implements Document
         $this->ratio = $ratio ?: null;
     }
 
-    public function setOptions(bool $thumbs, string $fullscreen, string $transition): void
+    public function setOptions(bool $thumbs, int $autoplay, string $fullscreen, string $transition): void
     {
         $this->thumbs = $thumbs;
+        $this->autoplay = $autoplay ?: null;
         $this->fullscreen = $fullscreen ?: null;
         $this->transition = $transition;
     }
@@ -194,6 +202,9 @@ final class Gallery implements Document
         }
         if ($this->thumbs) {
             $gallery->setAttribute("nav", "thumbs");
+        }
+        if ($this->autoplay !== null) {
+            $gallery->setAttribute("autoplay", (string) $this->autoplay);
         }
         if ($this->fullscreen !== null) {
             $gallery->setAttribute("fullscreen", $this->fullscreen);

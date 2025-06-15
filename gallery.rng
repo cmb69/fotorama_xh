@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<element name="gallery" xmlns="http://relaxng.org/ns/structure/1.0">
+<element name="gallery" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <attribute name="path"/>
   <optional>
     <attribute name="caption"/>
@@ -15,6 +15,13 @@
       <choice>
         <value>thumbs</value>
       </choice>
+    </attribute>
+  </optional>
+  <optional>
+    <attribute name="autoplay">
+      <data type="integer">
+        <param name="minInclusive">0</param>
+      </data>
     </attribute>
   </optional>
   <optional>

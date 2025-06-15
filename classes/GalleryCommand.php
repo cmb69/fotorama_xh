@@ -95,6 +95,9 @@ class GalleryCommand
         if ($gallery->thumbs()) {
             $config["nav"] = "thumbs";
         }
+        if ($gallery->autoplay() !== null) {
+            $config["autoplay"] = 100 * $gallery->autoplay();
+        }
         if ($gallery->fullscreen()) {
             $config["allowFullscreen"] = $gallery->fullscreen();
         }

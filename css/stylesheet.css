@@ -75,6 +75,7 @@ article.fotorama_editor .fotorama_gallery label {
     display: block;
 }
 article.fotorama_editor .fotorama_gallery input:not([type]),
+article.fotorama_editor .fotorama_gallery input[type=number],
 article.fotorama_editor .fotorama_gallery textarea {
     width: 100%;
     box-sizing: border-box;
