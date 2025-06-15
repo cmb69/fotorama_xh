@@ -23,13 +23,17 @@ namespace Fotorama\Model;
 
 class ThumbnailService
 {
+    private string $cacheFolder;
+
+    public function __construct(string $cacheFolder)
+    {
+        $this->cacheFolder = $cacheFolder;
+    }
+
     public function makeThumbnail(string $path, int $size): string
     {
-        global $pth;
-
         $md5 = md5($path);
-        $thumb = $pth['folder']['plugins'] . 'fotorama/cache/'
-            . "{$md5}_{$size}.jpg";
+        $thumb = $this->cacheFolder . "{$md5}_{$size}.jpg";
         if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
             if (($source = imagecreatefromjpeg($path)) === false) {
                 return $path;

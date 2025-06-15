@@ -42,7 +42,7 @@ class Plugin
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
                 self::store(),
-                new ThumbnailService(),
+                new ThumbnailService($pth["folder"]["plugins"] . "fotorama/cache/"),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()
             );
