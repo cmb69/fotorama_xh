@@ -45,6 +45,9 @@ Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
    in das Plugin-Verzeichnis von CMSimple_XH hoch.
 1. Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse
    `cache/`, <!-- `config/`, --> `css/` und `languages/`.
+1. Verschieben Sie `plugins/fotorama/editorhook.php` nach
+   `plugins/filebrowser/editorhooks/fotorama/script.php`,
+   so dass der Dateibrowser beim Bearbeiten der Galerien genutzt werden kann.
 
 ## Einstellungen
 
@@ -69,61 +72,27 @@ Das Aussehen von Fotorama_XH kann unter `Stylesheet` angepasst werden.
 
 ### Vorbereiten einer Galerie
 
-Zunächst müssen Sie einige Bilder in einen Unterordner
-des Bilderordners von CMSimple_XH hoch laden.
-Sie können entweder den Dateibrowser von CMSimple_XH
-oder Ihren bevorzugten FTP-Client verwenden.
-Dann müssen Sie die XML-Datei mit der Galerie-Definition im Backend erstellen.
 Navigieren Sie zu `Plugins` → `Fotorama` → `Galerien`,
-und verwenden Sie das Formular um eine erste XML-Datei
+und verwenden Sie das Formular um eine erste Galerie
 mit allen Bildern des gewählten Ordners zu erstellen.
-Der Name der Galerie darf nur römische Kleinbuchstaben (`a`-`z`),
-arabische Ziffern (`0`-`9`) und Bindestriche (`-`) enthalten.
-Der Name der Galerie wird als Dateiname verwendet
-(wobei `.xml` angehängt wird),
-und die Datei wird im `content/` Ordner von CMSimple_XH gespeichert.
-Jede Sprache hat ihren eigenen Satz von Galerie-Definitionsdateien,
+Die Galerie wird im `content/` Ordner von CMSimple_XH gespeichert.
+Jede Sprache hat ihren eigenen Satz von Galerie-Definitionen,
 so dass Sie die Bildbeschriftungen übersetzen können.
 
-Nachdem die XML-Datei erfolgreich erstellt wurde,
+Nachdem die Galerie erfolgreich erstellt wurde,
 werden Sie zum Galerie-Editor weiter geleitet,
-wo Sie die Feinabstimmung der Galerie vornehmen können,
-indem Sie die XML-Datei bearbeiten.
-Sie können `pic` Elemente entfernen und hinzufügen,
+wo Sie die Feinabstimmung der Galerie vornehmen können.
+Sie können Bilder hinzufügen und entfernen,
 und deren Reihenfolge verändern.
-Jedem `pic` Element kann optional ein `caption` Attribut (Beschriftung)
-hinzugefügt werden, dessen Wert in der Galerie angezeigt wird;
-die Beschriftung wird ebenfalls als `alt` Attribut des HTML `<img>` verwendet.
-Sie können den Wert des `path` Attributs (Pfad) ändern,
-aber Sie dürfen das Attribut nicht komplett entfernen.
-Beachten Sie, dass Sie die erste Zeile der Datei
-(die XML-Deklaration) nicht ändern sollten.
 
-Weiterhin können Sie dem `<gallery>` Element (Galerie) zusätzliche Attribute
-(das `path` Attribute ist auf jeden Fall erforderlich) geben,
-die die Funktionalität und das Aussehen der Galerie beeinflussen.
-Folgende Attribute werden unterstützt:
-
-- `caption`:
-  Die Beschriftung wird oberhalb der Galerie als zugänglicher Name angezeigt.
 - `width` und `ratio`:
-  Diese Attribute geben die Breite bzw. das Seitenverhältnis der Galerie an.
-  Die Breite ist entweder eine einfache Zahl,
-  die die Breite in Pixeln angibt (z.B. `400`),
-  oder ein Prozentsatz des verfügbaren horizontalen Platzes (z.B. `100%`),
-  was besonders nützlich für responsive Layouts ist.
-  Das Seitenverhältnis ist entweder ein Bruch (z.B. `400/300` oder `16/9`)
-  oder eine Dezimalzahl (z.B. `1,3333`).
   Werden diese Attribute ausgelassen,
   dann werden Breite und Seitenverhältnis durch das erste Bild bestimmt.
   Beachten Sie, dass die Größe der Bilder angepasst wird,
   so dass diese zu Breite/Seitenverhältnis passen,
   damit es möglich ist, Bilder im Hoch- und Querformat
-  in der selben Galerie ohne Verzerrung zu mischen.
+  in derselben Galerie ohne Verzerrung zu mischen.
 - `nav`:
-  Nur `thumbs` (Vorschaubild) ist erlaubt,
-  wenn dieses Attribut angegeben wird.
-  Das erweitert die Punkt-Navigation zu einer Vorschaubild-Navigation.
   Die erforderlichen Vorschaubilder werden bei Bedarf automatisch erzeugt,
   und im `cache/` Ordner des Plugins gespeichert.
 - `fullscreen`:
@@ -133,25 +102,16 @@ Folgende Attribute werden unterstützt:
   aber auch in älteren Browsern funktioniert,
   oder `native`, was den gesamten Bildschirm verwendet,
   wenn vom Browser unterstützt.
-- `transition`:
-  Entweder `slide` (die Voreinstellung, wenn das Attribut ausgelassen wird),
-  `crossfade` oder `dissolve`.
-  Letzteres ist vermutlich nur dann sinnvoll,
-  wenn Sie Bilder haben, die sich nur leicht unterscheiden;
-  ansonsten ist `crossfade` vorzuziehen.
 
-Wird die Datei gespeichert, wird sie automatisch gegen das RelaxNG Schema validiert
+Wird die Galerie gespeichert, wird sie automatisch gegen das RelaxNG Schema validiert
 (`gallery.rng`).
-
-Ist [Codeeditor_XH](https://github.com/cmb69/codeeditor_xh/releases) installiert,
-ist die Bearbeitung des XML ein wenig erträglicher.
 
 ### Externe Bilder
 
 Es ist ebenfalls möglich externe Bilder
 (d.h. Bilder außerhalb von Ihrem Bilderordner)
 durch Angabe der vollständig qualifizierten URL des Bildes
-als `path` des `<pic>` Elements anzuzeigen.
+anzuzeigen.
 Wie in diesem Fall üblich ist zu beachten,
 dass beispielsweise das Bild nicht verfügbar ist,
 und unter Umständen rechtliche Einschränkungen gelten.
