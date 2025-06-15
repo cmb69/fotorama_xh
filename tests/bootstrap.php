@@ -17,6 +17,7 @@ require_once "../plib/classes/View.php";
 require_once "../plib/classes/FakeRequest.php";
 require_once "../plib/classes/FakeSystemChecker.php";
 
+require_once "./classes/dto/GalleryDto.php";
 require_once "./classes/model/Gallery.php";
 require_once "./classes/model/Image.php";
 require_once "./classes/GalleryAdminCommand.php";

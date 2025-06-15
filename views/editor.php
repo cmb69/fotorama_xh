@@ -1,5 +1,6 @@
 <?php
 
+use Fotorama\Dto\GalleryDto;
 use Plib\View;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
@@ -12,7 +13,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $action
  * @var string $token
  * @var string $base_url
- * @var object{path:string,caption:string,width:string,ratio:string,thumbs:bool,autoplay:int,fullscreen:string,transition:string,images:string} $gallery
+ * @var GalleryDto $gallery
  */
 ?>
 

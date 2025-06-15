@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Fotorama\Dto\GalleryDto;
 use Fotorama\Model\Gallery;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
@@ -182,20 +183,19 @@ class GalleryAdminCommand
         return $this->pluginFolder . "admin.js";
     }
 
-    /** @return object{path:string,caption:string,width:string,ratio:string,thumbs:bool,autoplay:int,fullscreen:string,transition:string,images:string} */
-    private function galleryDto(Request $request, Gallery $gallery): object
+    private function galleryDto(Request $request, Gallery $gallery): GalleryDto
     {
-        return (object) [
-            "path" => $request->post("path") ?? $gallery->path(),
-            "caption" => $request->post("caption") ?? $gallery->caption() ?? "",
-            "width" => $request->post("width") ?? $gallery->width() ?? "",
-            "ratio" => $request->post("ratio") ?? $gallery->ratio() ?? "",
-            "thumbs" => (bool) ($request->post("thumbs") ?? $gallery->thumbs()),
-            "autoplay" => (int) ($request->post("autoplay") ?? $gallery->autoplay()),
-            "fullscreen" => $request->post("fullscreen") ?? $gallery->fullscreen() ?? "",
-            "transition" => $request->post("transition") ?? $gallery->transition(),
-            "images" => $this->images($request, $gallery),
-        ];
+        return new GalleryDto(
+            $request->post("path") ?? $gallery->path(),
+            $request->post("caption") ?? $gallery->caption() ?? "",
+            $request->post("width") ?? $gallery->width() ?? "",
+            $request->post("ratio") ?? $gallery->ratio() ?? "",
+            (bool) ($request->post("thumbs") ?? $gallery->thumbs()),
+            (int) ($request->post("autoplay") ?? $gallery->autoplay()),
+            $request->post("fullscreen") ?? $gallery->fullscreen() ?? "",
+            $request->post("transition") ?? $gallery->transition(),
+            $this->images($request, $gallery)
+        );
     }
 
     private function images(Request $request, Gallery $gallery): string
