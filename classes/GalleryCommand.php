@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Fotorama\Model\Gallery;
+use Fotorama\Model\ThumbnailService;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
 use Plib\Request;

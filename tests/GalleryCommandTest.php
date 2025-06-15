@@ -3,6 +3,7 @@
 namespace Fotorama;
 
 use ApprovalTests\Approvals;
+use Fotorama\Model\ThumbnailService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
