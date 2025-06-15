@@ -79,7 +79,7 @@ article.fotorama_editor .fotorama_gallery textarea {
     width: 100%;
     box-sizing: border-box;
 }
-article.fotorama_editor .fotorama_images ul {
+article.fotorama_editor .fotorama_images ol {
     list-style: none;
     margin: 0;
     padding-left: 0;
@@ -107,7 +107,7 @@ article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fo
 article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_image_controls {
     display: none;
 }
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images ul {
+article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images ol {
     display: flex;
     flex-wrap: wrap;
 }

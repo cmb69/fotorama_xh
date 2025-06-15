@@ -14,18 +14,18 @@ var fotorama = (function () {
         const form = article.querySelector("form");
         const imagesInput = article.querySelector("input[name=gallery_images]");
         const images = JSON.parse(imagesInput.value);
-        const ul = article.querySelector("ul");
-        let baseUrl = ul.dataset.baseUrl + form.querySelector(".fotorama_path").value + "/";
+        const ol = article.querySelector("ol");
+        let baseUrl = ol.dataset.baseUrl + form.querySelector(".fotorama_path").value + "/";
         const template = article.querySelector(".fotorama_template");
         const filebrowser = article.querySelector(".fotorama_filebrowser");
         images.forEach(image);
         form.querySelector(".fotorama_path").addEventListener("change", event => {
-            baseUrl = ul.dataset.baseUrl + event.currentTarget.value + "/";
-            ul.querySelectorAll("li .fotorama_thumb").forEach(input => {
+            baseUrl = ol.dataset.baseUrl + event.currentTarget.value + "/";
+            ol.querySelectorAll("li .fotorama_thumb").forEach(input => {
                 input.src = baseUrl + input.parentElement.querySelector(".fotorama_path").value;
             });
         });
-        ul.addEventListener("keydown", event => {
+        ol.addEventListener("keydown", event => {
             if (event.target.nodeName !== "INPUT" || event.target.type !== "image") {
                 return;
             }
@@ -54,7 +54,7 @@ var fotorama = (function () {
         });
         form.querySelector(".fotorama_add_image").addEventListener("click", () => {
             image(null);
-            ul.querySelector("li:last-child .fotorama_thumb").focus();
+            ol.querySelector("li:last-child .fotorama_thumb").focus();
         });
         form.addEventListener("submit", event => {
             if (event.submitter.nodeName === "INPUT" && event.submitter.type === "image") {
@@ -63,7 +63,7 @@ var fotorama = (function () {
                 return;
             }
             let records = [];
-            ul.querySelectorAll("li").forEach(li => {
+            ol.querySelectorAll("li").forEach(li => {
                 records.push({
                     path: li.querySelector(".fotorama_path").value,
                     caption: li.querySelector(".fotorama_caption").value,
@@ -103,7 +103,7 @@ var fotorama = (function () {
             clone.querySelector(".fotorama_delete_image").addEventListener("click", () => {
                 li.remove();
             });
-            ul.appendChild(clone);
+            ol.appendChild(clone);
         }
 
         function openFilebrowser(path) {

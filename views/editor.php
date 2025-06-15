@@ -83,8 +83,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         </label>
         <button class="fotorama_add_image" type="button"><?=$this->text("label_add")?></button>
       </p>
-      <ul data-base-url="<?=$this->esc($base_url)?>">
-      </ul>
+      <ol data-base-url="<?=$this->esc($base_url)?>">
+      </ol>
     </fieldset>
     <p class="fotorama_controls">
       <button><?=$this->text("label_save")?></button>
