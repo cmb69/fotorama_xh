@@ -1,11 +1,11 @@
 <?php
 
-namespace Fotorama;
+namespace Fotorama\Model;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-class GalleryServiceTest extends TestCase
+class ImageServiceTest extends TestCase
 {
     private const FOO_XML = <<<XML
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -33,7 +33,7 @@ XML;
         $img = imagecreate(100, 100);
         imagejpeg($img, "{$pth['folder']['images']}test/foo.jpg");
         imagejpeg($img, "{$pth['folder']['images']}test/bar.jpg");
-        $this->sut = new GalleryService();
+        $this->sut = new ImageService();
     }
 
     public function testFindsAllImageFolders()
