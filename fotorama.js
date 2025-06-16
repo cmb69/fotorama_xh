@@ -1,5 +1,5 @@
 /**
- * Copyright 2015-2021 Christoph M. Becker
+ * Copyright (c) Christoph M. Becker
  *
  * This file is part of Fotorama_XH.
  *
@@ -14,18 +14,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // @ts-check
 
 document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
-    if (!(element instanceof HTMLElement)) return;
-    init(element);
+    init(/** @type {HTMLElement} */ (element));
 });
 
 /** @param {HTMLElement} element */
 function init(element) {
     const config = JSON.parse(element.dataset.config || "{}");
+    // @ts-expect-error
     jQuery(".fotorama", element).fotorama(config);
 }
