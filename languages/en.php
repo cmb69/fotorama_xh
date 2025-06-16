@@ -61,3 +61,10 @@ $plugin_tx['fotorama']['syscheck_xhversion'] = "CMSimple_XH version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_writable'] = "%s is writable: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "yes";
 $plugin_tx['fotorama']['syscheck_no'] = "no";
+
+$plugin_tx['fotorama']['cf_default_width'] = "The default width of new galleries; either a plain number giving the width in pixels (e.g. 400) or a percentage of the available horizontal space (e.g. 100%).  If left empty, the width of the first gallery image is used.";
+$plugin_tx['fotorama']['cf_default_ratio'] = "The default aspect ration of new galleries; either a fraction (e.g. 400/300 or 16/9) or a decimal numer (e.g. 1.3333).  If left empty, the aspect ratio of the first gallery image is used.";
+$plugin_tx['fotorama']['cf_default_nav'] = "The default navigation of new galleries; either empty for a slim dot navigation, or thumbs for a thumbnail navigation.";
+$plugin_tx['fotorama']['cf_default_autoplay'] = "The default autoplay interval of new galleries in deciseconds (e.g. 50 for 5 seconds).  Leave empty to disable autoplay.";
+$plugin_tx['fotorama']['cf_default_fullscreen'] = "The default fullscreen mode of new galleries.  Empty means no fullscreen support; true means use full browser viewport; native means use full screen if supported by the browser.";
+$plugin_tx['fotorama']['cf_default_transition'] = "The default transition mode of new galleries.  Slide achieves  a sliding transition, crossfade achieves crossfading, and dissolve achieves dissolving.";

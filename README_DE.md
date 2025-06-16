@@ -45,7 +45,7 @@ Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
 1. Laden Sie das ganze Verzeichnis `fotorama/` auf Ihren Server
    in das Plugin-Verzeichnis von CMSimple_XH hoch.
 1. Vergeben Sie falls nötig Schreibrechte für die Unterverzeichnisse
-   `cache/`, <!-- `config/`, --> `css/` und `languages/`.
+   `cache/`, `config/`, `css/` und `languages/`.
 1. Verschieben Sie `plugins/fotorama/editorhook.php` nach
    `plugins/filebrowser/editorhooks/fotorama/script.php`,
    so dass der Dateibrowser beim Bearbeiten der Galerien genutzt werden kann.
@@ -58,11 +58,9 @@ Die Plugin-Konfiguration erfolgt wie bei vielen anderen
 CMSimple_XH-Plugins auch im Administrationsbereich der Website.
 Gehen Sie zu `Plugins` → `Fotorama`.
 
-<!--
 Sie können die Voreinstellungen von Fotorama_XH unter `Konfiguration` ändern.
 Beim Überfahren der Hilfe-Icons mit der Maus
 werden Hinweise zu den Einstellungen angezeigt.
--->
 
 Die Lokalisierung wird unter `Sprache` vorgenommen.
 Sie können die Sprachtexte in Ihre eigene Sprache übersetzen,

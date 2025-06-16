@@ -15,6 +15,8 @@ use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
 {
+    /** @var array<string,string> */
+    private $conf;
     /** @var ImageFinder&Stub */
     private $imageFinder;
     private DocumentStore $store;
@@ -25,6 +27,7 @@ class GalleryAdminCommandTest extends TestCase
     protected function setUp(): void
     {
         vfsStream::setup("root");
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
         $this->imageFinder = $this->createStub(ImageFinder::class);
         $this->store = new DocumentStore(vfsStream::url("root/"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
@@ -36,6 +39,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         return new GalleryAdminCommand(
             "./plugins/fotorama/",
+            $this->conf,
             $this->imageFinder,
             $this->store,
             $this->csrfProtector,

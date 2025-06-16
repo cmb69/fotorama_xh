@@ -61,3 +61,10 @@ $plugin_tx['fotorama']['syscheck_xhversion'] = "CMSimple_XH Version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_writable'] = "%s ist schreibbar: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "ja";
 $plugin_tx['fotorama']['syscheck_no'] = "nein";
+
+$plugin_tx['fotorama']['cf_default_width'] = "Die Vorgabe-Breite für neue Galerien; entweder eine einfache Zahl, die die Breite in Pixeln angibt (z.B. 400), oder eine Prozentzahl des verfügbaren horizontalen Platzes (z.B. 100%).  Wenn leer gelassen, wird die Breite des ersten Galeriebildes verwendet.";
+$plugin_tx['fotorama']['cf_default_ratio'] = "Das Vorgabe-Seitenverhältnis für neue Galerien; entweder ein Bruch (z.B. 400/300 oder 16/9), oder eine Dezimalzahl (z.B. 1.3333). Wenn leer gelassen, wird das Seitenverhältnis des ersten Galeriebildes verwendet.";
+$plugin_tx['fotorama']['cf_default_nav'] = "Die Vorgabe-Navigation für neue Galerien; entweder leer für eine schlanke Punkt-Navigation, oder thumbs für eine Vorschaubild-Navigation.";
+$plugin_tx['fotorama']['cf_default_autoplay'] = "Das Vorgabe-Interval für automatische Wiedergabe für neue Galerien in Zehntelsekunden (z.B. 50 für 5 Sekunden). Leer lassen um die automatische Wiedergabe zu deaktivieren.";
+$plugin_tx['fotorama']['cf_default_fullscreen'] = "Der Vorgabe-Vollbildmodus für neue Galerien. Leer bedeutet kein Vollbild, true bedeutet, dass das gesamte Browserfenster genutzt wird; native bedeutet, dass der gesamte Bildschirm genutzt wird, falls vom Browser unterstützt.";
+$plugin_tx['fotorama']['cf_default_transition'] = "Der Vorgabe-Übergang für neue Galerien. Slide bewirkt einen gleitenden Übergang, crossfade bewirkt eine Überblendung, und dissolve bewirkt Zerfließen.";

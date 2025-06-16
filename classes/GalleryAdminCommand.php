@@ -35,19 +35,24 @@ use Plib\View;
 class GalleryAdminCommand
 {
     private string $pluginFolder;
+    /** @var array<string,string> */
+    private array $conf;
     private ImageFinder $imageFinder;
     private DocumentStore $store;
     private CsrfProtector $csrfProtector;
     private View $view;
 
+    /** @param array<string,string> $conf */
     public function __construct(
         string $pluginFolder,
+        array $conf,
         ImageFinder $imageFinder,
         DocumentStore $store,
         CsrfProtector $csrfProtector,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
+        $this->conf = $conf;
         $this->imageFinder = $imageFinder;
         $this->store = $store;
         $this->csrfProtector = $csrfProtector;
@@ -132,9 +137,7 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_exists", $name);
             return $this->respondWithOverview($request, $error);
         }
-        foreach ($this->imageFinder->images($path) as $image) {
-            $gallery->addImage($image);
-        }
+        $this->applyDefaults($gallery, $path);
         if (!$this->store->commit()) {
             $error = $this->view->message("fail", "error_save", $name);
             return $this->respondWithOverview($request, $error);
@@ -146,6 +149,20 @@ class GalleryAdminCommand
     private function isValidName(string $name): bool
     {
         return (bool) preg_match('/^[a-z0-9-]+$/', $name);
+    }
+
+    private function applyDefaults(Gallery $gallery, string $path): void
+    {
+        $gallery->setDimensions($this->conf["default_width"], $this->conf["default_ratio"]);
+        $gallery->setOptions(
+            (bool) $this->conf["default_nav"],
+            (int) $this->conf["default_autoplay"],
+            $this->conf["default_fullscreen"],
+            $this->conf["default_transition"]
+        );
+        foreach ($this->imageFinder->images($path) as $image) {
+            $gallery->addImage($image);
+        }
     }
 
     private function check(Request $request): Response

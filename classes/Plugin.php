@@ -53,9 +53,10 @@ class Plugin
 
     public static function galleryAdminCommand(): GalleryAdminCommand
     {
-        global $pth;
+        global $pth, $plugin_cf;
         return new GalleryAdminCommand(
             $pth["folder"]["plugins"] . "fotorama/",
+            $plugin_cf["fotorama"],
             new ImageFinder($pth["folder"]["images"]),
             self::store(),
             new CsrfProtector(),
