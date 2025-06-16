@@ -21,7 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
-use Fotorama\Model\ImageService;
+use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
@@ -56,7 +56,7 @@ class Plugin
         global $pth;
         return new GalleryAdminCommand(
             $pth["folder"]["plugins"] . "fotorama/",
-            new ImageService($pth["folder"]["images"]),
+            new ImageFinder($pth["folder"]["images"]),
             self::store(),
             new CsrfProtector(),
             self::view()

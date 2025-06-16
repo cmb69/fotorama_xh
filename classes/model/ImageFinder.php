@@ -27,7 +27,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
-class ImageService
+class ImageFinder
 {
     private string $imageFolder;
 
@@ -37,7 +37,7 @@ class ImageService
     }
 
     /** @return list<string> */
-    public function findImageFolders(): array
+    public function folders(): array
     {
         $res = [];
         $it = new RecursiveIteratorIterator(
@@ -60,19 +60,18 @@ class ImageService
         return array_values($res);
     }
 
-    public function hasImageFolder(string $path): bool
+    public function isFolder(string $path): bool
     {
-        return is_dir($this->getImageFoldername($path));
+        return is_dir($this->imageFolder . $path);
     }
 
     /** @return list<string> */
-    public function findImagesIn(string $path): array
+    public function images(string $path): array
     {
         $images = [];
         $files = new DirectoryIterator($this->imageFolder . $path);
         foreach ($files as $file) {
-            $filename = $file->getPathname();
-            if ($this->isImageFile($filename)) {
+            if ($this->isImage($file->getPathname())) {
                 $images[] = $file->getFilename();
             }
         }
@@ -80,13 +79,13 @@ class ImageService
         return array_values($images);
     }
 
-    private function isImageFile(string $filename): bool
+    private function isImage(string $filename): bool
     {
         return is_file($filename)
             && in_array(pathinfo($filename, PATHINFO_EXTENSION), ["jpeg", "jpg", "JPEG", "JPG"], true);
     }
 
-    public function getImageFoldername(string $path): string
+    public function filename(string $path): string
     {
         return $this->imageFolder . $path;
     }
