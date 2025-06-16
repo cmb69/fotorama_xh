@@ -10,7 +10,7 @@ class ImageServiceTest extends TestCase
     protected function setUp(): void
     {
         vfsStream::setup("root");
-        mkdir(vfsStream::url("root/images/test"), 0777, true);
+        mkdir(vfsStream::url("root/images/test/foo/bar"), 0777, true);
         $img = imagecreate(100, 100);
         imagejpeg($img, vfsStream::url("root/images/test/foo.jpg"));
         imagejpeg($img, vfsStream::url("root/images/test/bar.jpg"));
@@ -23,7 +23,7 @@ class ImageServiceTest extends TestCase
 
     public function testFindsAllImageFolders()
     {
-        $this->assertEquals(["test"], $this->sut()->findImageFolders());
+        $this->assertEquals(["test", "test/foo", "test/foo/bar"], $this->sut()->findImageFolders());
     }
 
     public function testHasImageFolder()
