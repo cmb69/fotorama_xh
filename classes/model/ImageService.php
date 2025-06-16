@@ -36,7 +36,7 @@ class ImageService
     /** @return list<string> */
     public function findImageFolders(): array
     {
-        $folders = $this->findImageFoldersIn($this->imageFolder, '');
+        $folders = $this->findImageFoldersIn($this->imageFolder, "");
         natcasesort($folders);
         return array_values($folders);
     }
@@ -49,7 +49,7 @@ class ImageService
     /** @return list<string> */
     private function findImageFoldersIn(string $path, string $prefix): array
     {
-        $folders = array();
+        $folders = [];
         $files = new DirectoryIterator($path);
         foreach ($files as $file) {
             if (!$file->isDot() && $file->isDir()) {
@@ -68,14 +68,14 @@ class ImageService
         $folders[] = $prefix . $file->getFilename();
         return array_merge(
             $folders,
-            $this->findImageFoldersIn($file->getPathname(), $prefix . $file->getFilename() . '/')
+            $this->findImageFoldersIn($file->getPathname(), $prefix . $file->getFilename() . "/")
         );
     }
 
     /** @return list<string> */
     public function findImagesIn(string $path): array
     {
-        $images = array();
+        $images = [];
         $files = new DirectoryIterator($this->imageFolder . $path);
         foreach ($files as $file) {
             $filename = $file->getPathname();
