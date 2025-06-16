@@ -230,7 +230,8 @@ class GalleryAdminCommand
             (int) ($request->post("autoplay") ?? $gallery->autoplay()),
             $request->post("fullscreen") ?? $gallery->fullscreen() ?? "",
             $request->post("transition") ?? $gallery->transition(),
-            $this->images($request, $gallery)
+            $this->images($request, $gallery),
+            $gallery->checksum() ?? ""
         );
     }
 
@@ -259,6 +260,11 @@ class GalleryAdminCommand
         if (($gallery = Gallery::update($name, $this->store)) === null) {
             $error = $this->view->message("fail", "error_load", $name);
             return $this->respondWithOverview($request, $error);
+        }
+        if ($request->post("checksum") !== $gallery->checksum()) {
+            $this->store->rollback();
+            $error = $this->view->message("warning", "message_conflict");
+            return $this->respondWithEditor($request, $error);
         }
         if (!$this->updateGallery($request, $gallery)) {
             $this->store->rollback();

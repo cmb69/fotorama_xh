@@ -39,6 +39,7 @@ final class Gallery implements Document
     private string $transition = "slide";
     /** @var list<Image> */
     private array $images = [];
+    private ?string $checksum = null;
 
     public static function new(string $key): self
     {
@@ -75,6 +76,7 @@ final class Gallery implements Document
                 $that->images[] = Image::fromElement($childNode);
             }
         }
+        $that->checksum = sha1($contents);
         return $that;
     }
 
@@ -151,6 +153,11 @@ final class Gallery implements Document
     public function images(): array
     {
         return $this->images;
+    }
+
+    public function checksum(): ?string
+    {
+        return $this->checksum;
     }
 
     public function setPath(string $path): void

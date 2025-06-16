@@ -27,6 +27,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
     <div class="fotorama_gallery">
       <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">
       <input type="hidden" name="fotorama_gallery" value="<?=$this->esc($name)?>">
+      <input type="hidden" name="checksum" value="<?=$this->esc($gallery->checksum)?>">
       <p>
         <label for="fotorama_path"><?=$this->text("label_path")?></label>
         <input id="fotorama_path" class="fotorama_path" name="path" value="<?=$this->esc($gallery->path)?>" required>

@@ -39,6 +39,7 @@ $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
 $plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
 $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
+$plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in the meantime! Save again to overwrite these changes.";
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 

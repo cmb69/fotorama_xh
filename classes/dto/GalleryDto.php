@@ -32,6 +32,7 @@ class GalleryDto
     public string $fullscreen;
     public string $transition;
     public string $images;
+    public string $checksum;
 
     public function __construct(
         string $path,
@@ -42,7 +43,8 @@ class GalleryDto
         int $autoplay,
         string $fullscreen,
         string $transition,
-        string $images
+        string $images,
+        string $checksum
     ) {
         $this->path = $path;
         $this->caption = $caption;
@@ -53,5 +55,6 @@ class GalleryDto
         $this->fullscreen = $fullscreen;
         $this->transition = $transition;
         $this->images = $images;
+        $this->checksum = $checksum;
     }
 }

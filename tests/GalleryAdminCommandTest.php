@@ -198,7 +198,10 @@ class GalleryAdminCommandTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=update&fotorama_gallery=test",
-            "post" => ["fotorama_do" => ""],
+            "post" => [
+                "fotorama_do" => "",
+                "checksum" => Gallery::read("test", $this->store)->checksum(),
+            ],
         ]);
         $response = $this->sut()($request);
         $this->assertSame("http://example.com/?&fotorama_gallery=test", $response->location());
@@ -226,6 +229,23 @@ class GalleryAdminCommandTest extends TestCase
         $this->assertStringContainsString("Cannot load the gallery “test”!", $response->output());
     }
 
+    public function testReportsConflictWhenSaving(): void
+    {
+        Gallery::create("test", "test", $this->store);
+        $this->store->commit();
+        $this->csrfProtector->method("check")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&action=update&fotorama_gallery=test",
+            "post" => [
+                "fotorama_do" => "",
+                "gallery_images" => "nope",
+                "checksum" => "",
+            ]
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("The gallery has been modified in the meantime!", $response->output());
+    }
+
     public function testReportsInvalidXML(): void
     {
         Gallery::create("test", "test", $this->store);
@@ -236,6 +256,7 @@ class GalleryAdminCommandTest extends TestCase
             "post" => [
                 "fotorama_do" => "",
                 "gallery_images" => "nope",
+                "checksum" => Gallery::read("test", $this->store)->checksum(),
             ]
         ]);
         $response = $this->sut()($request);
@@ -250,7 +271,10 @@ class GalleryAdminCommandTest extends TestCase
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=update&fotorama_gallery=test",
-            "post" => ["fotorama_do" => ""],
+            "post" => [
+                "fotorama_do" => "",
+                "checksum" => Gallery::read("test", $this->store)->checksum(),
+            ],
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Cannot save the gallery “test”!", $response->output());

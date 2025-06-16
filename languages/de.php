@@ -39,6 +39,7 @@ $plugin_tx['fotorama']['help_name'] = "(nur a-z, 0-9 und minus)";
 $plugin_tx['fotorama']['help_ratio'] = "(Bruch oder Dezimalzahl)";
 $plugin_tx['fotorama']['help_width'] = "(Zahl oder Prozentwert)";
 
+$plugin_tx['fotorama']['message_conflict'] = "Die Galerie wurde in der Zwischenzeit geändert! Speichern Sie noch einmal, um diese Änderungen zu überschreiben!";
 $plugin_tx['fotorama']['message_delete'] = "Galerie \"%s\" löschen?";
 $plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
