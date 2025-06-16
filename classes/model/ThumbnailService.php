@@ -56,9 +56,16 @@ class ThumbnailService
                 return $path;
             }
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
-            if (!imagejpeg($dest, $thumb)) {
+            ob_start();
+            if (!imagejpeg($dest)) {
+                ob_clean();
                 return $path;
             }
+            $data = (string) ob_get_clean();
+            if (($icc = $this->icc($path)) !== null) {
+                $data = $this->embedIcc($data, $icc);
+            }
+            file_put_contents($thumb, $data);
             imagedestroy($source);
             imagedestroy($dest);
         }
@@ -110,5 +117,33 @@ class ThumbnailService
             case 8:
                 return imagerotate($image, 90, 0) ?: null;
         }
+    }
+
+    private function icc(string $path): ?string
+    {
+        if (!getimagesize($path, $info)) {
+            return null;
+        }
+        if (!isset($info["APP2"]) || strncmp($info["APP2"], "ICC_PROFILE", strlen("ICC_PROFILE"))) {
+            return null;
+        }
+        return $info["APP2"];
+    }
+
+    private function embedIcc(string $data, string $icc): string
+    {
+        $pos = 0;
+        do {
+            $un = unpack("a2marker/nlength", $data, $pos);
+            if (!$un) {
+                return $data;
+            }
+            if ($un["marker"] === "\xff\xd8") { // SOI
+                $pos += 2;
+            } elseif ($un["marker"] === "\xff\xe0") { // APP0
+                $pos += $un["length"] + 2;
+            }
+        } while (in_array($un["marker"], ["\xff\xd8", "\xff\xe0"], true));
+        return substr($data, 0, $pos) . "\xff\xe2" . pack("n", strlen($icc) + 2) . $icc . substr($data, $pos);
     }
 }

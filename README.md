@@ -175,10 +175,14 @@ This plugin is powered by [Fotorama](https://fotorama.io/).
 Many thanks to Artem Polikarpov, the developer of this library,
 for his great work, and for publishing it under MIT license.
 
-The plugin icon is designed by [Everaldo Coelho](https://www.everaldo.com/). Many thanks for publishing this icon under LGPL.
+The plugin icon is designed by [Everaldo Coelho](https://www.everaldo.com/).
+Many thanks for publishing this icon under LGPL.
 The plugin also uses icons from the
 [Oxygen icon set](http://www.oxygen-icons.org/).
 Many thanks for publishing this icon set under GPL.
+
+Many thanks to [Jeffrey Friedl](https://regex.info/blog/photo-tech/color-spaces-page2)
+for nicely demonstrating the effects of embedded ICC color profiles.
 
 Many thanks to the community at the
 [CMSimple_XH forum](https://www.cmsimpleforum.com/)

@@ -187,6 +187,9 @@ Das Plugin verwendet ebenfalls Icons aus dem
 [Oxygen Icon-Set](http://www.oxygen-icons.org/).
 Vielen Dank für die Veröffentlichung dieses Icon-Sets unter GPL.
 
+Vielen Dank an [Jeffrey Friedl](https://regex.info/blog/photo-tech/color-spaces-page2)
+für die schöne Demonstration der Wirkung von eingebetten ICC-Farbprofilen.
+
 Vielen Dank an die Community im
 [CMSimple_XH Forum](https://www.cmsimpleforum.com/)
 für Hinweise, Anregungen und das Testen.

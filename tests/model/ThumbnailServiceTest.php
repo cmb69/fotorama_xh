@@ -80,4 +80,23 @@ class ThumbnailServiceTest extends TestCase
             "white" => imagecolorclosest($im, 0xff, 0xff, 0xff),
         ];
     }
+
+    public function testRetainsIccProfile(): void
+    {
+        $icc = <<<'EOS'
+            SUNDX1BST0ZJTEUAAQEAAAIwQURCRQIQAABtbnRyUkdCIFhZWiAH0AAIAAsAEwA3ACdhY3NwQVBQTAAAAABub25lAAAAAAAAAAAAAA
+            AAAAAAAAAA9tYAAQAAAADTLUFEQkUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApjcHJ0AAAA
+            /AAAADJkZXNjAAABMAAAAGl3dHB0AAABnAAAABRia3B0AAABsAAAABRyVFJDAAABxAAAAA5nVFJDAAAB1AAAAA5iVFJDAAAB5AAAAA
+            5yWFlaAAAB9AAAABRnWFlaAAACCAAAABRiWFlaAAACHAAAABR0ZXh0AAAAAENvcHlyaWdodCAyMDAwIEFkb2JlIFN5c3RlbXMgSW5j
+            b3Jwb3JhdGVkAAAAZGVzYwAAAAAAAAAPV2lkZSBHYW11dCBSR0IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWFlaIAAAAAAAAPbcAAEAAAAA0zpYWVogAAAAAAAAAAAA
+            AAAAAAAAAGN1cnYAAAAAAAAAAQIzAABjdXJ2AAAAAAAAAAECMwAAY3VydgAAAAAAAAABAjMAAFhZWiAAAAAAAAC3agAAQjsAAAAAWF
+            laIAAAAAAAABnbAAC5hwAADRxYWVogAAAAAAAAJZEAAAQ+AADGEQ==
+            EOS;
+        $path = __DIR__ . "/../data/Momiji-WideRGB-yes.jpg";
+        $this->sut()->thumbnail($path, 64);
+        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
+        getimagesize($path, $info);
+        $this->assertSame(str_replace("\n", "", $icc), base64_encode($info["APP2"]));
+    }
 }
