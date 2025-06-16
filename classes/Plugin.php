@@ -43,6 +43,7 @@ class Plugin
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
                 self::store(),
+                self::imageFinder(),
                 new ThumbnailService($pth["folder"]["plugins"] . "fotorama/cache/"),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()
@@ -57,7 +58,7 @@ class Plugin
         return new GalleryAdminCommand(
             $pth["folder"]["plugins"] . "fotorama/",
             $plugin_cf["fotorama"],
-            new ImageFinder($pth["folder"]["images"]),
+            self::imageFinder(),
             self::store(),
             new CsrfProtector(),
             self::view()
@@ -78,6 +79,12 @@ class Plugin
     {
         global $pth;
         return new DocumentStore($pth["folder"]["content"] . "fotorama/");
+    }
+
+    private static function imageFinder(): ImageFinder
+    {
+        global $pth;
+        return new ImageFinder($pth["folder"]["images"]);
     }
 
     private static function view(): View

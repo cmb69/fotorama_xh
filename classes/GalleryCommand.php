@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Fotorama\Model\Gallery;
+use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\Jquery;
@@ -34,6 +35,7 @@ class GalleryCommand
     private string $pluginFolder;
     private string $imageFolder;
     private DocumentStore $store;
+    private ImageFinder $imageFinder;
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
@@ -43,6 +45,7 @@ class GalleryCommand
         string $pluginFolder,
         string $imageFolder,
         DocumentStore $store,
+        ImageFinder $imageFinder,
         ThumbnailService $thumbnailService,
         Jquery $jquery,
         View $view
@@ -50,6 +53,7 @@ class GalleryCommand
         $this->pluginFolder = $pluginFolder;
         $this->imageFolder = $imageFolder;
         $this->store = $store;
+        $this->imageFinder = $imageFinder;
         $this->thumbnailService = $thumbnailService;
         $this->jquery = $jquery;
         $this->view = $view;
@@ -87,11 +91,18 @@ class GalleryCommand
     private function jsConfig(Gallery $gallery): array
     {
         $config = [];
-        if ($gallery->width() !== null) {
-            $config["width"] = $gallery->width();
+        $width = $ratio = null;
+        if (($gallery->width() === null || $gallery->ratio() === null) && $gallery->firstImagePath() !== null) {
+            if (($size = $this->imageFinder->size($gallery->firstImagePath()))) {
+                [$width, $height] = $size;
+                $ratio = "$width/$height";
+            }
         }
-        if ($gallery->ratio() !== null) {
-            $config["ratio"] = $gallery->ratio();
+        if ($gallery->width() !== null || $width !== null) {
+            $config["width"] = $gallery->width() ?? $width;
+        }
+        if ($gallery->ratio() !== null || $ratio !== null) {
+            $config["ratio"] = $gallery->ratio() ?? $ratio;
         }
         if ($gallery->thumbs()) {
             $config["nav"] = "thumbs";

@@ -85,6 +85,15 @@ class ImageFinder
             && in_array(pathinfo($filename, PATHINFO_EXTENSION), ["jpeg", "jpg", "JPEG", "JPG"], true);
     }
 
+    /** @return ?array{int,int} */
+    public function size(string $filename): ?array
+    {
+        if (($size = getimagesize($this->imageFolder . $filename)) === false) {
+            return null;
+        }
+        return [$size[0], $size[1]];
+    }
+
     public function filename(string $path): string
     {
         return $this->imageFolder . $path;
