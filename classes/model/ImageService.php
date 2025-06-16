@@ -22,6 +22,9 @@
 namespace Fotorama\Model;
 
 use DirectoryIterator;
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use SplFileInfo;
 
 class ImageService
@@ -36,40 +39,30 @@ class ImageService
     /** @return list<string> */
     public function findImageFolders(): array
     {
-        $folders = $this->findImageFoldersIn($this->imageFolder, "");
-        natcasesort($folders);
-        return array_values($folders);
+        $res = [];
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(
+                $this->imageFolder,
+                FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+            ),
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        $it->rewind();
+        while ($it->valid()) {
+            assert(is_string($it->key()));
+            assert($it->current() instanceof SplFileInfo);
+            if ($it->current()->isDir()) {
+                $res[] = substr($it->key(), strlen($this->imageFolder));
+            }
+            $it->next();
+        }
+        natcasesort($res);
+        return array_values($res);
     }
 
     public function hasImageFolder(string $path): bool
     {
         return is_dir($this->getImageFoldername($path));
-    }
-
-    /** @return list<string> */
-    private function findImageFoldersIn(string $path, string $prefix): array
-    {
-        $folders = [];
-        $files = new DirectoryIterator($path);
-        foreach ($files as $file) {
-            if (!$file->isDot() && $file->isDir()) {
-                $folders = $this->appendTo($folders, $file, $prefix);
-            }
-        }
-        return $folders;
-    }
-
-    /**
-     * @param list<string> $folders
-     * @return list<string>
-     */
-    private function appendTo(array $folders, SplFileInfo $file, string $prefix): array
-    {
-        $folders[] = $prefix . $file->getFilename();
-        return array_merge(
-            $folders,
-            $this->findImageFoldersIn($file->getPathname(), $prefix . $file->getFilename() . "/")
-        );
     }
 
     /** @return list<string> */
