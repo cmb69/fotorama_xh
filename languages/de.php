@@ -43,7 +43,7 @@ $plugin_tx['fotorama']['message_conflict'] = "Die Galerie wurde in der Zwischenz
 $plugin_tx['fotorama']['message_delete'] = "Galerie \"%s\" löschen?";
 $plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
-$plugin_tx['fotorama']['error_invalid_xml'] = "Ungültiges XML!";
+$plugin_tx['fotorama']['error_invalid_gallery'] = "Ungültige Galerie!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Der Galeriename \"%s\" ist ungültig!";
 $plugin_tx['fotorama']['error_save'] = "Die Galerie „%s“ kann nicht gespeichert werden!";
 $plugin_tx['fotorama']['error_delete'] = "Die Galerie \"%s\" kann nicht gelöscht werden!";

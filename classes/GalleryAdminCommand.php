@@ -268,7 +268,7 @@ class GalleryAdminCommand
         }
         if (!$this->updateGallery($request, $gallery)) {
             $this->store->rollback();
-            $error = $this->view->message("fail", "error_invalid_xml");
+            $error = $this->view->message("fail", "error_invalid_gallery");
             return $this->respondWithEditor($request, $error);
         }
         if (!$this->store->commit()) {

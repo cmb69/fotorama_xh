@@ -260,7 +260,7 @@ class GalleryAdminCommandTest extends TestCase
             ]
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Invalid XML!", $response->output());
+        $this->assertStringContainsString("Invalid gallery!", $response->output());
     }
 
     public function testReportsFailureToSave(): void

@@ -43,7 +43,7 @@ $plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in t
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
-$plugin_tx['fotorama']['error_invalid_xml'] = "Invalid XML!";
+$plugin_tx['fotorama']['error_invalid_gallery'] = "Invalid gallery!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Gallery name \"%s\" is invalid!";
 $plugin_tx['fotorama']['error_save'] = "Cannot save the gallery “%s”!";
 $plugin_tx['fotorama']['error_delete'] = "Cannot delete the \"%s\" gallery!";
