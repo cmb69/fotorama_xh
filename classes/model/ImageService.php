@@ -21,6 +21,7 @@
 
 namespace Fotorama\Model;
 
+use DirectoryIterator;
 use SplFileInfo;
 
 class ImageService
@@ -49,7 +50,7 @@ class ImageService
     private function findImageFoldersIn(string $path, string $prefix): array
     {
         $folders = array();
-        $files = new \DirectoryIterator($path);
+        $files = new DirectoryIterator($path);
         foreach ($files as $file) {
             if (!$file->isDot() && $file->isDir()) {
                 $folders = $this->appendTo($folders, $file, $prefix);
@@ -75,7 +76,7 @@ class ImageService
     public function findImagesIn(string $path): array
     {
         $images = array();
-        $files = new \DirectoryIterator($this->imageFolder . $path);
+        $files = new DirectoryIterator($this->imageFolder . $path);
         foreach ($files as $file) {
             $filename = $file->getPathname();
             if ($this->isImageFile($filename)) {
