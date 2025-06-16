@@ -24,6 +24,7 @@ namespace Fotorama;
 use DOMDocument;
 use Fotorama\Dto\GalleryDto;
 use Fotorama\Model\Gallery;
+use Fotorama\Model\ImageFinder;
 use LibXMLError;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
@@ -34,20 +35,20 @@ use Plib\View;
 class GalleryAdminCommand
 {
     private string $pluginFolder;
-    private GalleryService $galleryService;
+    private ImageFinder $imageFinder;
     private DocumentStore $store;
     private CsrfProtector $csrfProtector;
     private View $view;
 
     public function __construct(
         string $pluginFolder,
-        GalleryService $galleryService,
+        ImageFinder $imageFinder,
         DocumentStore $store,
         CsrfProtector $csrfProtector,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
-        $this->galleryService = $galleryService;
+        $this->imageFinder = $imageFinder;
         $this->store = $store;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
@@ -88,7 +89,7 @@ class GalleryAdminCommand
             "token" => $this->csrfProtector->token(),
             "name" => $name,
             "path" => $path,
-            "folders" => $this->galleryService->findImageFolders(),
+            "folders" => $this->imageFinder->folders(),
         ]);
     }
 
@@ -122,8 +123,8 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_invalid_name", $name);
             return $this->respondWithOverview($request, $error);
         }
-        if (!$this->galleryService->hasImageFolder($path)) {
-            $foldername = $this->galleryService->getImageFoldername($path);
+        if (!$this->imageFinder->isFolder($path)) {
+            $foldername = $this->imageFinder->filename($path);
             $error = $this->view->message("fail", "error_no_folder", $foldername);
             return $this->respondWithOverview($request, $error);
         }
@@ -131,7 +132,7 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_exists", $name);
             return $this->respondWithOverview($request, $error);
         }
-        foreach ($this->galleryService->findImagesIn($path) as $image) {
+        foreach ($this->imageFinder->images($path) as $image) {
             $gallery->addImage($image);
         }
         if (!$this->store->commit()) {
@@ -206,7 +207,7 @@ class GalleryAdminCommand
             "name" => $name,
             "action" => $request->url()->relative(),
             "token" => $this->csrfProtector->token(),
-            "base_url" => $this->galleryService->getImageFoldername(""),
+            "base_url" => $this->imageFinder->filename(""),
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
     }

@@ -4,6 +4,7 @@ namespace Fotorama;
 
 use ApprovalTests\Approvals;
 use Fotorama\Model\Gallery;
+use Fotorama\Model\ImageFinder;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +15,8 @@ use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
 {
-    /** @var GalleryService&Stub */
-    private $galleryService;
+    /** @var ImageFinder&Stub */
+    private $imageFinder;
     private DocumentStore $store;
     /** @var CsrfProtector&Stub */
     private $csrfProtector;
@@ -24,7 +25,7 @@ class GalleryAdminCommandTest extends TestCase
     protected function setUp(): void
     {
         vfsStream::setup("root");
-        $this->galleryService = $this->createStub(GalleryService::class);
+        $this->imageFinder = $this->createStub(ImageFinder::class);
         $this->store = new DocumentStore(vfsStream::url("root/"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
@@ -35,7 +36,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         return new GalleryAdminCommand(
             "./plugins/fotorama/",
-            $this->galleryService,
+            $this->imageFinder,
             $this->store,
             $this->csrfProtector,
             $this->view
@@ -47,7 +48,7 @@ class GalleryAdminCommandTest extends TestCase
         Gallery::create("gallery1", "gallery1", $this->store);
         Gallery::create("gallery2", "gallery2", $this->store);
         $this->store->commit();
-        $this->galleryService->method("findImageFolders")->willReturn(["folder1", "folder2"]);
+        $this->imageFinder->method("folders")->willReturn(["folder1", "folder2"]);
         $request = new FakeRequest([
             "url" => "http://example.com/?&fotorama&admin=plugin_main&action=plugin_tx&normal",
         ]);
@@ -58,7 +59,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testRedirectsAfterCreating(): void
     {
-        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->imageFinder->method("isFolder")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=create",
@@ -81,7 +82,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsInvalidFolderNameWhenCreating(): void
     {
-        $this->galleryService->method("hasImageFolder")->willReturn(false);
+        $this->imageFinder->method("isFolder")->willReturn(false);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=create",
@@ -96,7 +97,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsInvalidGalleryNameWhenCreating(): void
     {
-        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->imageFinder->method("isFolder")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=create",
@@ -111,7 +112,7 @@ class GalleryAdminCommandTest extends TestCase
 
     public function testReportsExistingGalleryWhenCreating(): void
     {
-        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->imageFinder->method("isFolder")->willReturn(true);
         Gallery::create("gallery", "gallery", $this->store);
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
@@ -129,7 +130,7 @@ class GalleryAdminCommandTest extends TestCase
     public function testReportsFailureToSaveWhenCreating(): void
     {
         vfsStream::setQuota(0);
-        $this->galleryService->method("hasImageFolder")->willReturn(true);
+        $this->imageFinder->method("isFolder")->willReturn(true);
         $this->csrfProtector->method("check")->willReturn(true);
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=create",
