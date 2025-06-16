@@ -68,6 +68,9 @@ falls keine entsprechende Sprachdatei zur Verfügung steht,
 oder diese Ihren Wünschen gemäß anpassen.
 
 Das Aussehen von Fotorama_XH kann unter `Stylesheet` angepasst werden.
+Zu Beginn der Datei befindet sich ein `simple customization` Abschnitt,
+der ein paar einfache Anpassungen ermöglicht. Alles darunter benötigt
+fortgeschrittene CSS Kenntnisse zur Anpassung.
 
 ## Verwendung
 

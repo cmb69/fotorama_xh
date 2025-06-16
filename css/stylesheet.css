@@ -1,3 +1,13 @@
+/* simple customization */
+
+article.fotorama_editor {
+    --general-columns: 1fr 1fr; /* 3 columns: 1fr 1fr 1fr */
+    --thumb-small: 100px;
+    --thumb-large: 150px;
+    --display-image-labels: block; /* block or none */
+    --filebrowser-size: 80%;
+}
+
 /* gallery */
 
 figure.fotorama_gallery {}
@@ -68,7 +78,7 @@ article.fotorama_editor .fotorama_controls {
 }
 article.fotorama_editor .fotorama_gallery {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: var(--general-columns, 1fr 1fr);
     column-gap: 1em;
 }
 article.fotorama_editor .fotorama_gallery label {
@@ -87,21 +97,22 @@ article.fotorama_editor .fotorama_images ol {
 }
 article.fotorama_editor .fotorama_images li {
     display: grid;
-    grid-template-columns: 100px 1fr 5em;
+    grid-template-columns: var(--thumb-small, 100px) 1fr 5em;
     grid-column-gap: 1em;
     border: none;
     border-top: 1px dotted #888;
     padding: 0.5em 0;
 }
 article.fotorama_editor .fotorama_images .fotorama_thumb {
-    width: 100px;
-    height: 100px;
+    width: var(--thumb-small, 100px);
+    height: var(--thumb-small, 100px);
     margin: auto;
     object-fit: contain;
 }
 article.fotorama_editor .fotorama_images .fotorama_image_details {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     justify-content: space-around;
 }
 article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_image_details,
@@ -120,8 +131,8 @@ article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images li 
     margin: 0;
 }
 article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_thumb {
-    width: 150px;
-    height: 150px;
+    width: var(--thumb-large, 150px);
+    height: var(--thumb-large, 150px);
 }
 article.fotorama_editor .fotorama_images .fotorama_input_plus {
     display: flex;
@@ -139,16 +150,18 @@ article.fotorama_editor .fotorama_images .fotorama_image_controls {
 article.fotorama_editor .fotorama_images .fotorama_controls span {
     display: inline;
 }
-article.fotorama_editor .fotorama_images label,
-article.fotorama_editor .fotorama_images span {
+article.fotorama_editor .fotorama_images label {
     display: block;
+}
+article.fotorama_editor .fotorama_images span {
+    display: var(--display-image-labels, block);
 }
 
 /* filebrowser dialog */
 
 article.fotorama_editor .fotorama_filebrowser {
-    width: 80%;
-    height: 80%;
+    width: var(--filebrowser-size, 80%);
+    height: var(--filebrowser-size, 80%);
     margin: auto;
     border: 0;
     padding: 0;

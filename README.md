@@ -70,6 +70,9 @@ if there is no appropriate language file available,
 or customize them according to your needs.
 
 The look of Fotorama_XH can be customized under `Stylesheet`.
+At the top of the file you find a `simple customization` section which allows
+for some simple customizations.  Everything below needs advanced CSS knowledge
+to customize.
 
 ## Usage
 
