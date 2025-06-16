@@ -40,6 +40,9 @@ class ThumbnailService
             if (($source = imagecreatefromjpeg($path)) === false) {
                 return $path;
             }
+            if (imagesx($source) < $size || imagesy($source) < $size) {
+                return $path;
+            }
             if (($source = $this->normalize($source, $this->orientation($path))) === null) {
                 return $path;
             }

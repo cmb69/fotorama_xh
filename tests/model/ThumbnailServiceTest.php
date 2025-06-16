@@ -20,33 +20,37 @@ class ThumbnailServiceTest extends TestCase
 
     public function testMakesHorizontalThumbnail(): void
     {
-        $path = __DIR__ . "/../data/XH2.jpg";
-        $this->sut()->thumbnail($path, 64);
-        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
-        $this->assertFileExists($path);
-        $size = getimagesize($path);
-        $this->assertSame(144, $size[0]);
-        $this->assertSame(64, $size[1]);
+        $in = __DIR__ . "/../data/XH2.jpg";
+        $out = $this->sut()->thumbnail($in, 32);
+        $this->assertFileExists($out);
+        $size = getimagesize($out);
+        $this->assertSame(72, $size[0]);
+        $this->assertSame(32, $size[1]);
     }
 
     public function testMakesVerticalThumbnail(): void
     {
-        $path = __DIR__ . "/../data/XH2_vertical.jpg";
-        $this->sut()->thumbnail($path, 64);
-        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
-        $this->assertFileExists($path);
-        $size = getimagesize($path);
-        $this->assertSame(64, $size[0]);
-        $this->assertSame(144, $size[1]);
+        $in = __DIR__ . "/../data/XH2_vertical.jpg";
+        $out = $this->sut()->thumbnail($in, 32);
+        $this->assertFileExists($out);
+        $size = getimagesize($out);
+        $this->assertSame(32, $size[0]);
+        $this->assertSame(72, $size[1]);
+    }
+
+    public function testDoesNotCreateUpscaledThumbnail(): void
+    {
+        $in = __DIR__ . "/../data/XH2.jpg";
+        $out = $this->sut()->thumbnail($in, 64);
+        $this->assertSame($in, $out);
     }
 
     /** @dataProvider orientation */
     public function testHeedsOrientation(string $basename, string $col1, string $col2, string $col3, string $col4): void
     {
-        $path = __DIR__ . "/../data/$basename";
-        $this->sut()->thumbnail($path, 64);
-        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
-        $im = imagecreatefromjpeg($path);
+        $in = __DIR__ . "/../data/$basename";
+        $out = $this->sut()->thumbnail($in, 64);
+        $im = imagecreatefromjpeg($out);
         $this->assertSame(128, imagesx($im));
         $this->assertSame(64, imagesy($im));
         imagetruecolortopalette($im, false, 4);
