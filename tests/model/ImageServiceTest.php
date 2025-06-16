@@ -19,8 +19,6 @@ XML;
 
     public function setUp(): void
     {
-        global $pth;
-
         $this->root = vfsStream::setup();
         $pth = array('folder' => array(
             'content' => $this->root->url() . '/content/',
@@ -33,7 +31,7 @@ XML;
         $img = imagecreate(100, 100);
         imagejpeg($img, "{$pth['folder']['images']}test/foo.jpg");
         imagejpeg($img, "{$pth['folder']['images']}test/bar.jpg");
-        $this->sut = new ImageService();
+        $this->sut = new ImageService($pth["folder"]["images"]);
     }
 
     public function testFindsAllImageFolders()

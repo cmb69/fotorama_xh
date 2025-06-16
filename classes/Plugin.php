@@ -56,7 +56,7 @@ class Plugin
         global $pth;
         return new GalleryAdminCommand(
             $pth["folder"]["plugins"] . "fotorama/",
-            new ImageService(),
+            new ImageService($pth["folder"]["images"]),
             self::store(),
             new CsrfProtector(),
             self::view()

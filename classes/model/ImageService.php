@@ -25,12 +25,17 @@ use SplFileInfo;
 
 class ImageService
 {
+    private string $imageFolder;
+
+    public function __construct(string $imageFolder)
+    {
+        $this->imageFolder = $imageFolder;
+    }
+
     /** @return list<string> */
     public function findImageFolders(): array
     {
-        global $pth;
-
-        $folders = $this->findImageFoldersIn($pth['folder']['images'], '');
+        $folders = $this->findImageFoldersIn($this->imageFolder, '');
         natcasesort($folders);
         return array_values($folders);
     }
@@ -69,10 +74,8 @@ class ImageService
     /** @return list<string> */
     public function findImagesIn(string $path): array
     {
-        global $pth;
-
         $images = array();
-        $files = new \DirectoryIterator("{$pth['folder']['images']}$path");
+        $files = new \DirectoryIterator($this->imageFolder . $path);
         foreach ($files as $file) {
             $filename = $file->getPathname();
             if ($this->isImageFile($filename)) {
@@ -91,8 +94,6 @@ class ImageService
 
     public function getImageFoldername(string $path): string
     {
-        global $pth;
-
-        return "{$pth['folder']['images']}$path";
+        return $this->imageFolder . $path;
     }
 }
