@@ -69,7 +69,7 @@ class GalleryCommand
             $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
             $this->jqueryIncluded = true;
         }
-        return Response::create($this->view->render("gallery", [
+        return Response::create($this->view->render("fotorama", [
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
             "caption" => $gallery->caption() ?? "",
