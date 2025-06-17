@@ -102,7 +102,7 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("The folder &quot;folder&quot; does not exist!", $response->output());
+        $this->assertStringContainsString("The folder “folder” does not exist!", $response->output());
     }
 
     public function testReportsInvalidGalleryNameWhenCreating(): void
@@ -117,7 +117,7 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Gallery name &quot;not allowed&quot; is invalid!", $response->output());
+        $this->assertStringContainsString("Gallery name “not allowed” is invalid!", $response->output());
     }
 
     public function testReportsExistingGalleryWhenCreating(): void
@@ -134,7 +134,7 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("The gallery &quot;gallery&quot; does already exist!", $response->output());
+        $this->assertStringContainsString("The gallery “gallery” does already exist!", $response->output());
     }
 
     public function testReportsFailureToSaveWhenCreating(): void
@@ -346,7 +346,7 @@ class GalleryAdminCommandTest extends TestCase
             "post" => ["fotorama_do" => ""],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("Cannot delete the &quot;test&quot; gallery!", $response->output());
+        $this->assertStringContainsString("Cannot delete the “test” gallery!", $response->output());
     }
 
     public function testRendersClearsCacheConfirmation(): void

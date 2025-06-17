@@ -42,18 +42,18 @@ $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
 $plugin_tx['fotorama']['message_clear_cache'] = "Clear the thumbnail cache?";
 $plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in the meantime! Save again to overwrite these changes.";
-$plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
+$plugin_tx['fotorama']['message_delete'] = "Delete the “%s” gallery?";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
 $plugin_tx['fotorama']['error_clear_cache'] = "Cannot clear the thumbnail cache!";
 $plugin_tx['fotorama']['error_invalid_gallery'] = "Invalid gallery!";
-$plugin_tx['fotorama']['error_invalid_name'] = "Gallery name \"%s\" is invalid!";
+$plugin_tx['fotorama']['error_invalid_name'] = "Gallery name “%s” is invalid!";
 $plugin_tx['fotorama']['error_save'] = "Cannot save the gallery “%s”!";
-$plugin_tx['fotorama']['error_delete'] = "Cannot delete the \"%s\" gallery!";
-$plugin_tx['fotorama']['error_exists'] = "The gallery \"%s\" does already exist!";
+$plugin_tx['fotorama']['error_delete'] = "Cannot delete the “%s” gallery!";
+$plugin_tx['fotorama']['error_exists'] = "The gallery “%s” does already exist!";
 $plugin_tx['fotorama']['error_invalid'] = "The gallery “%s” is invalid!";
 $plugin_tx['fotorama']['error_load'] = "Cannot load the gallery “%s”!";
-$plugin_tx['fotorama']['error_no_folder'] = "The folder \"%s\" does not exist!";
+$plugin_tx['fotorama']['error_no_folder'] = "The folder “%s” does not exist!";
 $plugin_tx['fotorama']['error_well-formed'] = "The gallery “%s” is not well-formed!";
 
 $plugin_tx['fotorama']['syscheck_title'] = "System Check";
