@@ -179,9 +179,12 @@ Copyright 2015-2021 Christoph M. Becker
 
 ## Danksagung
 
-Dieses Plugin verwendet [Fotorama](https://fotorama.io/)
-zur Anzeige der Galerien.
+Dieses Plugin verwendet [Fotorama](https://fotorama.io/) zur Anzeige der Galerien.
 Vielen Dank an Artem Polikarpov, dem Entwickler dieser Bibliothek,
+für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
+
+Dieses Plugin verwendet [SimpleLightbox](https://simplelightbox.js.org/) zur Anzeige der Galerien.
+Vielen Dank an Andre Rinas, dem Entwickler dieser Bibliothek,
 für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
 
 Das Pluginlogo wurde von [Everaldo Coelho](https://www.everaldo.com/) gestaltet.

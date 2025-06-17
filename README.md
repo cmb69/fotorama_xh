@@ -178,6 +178,10 @@ This plugin is powered by [Fotorama](https://fotorama.io/).
 Many thanks to Artem Polikarpov, the developer of this library,
 for his great work, and for publishing it under MIT license.
 
+The plugin is powered by [SimpleLightbox](https://simplelightbox.js.org/).
+Many thanks to Andre Rinas, the developer of this library,
+for his great work, and for publishing it under MIT license.
+
 The plugin icon is designed by [Everaldo Coelho](https://www.everaldo.com/).
 Many thanks for publishing this icon under LGPL.
 The plugin also uses icons from the

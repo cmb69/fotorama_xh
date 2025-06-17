@@ -21,6 +21,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Exception;
 use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
@@ -71,17 +72,31 @@ class GalleryCommand
         }
         if (!$this->jqueryIncluded) {
             $this->jquery->include();
-            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
+            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama/fotorama.js");
             $this->jqueryIncluded = true;
         }
         return Response::create($this->view->render($this->conf["gallery_frontend"], [
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
-            "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
+            "lightbox_script" => $this->lightboxScript(),
+            "stylesheet" => $this->stylesheet(),
+            "rel" => "fotorama-" . $name,
             "caption" => $gallery->caption() ?? "",
             "config" => $this->jsConfig($gallery),
             "images" => $this->pictureDtos($gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
+    }
+
+    private function lightboxScript(): ?string
+    {
+        switch ($this->conf["gallery_frontend"]) {
+            case "fotorama":
+                return null;
+            case "lightbox":
+                return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.js";
+            default:
+                throw new Exception("unsupported lightbox");
+        }
     }
 
     private function script(): string
@@ -90,6 +105,18 @@ class GalleryCommand
             return $this->pluginFolder . "fotorama.min.js";
         }
         return $this->pluginFolder . "fotorama.js";
+    }
+
+    private function stylesheet(): string
+    {
+        switch ($this->conf["gallery_frontend"]) {
+            case "fotorama":
+                return $this->pluginFolder . "lib/fotorama/fotorama.css";
+            case "lightbox":
+                return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.css";
+            default:
+                throw new Exception("unsupported lightbox");
+        }
     }
 
     /** @return array<string,mixed> */
