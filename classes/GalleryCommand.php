@@ -130,7 +130,11 @@ class GalleryCommand
                 if ($isAbsoluteUrl) {
                     $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {
-                    $thumbnail = $this->thumbnailService->thumbnail($filename, 64);
+                    $thumbnail = $this->thumbnailService->thumbnail(
+                        $this->imageFolder,
+                        $gallery->path() . '/' . $pic->path(),
+                        64
+                    );
                 }
             } else {
                 $thumbnail = $filename;

@@ -20,8 +20,7 @@ class ThumbnailServiceTest extends TestCase
 
     public function testMakesHorizontalThumbnail(): void
     {
-        $in = __DIR__ . "/../data/XH2.jpg";
-        $out = $this->sut()->thumbnail($in, 32);
+        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2.jpg", 32);
         $this->assertFileExists($out);
         $size = getimagesize($out);
         $this->assertSame(72, $size[0]);
@@ -30,8 +29,7 @@ class ThumbnailServiceTest extends TestCase
 
     public function testMakesVerticalThumbnail(): void
     {
-        $in = __DIR__ . "/../data/XH2_vertical.jpg";
-        $out = $this->sut()->thumbnail($in, 32);
+        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2_vertical.jpg", 32);
         $this->assertFileExists($out);
         $size = getimagesize($out);
         $this->assertSame(32, $size[0]);
@@ -40,16 +38,14 @@ class ThumbnailServiceTest extends TestCase
 
     public function testDoesNotCreateUpscaledThumbnail(): void
     {
-        $in = __DIR__ . "/../data/XH2.jpg";
-        $out = $this->sut()->thumbnail($in, 64);
-        $this->assertSame($in, $out);
+        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2.jpg", 64);
+        $this->assertSame(__DIR__ . "/../data/XH2.jpg", $out);
     }
 
     /** @dataProvider orientation */
     public function testHeedsOrientation(string $basename, string $col1, string $col2, string $col3, string $col4): void
     {
-        $in = __DIR__ . "/../data/$basename";
-        $out = $this->sut()->thumbnail($in, 64);
+        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", $basename, 64);
         $im = imagecreatefromjpeg($out);
         $this->assertSame(128, imagesx($im));
         $this->assertSame(64, imagesy($im));
@@ -97,10 +93,9 @@ class ThumbnailServiceTest extends TestCase
             AAAAAAAAAGN1cnYAAAAAAAAAAQIzAABjdXJ2AAAAAAAAAAECMwAAY3VydgAAAAAAAAABAjMAAFhZWiAAAAAAAAC3agAAQjsAAAAAWF
             laIAAAAAAAABnbAAC5hwAADRxYWVogAAAAAAAAJZEAAAQ+AADGEQ==
             EOS;
-        $path = __DIR__ . "/../data/Momiji-WideRGB-yes.jpg";
-        $this->sut()->thumbnail($path, 64);
-        $path = vfsStream::url("root/cache/" . md5($path) . "_64.jpg");
-        getimagesize($path, $info);
+        $this->sut()->thumbnail(__DIR__ . "/../data/", "Momiji-WideRGB-yes.jpg", 64);
+        $path = vfsStream::url("root/cache/" . md5("Momiji-WideRGB-yes.jpg") . "_64.jpg");
+        getimagesize(__DIR__ . "/../data/Momiji-WideRGB-yes.jpg", $info);
         $this->assertSame(str_replace("\n", "", $icc), base64_encode($info["APP2"]));
     }
 }

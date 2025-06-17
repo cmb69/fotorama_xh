@@ -32,19 +32,25 @@ class ThumbnailService
         $this->cacheFolder = $cacheFolder;
     }
 
-    public function thumbnail(string $path, int $size): string
+    public function thumbnail(string $folder, string $filename, int $size): string
     {
-        $md5 = md5($path);
-        $thumb = $this->cacheFolder . "{$md5}_{$size}.jpg";
-        if (!is_file($thumb) || filemtime($thumb) < filemtime($path)) {
-            if (($source = imagecreatefromjpeg($path)) === false) {
-                return $path;
+        $pathinfo = pathinfo($filename);
+        $dirname = $pathinfo["dirname"] ?? ".";
+        if ($dirname !== "." && !is_dir($this->cacheFolder . $dirname)) {
+            mkdir($this->cacheFolder . $dirname, 0777, true);
+            chmod($this->cacheFolder . $dirname, 0777);
+        }
+        $extension = $pathinfo["extension"] ?? "jpg";
+        $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-64." . $extension;
+        if (!is_file($thumb) || filemtime($thumb) < filemtime($folder . $filename)) {
+            if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
+                return $folder . $filename;
             }
             if (imagesx($source) < $size || imagesy($source) < $size) {
-                return $path;
+                return $folder . $filename;
             }
-            if (($source = $this->normalize($source, $this->orientation($path))) === null) {
-                return $path;
+            if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
+                return $folder . $filename;
             }
             $w1 = imagesx($source);
             $h1 = imagesy($source);
@@ -56,16 +62,16 @@ class ThumbnailService
                 $w2 = (int) round($h2 / $h1 * $w1);
             }
             if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
-                return $path;
+                return $folder . $filename;
             }
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
             ob_start();
             if (!imagejpeg($dest)) {
                 ob_clean();
-                return $path;
+                return $folder . $filename;
             }
             $data = (string) ob_get_clean();
-            if (($icc = $this->icc($path)) !== null) {
+            if (($icc = $this->icc($folder . $filename)) !== null) {
                 $data = $this->embedIcc($data, $icc);
             }
             file_put_contents($thumb, $data);
