@@ -1,7 +1,6 @@
 <?php
 
 $plugin_tx['fotorama']['menu_main'] = "Galerien";
-$plugin_tx['fotorama']['alt_logo'] = "Bilderordner";
 
 $plugin_tx['fotorama']['label_add'] = "Hinzufügen";
 $plugin_tx['fotorama']['label_autoplay'] = "Automatische Wiedergabe";
