@@ -5,7 +5,9 @@ namespace Fotorama;
 use ApprovalTests\Approvals;
 use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
+use Fotorama\Model\ThumbnailService;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
@@ -19,6 +21,8 @@ class GalleryAdminCommandTest extends TestCase
     private $conf;
     /** @var ImageFinder&Stub */
     private $imageFinder;
+    /** @var ThumbnailService&MockObject */
+    private $thumbnailService;
     private DocumentStore $store;
     /** @var CsrfProtector&Stub */
     private $csrfProtector;
@@ -29,6 +33,7 @@ class GalleryAdminCommandTest extends TestCase
         vfsStream::setup("root");
         $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
         $this->imageFinder = $this->createStub(ImageFinder::class);
+        $this->thumbnailService = $this->createMock(ThumbnailService::class);
         $this->store = new DocumentStore(vfsStream::url("root/"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
@@ -41,6 +46,7 @@ class GalleryAdminCommandTest extends TestCase
             "./plugins/fotorama/",
             $this->conf,
             $this->imageFinder,
+            $this->thumbnailService,
             $this->store,
             $this->csrfProtector,
             $this->view
@@ -341,5 +347,49 @@ class GalleryAdminCommandTest extends TestCase
         ]);
         $response = $this->sut()($request);
         $this->assertStringContainsString("Cannot delete the &quot;test&quot; gallery!", $response->output());
+    }
+
+    public function testRendersClearsCacheConfirmation(): void
+    {
+        $request = new FakeRequest(["url" => "http://example.com/?&action=clear_cache&fotorama_gallery=test"]);
+        $response = $this->sut()($request);
+        $this->assertSame("Fotorama – Clear Cache", $response->title());
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testClearsCache(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->thumbnailService->expects($this->once())->method("clearCache")->willReturn(true);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=clear_cache",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertEmpty($this->store->find('/test\..xml/'));
+        $this->assertSame("http://example.com/?&fotorama&admin=plugin_main", $response->location());
+    }
+
+    public function testClearingCacheIsCsrfProtected(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(false);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=clear_cache",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertSame(403, $response->status());
+    }
+
+    public function testReportsFailureToClearCache(): void
+    {
+        $this->csrfProtector->method("check")->willReturn(true);
+        $this->thumbnailService->expects($this->once())->method("clearCache")->willReturn(false);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?&fotorama&admin=plugin_main&action=clear_cache",
+            "post" => ["fotorama_do" => ""],
+        ]);
+        $response = $this->sut()($request);
+        $this->assertStringContainsString("Cannot clear the thumbnail cache!", $response->output());
     }
 }

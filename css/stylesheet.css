@@ -193,6 +193,15 @@ article.fotorama_delete .fotorama_controls {
     margin: 1em;
 }
 
+/* clear cache confirmation */
+
+article.fotorama_clear_cache {}
+article.fotorama_clear_cache .fotorama_controls {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 1em;
+}
+
 /* plugin info */
 
 article.fotorama_pluginfo {}

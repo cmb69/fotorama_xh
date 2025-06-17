@@ -38,6 +38,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       <button name="action" value="update"><?=$this->text("label_edit")?></button>
       <button name="action" value="check"><?=$this->text("label_check")?></button>
       <button name="action" value="delete"><?=$this->text("label_delete")?></button>
+      <button name="action" value="clear_cache"><?=$this->text("label_clear_cache")?></button>
   </form>
   <form action="<?=$this->esc($action)?>" method="post">
     <input type="hidden" name="fotorama_token" value="<?=$this->esc($token)?>">

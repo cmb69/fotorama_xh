@@ -44,7 +44,7 @@ class Plugin
                 $pth["folder"]["images"],
                 self::store(),
                 self::imageFinder(),
-                new ThumbnailService($pth["folder"]["plugins"] . "fotorama/cache/"),
+                self::thumbnailService(),
                 new Jquery($pth["folder"]["plugins"] . "jquery/"),
                 self::view()
             );
@@ -59,6 +59,7 @@ class Plugin
             $pth["folder"]["plugins"] . "fotorama/",
             $plugin_cf["fotorama"],
             self::imageFinder(),
+            self::thumbnailService(),
             self::store(),
             new CsrfProtector(),
             self::view()
@@ -85,6 +86,12 @@ class Plugin
     {
         global $pth;
         return new ImageFinder($pth["folder"]["images"]);
+    }
+
+    private static function thumbnailService(): ThumbnailService
+    {
+        global $pth;
+        return new ThumbnailService($pth["folder"]["plugins"] . "fotorama/cache/");
     }
 
     private static function view(): View

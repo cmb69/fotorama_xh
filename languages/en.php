@@ -7,6 +7,7 @@ $plugin_tx['fotorama']['label_add'] = "Add";
 $plugin_tx['fotorama']['label_autoplay'] = "Auto-Play";
 $plugin_tx['fotorama']['label_caption'] = "Caption";
 $plugin_tx['fotorama']['label_check'] = "Check";
+$plugin_tx['fotorama']['label_clear_cache'] = "Clear Cache";
 $plugin_tx['fotorama']['label_close'] = "Close";
 $plugin_tx['fotorama']['label_create'] = "Create";
 $plugin_tx['fotorama']['label_create_gallery'] = "Create new gallery";
@@ -39,10 +40,12 @@ $plugin_tx['fotorama']['help_name'] = "(only a-z, 0-9 and hyphens)";
 $plugin_tx['fotorama']['help_ratio'] = "(fraction or decimal number)";
 $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 
+$plugin_tx['fotorama']['message_clear_cache'] = "Clear the thumbnail cache?";
 $plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in the meantime! Save again to overwrite these changes.";
 $plugin_tx['fotorama']['message_delete'] = "Delete the \"%s\" gallery?";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
+$plugin_tx['fotorama']['error_clear_cache'] = "Cannot clear the thumbnail cache!";
 $plugin_tx['fotorama']['error_invalid_gallery'] = "Invalid gallery!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Gallery name \"%s\" is invalid!";
 $plugin_tx['fotorama']['error_save'] = "Cannot save the gallery “%s”!";

@@ -21,7 +21,11 @@
 
 namespace Fotorama\Model;
 
+use FilesystemIterator;
 use GdImage;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 
 class ThumbnailService
 {
@@ -154,5 +158,32 @@ class ThumbnailService
             }
         } while (in_array($un["marker"], ["\xff\xd8", "\xff\xe0"], true));
         return substr($data, 0, $pos) . "\xff\xe2" . pack("n", strlen($icc) + 2) . $icc . substr($data, $pos);
+    }
+
+    public function clearCache(): bool
+    {
+        $it = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(
+                $this->cacheFolder,
+                FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+            ),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        $it->rewind();
+        while ($it->valid()) {
+            assert(is_string($it->key()));
+            assert($it->current() instanceof SplFileInfo);
+            if ($it->current()->isFile()) {
+                if (!unlink($it->key())) {
+                    return false;
+                }
+            } elseif ($it->current()->isDir()) {
+                if (!rmdir($it->key())) {
+                    return false;
+                }
+            }
+            $it->next();
+        }
+        return true;
     }
 }

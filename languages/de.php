@@ -7,6 +7,7 @@ $plugin_tx['fotorama']['label_add'] = "Hinzufügen";
 $plugin_tx['fotorama']['label_autoplay'] = "Automatische Wiedergabe";
 $plugin_tx['fotorama']['label_caption'] = "Beschriftung";
 $plugin_tx['fotorama']['label_check'] = "Prüfen";
+$plugin_tx['fotorama']['label_clear_cache'] = "Cache löschen";
 $plugin_tx['fotorama']['label_close'] = "Schließen";
 $plugin_tx['fotorama']['label_create'] = "Erzeugen";
 $plugin_tx['fotorama']['label_create_gallery'] = "Neue Galerie erstellen";
@@ -39,10 +40,12 @@ $plugin_tx['fotorama']['help_name'] = "(nur a-z, 0-9 und minus)";
 $plugin_tx['fotorama']['help_ratio'] = "(Bruch oder Dezimalzahl)";
 $plugin_tx['fotorama']['help_width'] = "(Zahl oder Prozentwert)";
 
+$plugin_tx['fotorama']['message_clear_cache'] = "Thumbnail-Cache löschen?";
 $plugin_tx['fotorama']['message_conflict'] = "Die Galerie wurde in der Zwischenzeit geändert! Speichern Sie noch einmal, um diese Änderungen zu überschreiben!";
 $plugin_tx['fotorama']['message_delete'] = "Galerie \"%s\" löschen?";
 $plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
+$plugin_tx['fotorama']['error_clear_cache'] = "Der Thumbnail-Cache kann nicht gelöscht werden!";
 $plugin_tx['fotorama']['error_invalid_gallery'] = "Ungültige Galerie!";
 $plugin_tx['fotorama']['error_invalid_name'] = "Der Galeriename \"%s\" ist ungültig!";
 $plugin_tx['fotorama']['error_save'] = "Die Galerie „%s“ kann nicht gespeichert werden!";

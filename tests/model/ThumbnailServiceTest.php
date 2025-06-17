@@ -94,8 +94,28 @@ class ThumbnailServiceTest extends TestCase
             laIAAAAAAAABnbAAC5hwAADRxYWVogAAAAAAAAJZEAAAQ+AADGEQ==
             EOS;
         $this->sut()->thumbnail(__DIR__ . "/../data/", "Momiji-WideRGB-yes.jpg", 64);
-        $path = vfsStream::url("root/cache/" . md5("Momiji-WideRGB-yes.jpg") . "_64.jpg");
         getimagesize(__DIR__ . "/../data/Momiji-WideRGB-yes.jpg", $info);
         $this->assertSame(str_replace("\n", "", $icc), base64_encode($info["APP2"]));
+    }
+
+    public function testClearsCache(): void
+    {
+        touch(vfsStream::url("root/cache/foo.jpg"));
+        mkdir(vfsStream::url("root/cache/bar", 0777));
+        touch(vfsStream::url("root/cache/bar/baz.jpg"));
+        $this->assertTrue($this->sut()->clearCache());
+        $this->assertFileDoesNotExist(vfsStream::url("root/cache/foo.jpg"));
+        $this->assertFileDoesNotExist(vfsStream::url("root/cache/bar"));
+    }
+
+    public function testFailsToClearCache(): void
+    {
+        mkdir(vfsStream::url("root/cache/foo", 0777));
+        touch(vfsStream::url("root/cache/foo/bar.jpg"));
+        chmod(vfsStream::url("root/cache/foo/bar.jpg"), 0000);
+        chmod(vfsStream::url("root/cache/foo"), 0555);
+        $this->assertFalse($this->sut()->clearCache());
+        $this->assertFileExists(vfsStream::url("root/cache/foo/bar.jpg"));
+        $this->assertFileExists(vfsStream::url("root/cache/foo"));
     }
 }

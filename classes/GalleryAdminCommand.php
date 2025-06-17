@@ -25,6 +25,7 @@ use DOMDocument;
 use Fotorama\Dto\GalleryDto;
 use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
+use Fotorama\Model\ThumbnailService;
 use LibXMLError;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
@@ -38,6 +39,7 @@ class GalleryAdminCommand
     /** @var array<string,string> */
     private array $conf;
     private ImageFinder $imageFinder;
+    private ThumbnailService $thumbnailService;
     private DocumentStore $store;
     private CsrfProtector $csrfProtector;
     private View $view;
@@ -47,6 +49,7 @@ class GalleryAdminCommand
         string $pluginFolder,
         array $conf,
         ImageFinder $imageFinder,
+        ThumbnailService $thumbnailService,
         DocumentStore $store,
         CsrfProtector $csrfProtector,
         View $view
@@ -54,6 +57,7 @@ class GalleryAdminCommand
         $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
         $this->imageFinder = $imageFinder;
+        $this->thumbnailService = $thumbnailService;
         $this->store = $store;
         $this->csrfProtector = $csrfProtector;
         $this->view = $view;
@@ -72,6 +76,8 @@ class GalleryAdminCommand
                 return $this->update($request);
             case "delete":
                 return $this->delete($request);
+            case "clear_cache":
+                return $this->clearCache($request);
         }
     }
 
@@ -350,5 +356,34 @@ class GalleryAdminCommand
             return $this->respondWithDeleteConfirmation($request, $error);
         }
         return Response::redirect($request->url()->without("action")->without("fotorama_gallery")->absolute());
+    }
+
+    private function clearCache(Request $request): Response
+    {
+        if ($request->post("fotorama_do") !== null) {
+            return $this->doClearCache($request);
+        }
+        return $this->respondWithClearCacheConfirmation($request);
+    }
+
+    private function respondWithClearCacheConfirmation(Request $request, string $error = ""): Response
+    {
+        return Response::create($this->view->render("clear_cache", [
+            "error" => $error,
+            "action" => $request->url()->relative(),
+            "token" => $this->csrfProtector->token(),
+        ]))->withTitle("Fotorama – " . $this->view->text("label_clear_cache"));
+    }
+
+    private function doClearCache(Request $request): Response
+    {
+        if (!$this->csrfProtector->check($request->post("fotorama_token"))) {
+            return Response::error(403);
+        }
+        if (!$this->thumbnailService->clearCache()) {
+            $error = $this->view->message("fail", "error_clear_cache");
+            return $this->respondWithClearCacheConfirmation($request, $error);
+        }
+        return Response::redirect($request->url()->without("action")->absolute());
     }
 }
