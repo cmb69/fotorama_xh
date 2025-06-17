@@ -45,7 +45,7 @@ class ThumbnailService
             chmod($this->cacheFolder . $dirname, 0777);
         }
         $extension = $pathinfo["extension"] ?? "jpg";
-        $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-64." . $extension;
+        $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-$size.$extension";
         if (!is_file($thumb) || filemtime($thumb) < filemtime($folder . $filename)) {
             if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
                 return $folder . $filename;
