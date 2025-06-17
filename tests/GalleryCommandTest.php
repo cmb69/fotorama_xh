@@ -15,6 +15,7 @@ use Plib\View;
 
 class GalleryViewTest extends TestCase
 {
+    private array $conf;
     private DocumentStore $store;
     /** @var ImageFinder&Stub */
     private $imageFinder;
@@ -26,6 +27,7 @@ class GalleryViewTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
         $this->store = new DocumentStore(__DIR__ . "/" . "data/");
         $this->imageFinder = $this->createStub(ImageFinder::class);
         $this->thumbnailService = $this->createStub(ThumbnailService::class);
@@ -38,6 +40,7 @@ class GalleryViewTest extends TestCase
         return new GalleryCommand(
             "./plugins/fotorama/",
             "./",
+            $this->conf,
             $this->store,
             $this->imageFinder,
             $this->thumbnailService,

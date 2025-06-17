@@ -34,6 +34,8 @@ class GalleryCommand
 {
     private string $pluginFolder;
     private string $imageFolder;
+    /** @var array<string,string> */
+    private array $conf;
     private DocumentStore $store;
     private ImageFinder $imageFinder;
     private ThumbnailService $thumbnailService;
@@ -41,9 +43,11 @@ class GalleryCommand
     private View $view;
     private bool $jqueryIncluded = false;
 
+    /** @param array<string,string> $conf */
     public function __construct(
         string $pluginFolder,
         string $imageFolder,
+        array $conf,
         DocumentStore $store,
         ImageFinder $imageFinder,
         ThumbnailService $thumbnailService,
@@ -52,6 +56,7 @@ class GalleryCommand
     ) {
         $this->pluginFolder = $pluginFolder;
         $this->imageFolder = $imageFolder;
+        $this->conf = $conf;
         $this->store = $store;
         $this->imageFinder = $imageFinder;
         $this->thumbnailService = $thumbnailService;
@@ -69,7 +74,7 @@ class GalleryCommand
             $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
             $this->jqueryIncluded = true;
         }
-        return Response::create($this->view->render("fotorama", [
+        return Response::create($this->view->render($this->conf["gallery_frontend"], [
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
             "caption" => $gallery->caption() ?? "",

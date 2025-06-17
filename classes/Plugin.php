@@ -37,11 +37,12 @@ class Plugin
 
     public static function galleryCommand(): GalleryCommand
     {
-        global $pth;
+        global $pth, $plugin_cf;
         if (self::$galleryView === null) {
             self::$galleryView = new GalleryCommand(
                 $pth["folder"]["plugins"] . "fotorama/",
                 $pth["folder"]["images"],
+                $plugin_cf["fotorama"],
                 self::store(),
                 self::imageFinder(),
                 self::thumbnailService(),

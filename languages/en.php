@@ -64,6 +64,7 @@ $plugin_tx['fotorama']['syscheck_writable'] = "%s is writable: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "yes";
 $plugin_tx['fotorama']['syscheck_no'] = "no";
 
+$plugin_tx['fotorama']['cf_gallery_frontend'] = "The frontend to use to present the galleries.";
 $plugin_tx['fotorama']['cf_default_width'] = "The default width of new galleries; either a plain number giving the width in pixels (e.g. 400) or a percentage of the available horizontal space (e.g. 100%).  If left empty, the width of the first gallery image is used.";
 $plugin_tx['fotorama']['cf_default_ratio'] = "The default aspect ration of new galleries; either a fraction (e.g. 400/300 or 16/9) or a decimal numer (e.g. 1.3333).  If left empty, the aspect ratio of the first gallery image is used.";
 $plugin_tx['fotorama']['cf_default_nav'] = "The default navigation of new galleries; either empty for a slim dot navigation, or thumbs for a thumbnail navigation.";
