@@ -131,7 +131,7 @@ class GalleryCommand
             } else {
                 $filename = $this->imageFolder . $gallery->path() . '/' . $pic->path();
             }
-            if ($gallery->thumbs()) {
+            if ($this->conf["gallery_frontend"] === "fotorama" && $gallery->thumbs()) {
                 if ($isAbsoluteUrl) {
                     $thumbnail = $this->pluginFolder . "images/external.jpg";
                 } else {

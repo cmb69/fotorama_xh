@@ -13,7 +13,7 @@ use Plib\FakeRequest;
 use Plib\Jquery;
 use Plib\View;
 
-class GalleryViewTest extends TestCase
+class GalleryCommandTest extends TestCase
 {
     private array $conf;
     private DocumentStore $store;
@@ -49,7 +49,15 @@ class GalleryViewTest extends TestCase
         );
     }
 
-    public function testRendersGallery(): void
+    public function testRendersLightboxGallery(): void
+    {
+        $this->conf["gallery_frontend"] = "lightbox";
+        $request = new FakeRequest();
+        $response = $this->sut()($request, "test");
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testRendersFotoramaGallery(): void
     {
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");

@@ -1,5 +1,9 @@
 /* simple customization */
 
+div.fotorama_lightbox {
+    --flex-grow: 1; /* 0 or 1 */
+}
+
 article.fotorama_editor {
     --general-columns: 1fr 1fr; /* 3 columns: 1fr 1fr 1fr */
     --thumb-small: 100px;
@@ -14,6 +18,25 @@ figure.fotorama_gallery {}
 figure.fotorama_gallery figcaption {
     font-size: larger;
     text-align: center;
+}
+
+/* lightbox */
+
+div.fotorama_lightbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+div.fotorama_lightbox a {
+    height: 150px;
+    flex-grow: var(--flex-grow, 1);
+    border: none;
+}
+div.fotorama_lightbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* overview */
