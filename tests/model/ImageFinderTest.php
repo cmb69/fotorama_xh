@@ -37,8 +37,19 @@ class ImageFinderTest extends TestCase
         $this->assertEquals(["bar.jpg", "foo.jpg"], $this->sut()->images("test"));
     }
 
-    public function testImageFolderName()
+    /** @dataProvider filenames */
+    public function testNormalizesFilename(string $path, ?string $expected)
     {
-        $this->assertEquals("vfs://root/images/test", $this->sut()->filename("test"));
+        $this->assertSame($expected, $this->sut()->filename($path));
+    }
+
+    public function filenames(): array
+    {
+        return [
+            ["test/", "vfs://root/images/test/"],
+            ["test/./", "vfs://root/images/test/"],
+            ["test/../", "vfs://root/images/"],
+            ["../", null],
+        ];
     }
 }

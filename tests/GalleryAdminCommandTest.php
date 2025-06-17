@@ -96,7 +96,7 @@ class GalleryAdminCommandTest extends TestCase
             ],
         ]);
         $response = $this->sut()($request);
-        $this->assertStringContainsString("The folder &quot;&quot; does not exist!", $response->output());
+        $this->assertStringContainsString("The folder &quot;folder&quot; does not exist!", $response->output());
     }
 
     public function testReportsInvalidGalleryNameWhenCreating(): void

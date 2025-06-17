@@ -129,7 +129,7 @@ class GalleryAdminCommand
             return $this->respondWithOverview($request, $error);
         }
         if (!$this->imageFinder->isFolder($path)) {
-            $foldername = $this->imageFinder->filename($path);
+            $foldername = $this->imageFinder->filename($path) ?? $path;
             $error = $this->view->message("fail", "error_no_folder", $foldername);
             return $this->respondWithOverview($request, $error);
         }

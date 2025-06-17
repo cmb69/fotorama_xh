@@ -94,8 +94,12 @@ class ImageFinder
         return [$size[0], $size[1]];
     }
 
-    public function filename(string $path): string
+    public function filename(string $path): ?string
     {
-        return $this->imageFolder . $path;
+        $normalized = preg_replace(['/[^\/]+\/\.\.\//', '/(?<!\.)\.\//'], "", $path);
+        if ($normalized === null || !strncmp($normalized, "../", 3)) {
+            return null;
+        }
+        return $this->imageFolder . $normalized;
     }
 }
