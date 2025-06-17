@@ -104,6 +104,12 @@ article.fotorama_editor .fotorama_gallery {
     grid-template-columns: var(--general-columns, 1fr 1fr);
     column-gap: 1em;
 }
+article.fotorama_editor .fotorama_fotorama {
+    display: grid;
+    grid-template-columns: var(--general-columns, 1fr 1fr);
+    grid-column: 1/-1;
+    column-gap: 1em;
+}
 article.fotorama_editor .fotorama_gallery label {
     display: block;
 }

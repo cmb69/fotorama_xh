@@ -16,6 +16,7 @@ $plugin_tx['fotorama']['label_description'] = "Description";
 $plugin_tx['fotorama']['label_dissolve'] = "Dissolve";
 $plugin_tx['fotorama']['label_edit'] = "Edit";
 $plugin_tx['fotorama']['label_folder'] = "Folder";
+$plugin_tx['fotorama']['label_fotorama_frontend'] = "Fotorama Frontend";
 $plugin_tx['fotorama']['label_fullscreen'] = "Fullscreen";
 $plugin_tx['fotorama']['label_fullscreen_false'] = "no";
 $plugin_tx['fotorama']['label_fullscreen_true'] = "Viewport";

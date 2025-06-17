@@ -16,6 +16,7 @@ $plugin_tx['fotorama']['label_description'] = "Beschreibung";
 $plugin_tx['fotorama']['label_dissolve'] = "Zerfließen";
 $plugin_tx['fotorama']['label_edit'] = "Bearbeiten";
 $plugin_tx['fotorama']['label_folder'] = "Ordner";
+$plugin_tx['fotorama']['label_fotorama_frontend'] = "Fotorama-Frontend";
 $plugin_tx['fotorama']['label_fullscreen'] = "Vollbild";
 $plugin_tx['fotorama']['label_fullscreen_false'] = "nein";
 $plugin_tx['fotorama']['label_fullscreen_true'] = "Browser";
