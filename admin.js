@@ -104,6 +104,7 @@ var fotorama = (function () {
                     description: description.value,
                 });
             });
+            imagesInput.value = JSON.stringify(records);
         });
         const closeButton = /** @type {HTMLButtonElement} */ (filebrowser.querySelector("button.fotorama_close"));
         closeButton.addEventListener("click", () => {
