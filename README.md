@@ -119,7 +119,7 @@ for instance, the image might not be available,
 and there might be legal constraints.
 Note that no thumbnails are generated for external images,
 but rather a default thumbnail is shown which you can change by replacing
-`plugins/fotorama/images/external.jpg` with an image of your choice.
+`plugins/fotorama/images/external.svg` with an image of your choice.
 
 You can freely mix external images and images in the gallery folder.
 
@@ -184,9 +184,9 @@ for his great work, and for publishing it under MIT license.
 
 The plugin icon is designed by [Everaldo Coelho](https://www.everaldo.com/).
 Many thanks for publishing this icon under LGPL.
-The plugin also uses icons from the
-[Oxygen icon set](http://www.oxygen-icons.org/).
-Many thanks for publishing this icon set under GPL.
+
+[`external.svg`](https://commons.wikimedia.org/w/index.php?curid=112311856)
+is designed by Pigeon43.  Many thanks for publishing this icon under CC BY-SA 4.0.
 
 Many thanks to [Jeffrey Friedl](https://regex.info/blog/photo-tech/color-spaces-page2)
 for nicely demonstrating the effects of embedded ICC color profiles.

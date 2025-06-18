@@ -157,23 +157,29 @@ class GalleryCommand
         foreach ($gallery->images() as $pic) {
             if ($this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
+                $description = "external image";
                 $thumbnails = [];
-                $thumbnail = $filename;
+                $thumbnail = $this->pluginFolder . "images/external.svg";
+                $width = "100";
+                $height = "100";
             } else {
                 $filename = $this->imageFolder . $gallery->path() . "/" . $pic->path();
                 $filename = $request->url()->path($filename)->relative();
+                $description = $pic->description() ?? $pic->caption() ?? "";
                 $thumbnails = $this->thumbnailService->thumbnails($gallery->path() . "/" . $pic->path());
                 $thumbnail = $this->thumbnail($thumbnails);
                 $thumbnail = $thumbnail !== null ? $request->url()->path($thumbnail)->relative() : $filename;
+                $width = (string) $pic->width();
+                $height = (string) $pic->height();
             }
             yield (object) [
                 "filename" => $filename,
                 "caption" => $pic->caption() ?? "",
-                "description" => $pic->description() ?? $pic->caption() ?? "",
+                "description" => $description,
                 "thumbnail" => $thumbnail,
                 "srcset" => $this->srcset($request, $thumbnails),
-                "width" => (string) $pic->width(),
-                "height" => (string) $pic->height(),
+                "width" => $width,
+                "height" => $height,
             ];
         }
     }
