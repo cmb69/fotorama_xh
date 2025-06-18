@@ -149,7 +149,7 @@ class GalleryCommand
         return $config;
     }
 
-    /** @return iterable<object{filename:string,caption:string,thumbnail:string}> */
+    /** @return iterable<object{filename:string,caption:string,thumbnail:string,srcset:string}> */
     private function pictureDtos(Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
@@ -180,8 +180,19 @@ class GalleryCommand
                 "caption" => $pic->caption() ?? "",
                 "description" => $pic->description() ?? $pic->caption() ?? "",
                 "thumbnail" => $thumbnail,
+                "srcset" => $this->srcset($this->thumbnailService->thumbnails($gallery->path() . '/' . $pic->path())),
             ];
         }
+    }
+
+    /** @param array<string,string> $thumbnails */
+    private function srcset(array $thumbnails): string
+    {
+        $srcset = [];
+        foreach ($thumbnails as $w => $filename) {
+            $srcset[] = "$filename $w";
+        }
+        return implode(", ", $srcset);
     }
 
     private function isAbsoluteUrl(string $url): bool

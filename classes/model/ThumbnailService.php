@@ -160,6 +160,65 @@ class ThumbnailService
         return substr($data, 0, $pos) . "\xff\xe2" . pack("n", strlen($icc) + 2) . $icc . substr($data, $pos);
     }
 
+    /** @return array<string,string> */
+    public function thumbnails(string $filename): array
+    {
+        $res = [];
+        $pathinfo = pathinfo($filename);
+        $dirname = $pathinfo["dirname"] ?? ".";
+        $pattern = '/^' . preg_quote($pathinfo["filename"], "/") . '-(\d+w)\.jpg$/';
+        if (($dir = opendir($this->cacheFolder . $dirname)) !== false) {
+            while (($entry = readdir($dir)) !== false) {
+                if (preg_match($pattern, $entry, $matches)) {
+                    $res[$matches[1]] = $this->cacheFolder . $dirname . "/" . $matches[0];
+                }
+            }
+        }
+        return array_reverse($res);
+    }
+
+    public function createThumbnails(string $folder, string $filename): void
+    {
+        if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
+            return;
+        }
+        if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
+            return;
+        }
+        $pathinfo = pathinfo($filename);
+        $dirname = $pathinfo["dirname"] ?? ".";
+        if ($dirname !== "." && !is_dir($this->cacheFolder . $dirname)) {
+            mkdir($this->cacheFolder . $dirname, 0777, true);
+            chmod($this->cacheFolder . $dirname, 0777);
+        }
+        $w1 = imagesx($source);
+        $h1 = imagesy($source);
+        $w2 = intdiv($w1, 2);
+        $h2 = intdiv($h1, 2);
+        while ($w2 >= 300 || $h2 >= 150) {
+            $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-$w2" . "w.jpg";
+            if (is_file($thumb) && filemtime($thumb) >= filemtime($folder . $filename)) {
+                continue;
+            }
+            if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
+                continue;
+            }
+            imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
+            ob_start();
+            if (!imagejpeg($dest)) {
+                ob_clean();
+                continue;
+            }
+            $data = (string) ob_get_clean();
+            if (($icc = $this->icc($folder . $filename)) !== null) {
+                $data = $this->embedIcc($data, $icc);
+            }
+            file_put_contents($thumb, $data);
+            $w2 = intdiv($w2, 2);
+            $h2 = intdiv($h2, 2);
+        }
+    }
+
     public function clearCache(): bool
     {
         $it = new RecursiveIteratorIterator(

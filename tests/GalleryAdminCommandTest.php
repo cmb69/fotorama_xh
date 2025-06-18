@@ -207,6 +207,7 @@ class GalleryAdminCommandTest extends TestCase
         Gallery::create("test", "test", $this->store);
         $this->store->commit();
         $this->csrfProtector->method("check")->willReturn(true);
+        $this->imageFinder->method("filename")->willReturn("./userfiles/images/");
         $request = new FakeRequest([
             "url" => "http://example.com/?&action=update&fotorama_gallery=test",
             "post" => [

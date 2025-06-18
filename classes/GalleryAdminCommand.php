@@ -299,6 +299,7 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_save", $name);
             return $this->respondWithEditor($request, $error);
         }
+        $this->createThumbnails($gallery);
         return Response::redirect($request->url()->without("action")->absolute());
     }
 
@@ -320,6 +321,19 @@ class GalleryAdminCommand
             $im->setDescription($image["description"]);
         }
         return true;
+    }
+
+    private function createThumbnails(Gallery $gallery): void
+    {
+        if ($this->conf["gallery_frontend"] === "fotorama") {
+            return;
+        }
+        $imageFolder = $this->imageFinder->filename("");
+        assert($imageFolder !== null);
+        foreach ($gallery->images() as $image) {
+            $path = $gallery->path() . "/" . $image->path();
+            $this->thumbnailService->createThumbnails($imageFolder, $path);
+        }
     }
 
     private function delete(Request $request): Response
