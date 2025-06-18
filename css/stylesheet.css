@@ -218,6 +218,7 @@ article.fotorama_editor .fotorama_filebrowser iframe {
 article.fotorama_editor .fotorama_progress {
     margin: auto;
     padding: 1em;
+    width: 30em;
 }
 article.fotorama_editor .fotorama_progress progress {
     width: 100%;
