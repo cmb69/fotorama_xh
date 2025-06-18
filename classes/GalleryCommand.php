@@ -149,7 +149,7 @@ class GalleryCommand
         return $config;
     }
 
-    /** @return iterable<object{filename:string,caption:string,thumbnail:string,srcset:string}> */
+    /** @return iterable<object{filename:string,caption:string,thumbnail:string,srcset:string,width:string,height:string}> */
     private function pictureDtos(Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
@@ -175,12 +175,19 @@ class GalleryCommand
             } else {
                 $thumbnail = $filename;
             }
+            if (($size = $this->imageFinder->size($gallery->path() . "/" . $pic->path())) === null) {
+                $width = $height = "";
+            } else {
+                [$width, $height] = $size;
+            }
             yield (object) [
                 "filename" => $filename,
                 "caption" => $pic->caption() ?? "",
                 "description" => $pic->description() ?? $pic->caption() ?? "",
                 "thumbnail" => $thumbnail,
                 "srcset" => $this->srcset($this->thumbnailService->thumbnails($gallery->path() . '/' . $pic->path())),
+                "width" => (string) $width,
+                "height" => (string) $height,
             ];
         }
     }
