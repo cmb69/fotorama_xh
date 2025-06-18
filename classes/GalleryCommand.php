@@ -38,7 +38,7 @@ class GalleryCommand
     /** @var array<string,string> */
     private array $conf;
     private DocumentStore $store;
-    private ImageFinder $imageFinder;
+    private ImageFinder $imageFinder; // @phpstan-ignore-line
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
@@ -124,9 +124,11 @@ class GalleryCommand
     {
         $config = [];
         $width = $ratio = null;
-        if (($gallery->width() === null || $gallery->ratio() === null) && $gallery->firstImagePath() !== null) {
-            if (($size = $this->imageFinder->size($gallery->firstImagePath()))) {
-                [$width, $height] = $size;
+        if (($gallery->width() === null || $gallery->ratio() === null) && !empty($gallery->images())) {
+            $firstImage = $gallery->images()[0];
+            if ($firstImage->width() !== null && $firstImage->height() !== null) {
+                $width = $firstImage->width();
+                $height = $firstImage->height();
                 $ratio = "$width/$height";
             }
         }
@@ -149,48 +151,46 @@ class GalleryCommand
         return $config;
     }
 
-    /** @return iterable<object{filename:string,caption:string,thumbnail:string,srcset:string,width:string,height:string}> */
+    /** @return iterable<object{filename:string,caption:string,description:string,thumbnail:string,srcset:string,width:string,height:string}> */
     private function pictureDtos(Request $request, Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
-            if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
+            if ($this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
-            } else {
-                $filename = $this->imageFolder . $gallery->path() . '/' . $pic->path();
-            }
-            if ($this->conf["gallery_frontend"] !== "fotorama" || $gallery->thumbs()) {
-                if ($isAbsoluteUrl) {
-                    $thumbnail = $this->pluginFolder . "images/external.jpg";
-                } else {
-                    if ($this->imageFinder->filename($gallery->path() . "/" . $pic->path()) === null) {
-                        $thumbnail = $filename;
-                    } else {
-                        $thumbnail = $this->thumbnailService->thumbnail(
-                            $this->imageFolder,
-                            $gallery->path() . '/' . $pic->path(),
-                            $this->conf["gallery_frontend"] === "fotorama" ? 64 : 300
-                        );
-                    }
-                }
-            } else {
+                $thumbnails = [];
                 $thumbnail = $filename;
+            } else {
+                $filename = $this->imageFolder . $gallery->path() . "/" . $pic->path();
+                $filename = $request->url()->path($filename)->relative();
+                $thumbnails = $this->thumbnailService->thumbnails($gallery->path() . "/" . $pic->path());
+                $thumbnail = $this->thumbnail($thumbnails);
+                $thumbnail = $thumbnail !== null ? $request->url()->path($thumbnail)->relative() : $filename;
             }
             yield (object) [
-                "filename" => $request->url()->path($filename)->relative(),
+                "filename" => $filename,
                 "caption" => $pic->caption() ?? "",
                 "description" => $pic->description() ?? $pic->caption() ?? "",
-                "thumbnail" => $request->url()->path($thumbnail)->relative(),
-                "srcset" => $this->srcset($request, $gallery->path() . '/' . $pic->path()),
+                "thumbnail" => $thumbnail,
+                "srcset" => $this->srcset($request, $thumbnails),
                 "width" => (string) $pic->width(),
                 "height" => (string) $pic->height(),
             ];
         }
     }
 
-    private function srcset(Request $request, string $path): string
+    /** @param array<string,string> $thumbnails */
+    private function thumbnail(array $thumbnails): ?string
+    {
+        if (($key = array_key_first($thumbnails)) === null) {
+            return null;
+        }
+        return $thumbnails[$key];
+    }
+
+    /** @param array<string,string> $thumbnails */
+    private function srcset(Request $request, array $thumbnails): string
     {
         $srcset = [];
-        $thumbnails = $this->thumbnailService->thumbnails($path);
         foreach ($thumbnails as $w => $filename) {
             $srcset[] = $request->url()->path($filename)->relative() . " " . $w;
         }

@@ -99,10 +99,10 @@ class Image
             $image->setAttribute("description", $this->description);
         }
         if ($this->width !== null) {
-            $image->setAttribute("width", $this->width);
+            $image->setAttribute("width", (string) $this->width);
         }
         if ($this->height !== null) {
-            $image->setAttribute("height", $this->height);
+            $image->setAttribute("height", (string) $this->height);
         }
         return $image;
     }
