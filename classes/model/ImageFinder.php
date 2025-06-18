@@ -91,7 +91,14 @@ class ImageFinder
         if (($size = getimagesize($this->imageFolder . $filename)) === false) {
             return null;
         }
-        return [$size[0], $size[1]];
+        $orientation = 0;
+        if (extension_loaded("exif") && ($exif = exif_read_data($this->imageFolder . $filename))) {
+            $orientation = $exif["Orientation"] ?? 0;
+        }
+        if ($orientation < 5) {
+            return [$size[0], $size[1]];
+        }
+        return [$size[1], $size[0]];
     }
 
     public function filename(string $path): ?string
