@@ -24,9 +24,5 @@ use Plib\Request;
 
 function fotorama(string $name): string
 {
-    $t0 = hrtime(true);
-    $response = Plugin::galleryCommand()(Request::current(), $name)();
-    $t1 = hrtime(true);
-    var_dump(($t1 - $t0) / 1e6);
-    return $response;
+    return Plugin::galleryCommand()(Request::current(), $name)();
 }
