@@ -43,6 +43,7 @@ $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 $plugin_tx['fotorama']['message_clear_cache'] = "Clear the thumbnail cache?";
 $plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in the meantime! Save again to overwrite these changes.";
 $plugin_tx['fotorama']['message_delete'] = "Delete the “%s” gallery?";
+$plugin_tx['fotorama']['message_save_progress'] = "Saving may take a while, because thumbnails may need to be created. Please be patient!";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
 $plugin_tx['fotorama']['error_clear_cache'] = "Cannot clear the thumbnail cache!";

@@ -43,6 +43,7 @@ $plugin_tx['fotorama']['help_width'] = "(Zahl oder Prozentwert)";
 $plugin_tx['fotorama']['message_clear_cache'] = "Thumbnail-Cache löschen?";
 $plugin_tx['fotorama']['message_conflict'] = "Die Galerie wurde in der Zwischenzeit geändert! Speichern Sie noch einmal, um diese Änderungen zu überschreiben!";
 $plugin_tx['fotorama']['message_delete'] = "Galerie „%s“  löschen?";
+$plugin_tx['fotorama']['message_save_progress'] = "Das Speichern kann eine Weile dauern, weil möglicherweise Vorschaubilder erzeugt werden müssen. Bitte haben Sie etwas Geduld!";
 $plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
 $plugin_tx['fotorama']['error_clear_cache'] = "Der Thumbnail-Cache kann nicht gelöscht werden!";

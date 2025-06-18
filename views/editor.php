@@ -141,4 +141,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       <iframe src="" loading="lazy"></iframe>
     </figure>
   </dialog>
+  <dialog class="fotorama_progress">
+    <p class="xh_info"><?=$this->text("message_save_progress")?></p>
+    <progress></progress>
+  </dialog>
 </article>
