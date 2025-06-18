@@ -319,6 +319,9 @@ class GalleryAdminCommand
             $im = $gallery->addImage($image["path"]);
             $im->setCaption($image["caption"]);
             $im->setDescription($image["description"]);
+            if (($size = $this->imageFinder->size($gallery->path() . "/" . $im->path())) !== null) {
+                $im->setDimensions($size[0], $size[1]);
+            }
         }
         return true;
     }

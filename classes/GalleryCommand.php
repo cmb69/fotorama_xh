@@ -175,19 +175,14 @@ class GalleryCommand
             } else {
                 $thumbnail = $filename;
             }
-            if (($size = $this->imageFinder->size($gallery->path() . "/" . $pic->path())) === null) {
-                $width = $height = "";
-            } else {
-                [$width, $height] = $size;
-            }
             yield (object) [
                 "filename" => $request->url()->path($filename)->relative(),
                 "caption" => $pic->caption() ?? "",
                 "description" => $pic->description() ?? $pic->caption() ?? "",
                 "thumbnail" => $request->url()->path($thumbnail)->relative(),
                 "srcset" => $this->srcset($request, $gallery->path() . '/' . $pic->path()),
-                "width" => (string) $width,
-                "height" => (string) $height,
+                "width" => (string) $pic->width(),
+                "height" => (string) $pic->height(),
             ];
         }
     }

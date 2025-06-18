@@ -50,6 +50,16 @@
       <optional>
         <attribute name="description"/>
       </optional>
+      <optional>
+        <attribute name="width">
+          <data type="integer"/>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="height">
+          <data type="integer"/>
+        </attribute>
+      </optional>
     </element>
   </zeroOrMore>
 </element>
