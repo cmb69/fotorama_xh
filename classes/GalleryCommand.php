@@ -82,7 +82,7 @@ class GalleryCommand
             "rel" => "fotorama-" . $name,
             "caption" => $gallery->caption() ?? "",
             "config" => $this->jsConfig($gallery),
-            "images" => $this->pictureDtos($gallery),
+            "images" => $this->pictureDtos($request, $gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
     }
@@ -150,7 +150,7 @@ class GalleryCommand
     }
 
     /** @return iterable<object{filename:string,caption:string,thumbnail:string,srcset:string,width:string,height:string}> */
-    private function pictureDtos(Gallery $gallery): iterable
+    private function pictureDtos(Request $request, Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
             if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
@@ -181,23 +181,23 @@ class GalleryCommand
                 [$width, $height] = $size;
             }
             yield (object) [
-                "filename" => $filename,
+                "filename" => $request->url()->path($filename)->relative(),
                 "caption" => $pic->caption() ?? "",
                 "description" => $pic->description() ?? $pic->caption() ?? "",
-                "thumbnail" => $thumbnail,
-                "srcset" => $this->srcset($this->thumbnailService->thumbnails($gallery->path() . '/' . $pic->path())),
+                "thumbnail" => $request->url()->path($thumbnail)->relative(),
+                "srcset" => $this->srcset($request, $gallery->path() . '/' . $pic->path()),
                 "width" => (string) $width,
                 "height" => (string) $height,
             ];
         }
     }
 
-    /** @param array<string,string> $thumbnails */
-    private function srcset(array $thumbnails): string
+    private function srcset(Request $request, string $path): string
     {
         $srcset = [];
+        $thumbnails = $this->thumbnailService->thumbnails($path);
         foreach ($thumbnails as $w => $filename) {
-            $srcset[] = "$filename $w";
+            $srcset[] = $request->url()->path($filename)->relative() . " " . $w;
         }
         return implode(", ", $srcset);
     }
