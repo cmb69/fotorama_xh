@@ -194,9 +194,11 @@ class ThumbnailService
         }
         $w1 = imagesx($source);
         $h1 = imagesy($source);
-        $w2 = intdiv($w1, 2);
-        $h2 = intdiv($h1, 2);
-        while ($w2 >= 300 || $h2 >= 150) {
+        for (
+            $w2 = intdiv($w1, 2), $h2 = intdiv($h1, 2);
+            $w2 >= 300 || $h2 >= 150;
+            $w2 = intdiv($w2, 2), $h2 = intdiv($h2, 2)
+        ) {
             $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-$w2" . "w.jpg";
             if (is_file($thumb) && filemtime($thumb) >= filemtime($folder . $filename)) {
                 continue;
@@ -216,8 +218,6 @@ class ThumbnailService
                 $data = $this->embedIcc($data, $icc);
             }
             file_put_contents($thumb, $data);
-            $w2 = intdiv($w2, 2);
-            $h2 = intdiv($h2, 2);
         }
     }
 
