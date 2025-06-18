@@ -69,6 +69,7 @@ class ThumbnailService
                 return $folder . $filename;
             }
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
+            imageinterlace($dest, true);
             ob_start();
             if (!imagejpeg($dest)) {
                 ob_clean();
@@ -204,6 +205,7 @@ class ThumbnailService
                 continue;
             }
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
+            imageinterlace($dest, true);
             ob_start();
             if (!imagejpeg($dest)) {
                 ob_clean();
