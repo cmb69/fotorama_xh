@@ -299,6 +299,7 @@ class GalleryAdminCommand
             $error = $this->view->message("fail", "error_save", $name);
             return $this->respondWithEditor($request, $error);
         }
+        $this->createThumbnails($gallery);
         return Response::redirect($request->url()->without("action")->absolute());
     }
 
@@ -318,8 +319,24 @@ class GalleryAdminCommand
             $im = $gallery->addImage($image["path"]);
             $im->setCaption($image["caption"]);
             $im->setDescription($image["description"]);
+            if (
+                strpos($im->path(), '://') === false
+                && ($size = $this->imageFinder->size($gallery->path() . "/" . $im->path())) !== null
+            ) {
+                $im->setDimensions($size[0], $size[1]);
+            }
         }
         return true;
+    }
+
+    private function createThumbnails(Gallery $gallery): void
+    {
+        $imageFolder = $this->imageFinder->filename("");
+        assert($imageFolder !== null);
+        foreach ($gallery->images() as $image) {
+            $path = $gallery->path() . "/" . $image->path();
+            $this->thumbnailService->createThumbnails($imageFolder, $path);
+        }
     }
 
     private function delete(Request $request): Response

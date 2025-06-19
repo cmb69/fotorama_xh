@@ -16,6 +16,7 @@ $plugin_tx['fotorama']['label_description'] = "Beschreibung";
 $plugin_tx['fotorama']['label_dissolve'] = "Zerfließen";
 $plugin_tx['fotorama']['label_edit'] = "Bearbeiten";
 $plugin_tx['fotorama']['label_folder'] = "Ordner";
+$plugin_tx['fotorama']['label_fotorama_frontend'] = "Fotorama-Frontend";
 $plugin_tx['fotorama']['label_fullscreen'] = "Vollbild";
 $plugin_tx['fotorama']['label_fullscreen_false'] = "nein";
 $plugin_tx['fotorama']['label_fullscreen_true'] = "Browser";
@@ -42,6 +43,7 @@ $plugin_tx['fotorama']['help_width'] = "(Zahl oder Prozentwert)";
 $plugin_tx['fotorama']['message_clear_cache'] = "Thumbnail-Cache löschen?";
 $plugin_tx['fotorama']['message_conflict'] = "Die Galerie wurde in der Zwischenzeit geändert! Speichern Sie noch einmal, um diese Änderungen zu überschreiben!";
 $plugin_tx['fotorama']['message_delete'] = "Galerie „%s“  löschen?";
+$plugin_tx['fotorama']['message_save_progress'] = "Das Speichern kann eine Weile dauern, weil möglicherweise Vorschaubilder erzeugt werden müssen. Bitte haben Sie etwas Geduld!";
 $plugin_tx['fotorama']['message_valid'] = "Die Galerie „%s“ ist gültig!";
 
 $plugin_tx['fotorama']['error_clear_cache'] = "Der Thumbnail-Cache kann nicht gelöscht werden!";
@@ -64,6 +66,7 @@ $plugin_tx['fotorama']['syscheck_writable'] = "%s ist schreibbar: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "ja";
 $plugin_tx['fotorama']['syscheck_no'] = "nein";
 
+$plugin_tx['fotorama']['cf_gallery_frontend'] = "Das Frontend, das zur Darstellung der Galerien verwendet wird.";
 $plugin_tx['fotorama']['cf_default_width'] = "Die Vorgabe-Breite für neue Galerien; entweder eine einfache Zahl, die die Breite in Pixeln angibt (z.B. 400), oder eine Prozentzahl des verfügbaren horizontalen Platzes (z.B. 100%).  Wenn leer gelassen, wird die Breite des ersten Galeriebildes verwendet.";
 $plugin_tx['fotorama']['cf_default_ratio'] = "Das Vorgabe-Seitenverhältnis für neue Galerien; entweder ein Bruch (z.B. 400/300 oder 16/9), oder eine Dezimalzahl (z.B. 1.3333). Wenn leer gelassen, wird das Seitenverhältnis des ersten Galeriebildes verwendet.";
 $plugin_tx['fotorama']['cf_default_nav'] = "Die Vorgabe-Navigation für neue Galerien; entweder leer für eine schlanke Punkt-Navigation, oder thumbs für eine Vorschaubild-Navigation.";

@@ -36,48 +36,51 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         <label for="fotorama_caption"><?=$this->text("label_caption")?></label>
         <textarea id="fotorama_caption" name="caption" rows="2"><?=$this->esc($gallery->caption)?></textarea>
       </p>
-      <p>
-        <label for="fotorama_width">
-          <span><?=$this->text("label_width")?></span>
-          <span class="fotorama_help"><?=$this->text("help_width")?></span>
-        </label>
-        <input id="fotorama_width" name="width" value="<?=$this->esc($gallery->width)?>">
-      </p>
-      <p>
-        <label for="fotorama_ratio">
-          <span><?=$this->text("label_ratio")?></span>
-          <span class="fotorama_help"><?=$this->text("help_ratio")?></span>
-        </label>
-        <input id="fotorama_ratio" name="ratio" value="<?=$this->esc($gallery->ratio)?>">
-      </p>
-      <p>
-        <input type="hidden" name="thumbs" value="">
-        <input type="checkbox" id="fotorama_nav" name="thumbs" <?=$this->checked($gallery->thumbs)?>>
-        <label for="fotorama_nav"><?=$this->text("label_nav")?></label>
-      </p>
-      <p>
-        <label for="fotorama_autoplay">
-          <span><?=$this->text("label_autoplay")?></span>
-          <span class="fotorama_help"><?=$this->text("help_autoplay")?></span>
-        </label>
-        <input type="number" id="fotorama_autoplay" name="autoplay" value="<?=$this->esc($gallery->autoplay)?>" min="0">
-      </p>
-      <p>
-        <label for="fotorama_fullscreen"><?=$this->text("label_fullscreen")?></label>
-        <select id="fotorama_fullscreen" name="fullscreen">
-          <option value="" <?=$this->selected("", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_false")?></option>
-          <option value="true" <?=$this->selected("true", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_true")?></option>
-          <option value="native" <?=$this->selected("native", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_native")?></option>
-        </select>
-      </p>
-      <p>
-        <label for="fotorama_transition"><?=$this->text("label_transition")?></label>
-        <select id="fotorama_transition" name="transition">
-          <option value="slide" <?=$this->selected("slide", $gallery->transition)?>><?=$this->text("label_slide")?></option>
-          <option value="crossfade" <?=$this->selected("crossfade", $gallery->transition)?>><?=$this->text("label_crossfade")?></option>
-          <option value="dissolve" <?=$this->selected("dissolve", $gallery->transition)?>><?=$this->text("label_dissolve")?></option>
-        </select>
-      </p>
+      <fieldset class="fotorama_fotorama">
+        <legend><?=$this->text("label_fotorama_frontend")?></legend>
+        <p>
+          <label for="fotorama_width">
+            <span><?=$this->text("label_width")?></span>
+            <span class="fotorama_help"><?=$this->text("help_width")?></span>
+          </label>
+          <input id="fotorama_width" name="width" value="<?=$this->esc($gallery->width)?>">
+        </p>
+        <p>
+          <label for="fotorama_ratio">
+            <span><?=$this->text("label_ratio")?></span>
+            <span class="fotorama_help"><?=$this->text("help_ratio")?></span>
+          </label>
+          <input id="fotorama_ratio" name="ratio" value="<?=$this->esc($gallery->ratio)?>">
+        </p>
+        <p>
+          <input type="hidden" name="thumbs" value="">
+          <input type="checkbox" id="fotorama_nav" name="thumbs" <?=$this->checked($gallery->thumbs)?>>
+          <label for="fotorama_nav"><?=$this->text("label_nav")?></label>
+        </p>
+        <p>
+          <label for="fotorama_autoplay">
+            <span><?=$this->text("label_autoplay")?></span>
+            <span class="fotorama_help"><?=$this->text("help_autoplay")?></span>
+          </label>
+          <input type="number" id="fotorama_autoplay" name="autoplay" value="<?=$this->esc($gallery->autoplay)?>" min="0">
+        </p>
+        <p>
+          <label for="fotorama_fullscreen"><?=$this->text("label_fullscreen")?></label>
+          <select id="fotorama_fullscreen" name="fullscreen">
+            <option value="" <?=$this->selected("", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_false")?></option>
+            <option value="true" <?=$this->selected("true", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_true")?></option>
+            <option value="native" <?=$this->selected("native", $gallery->fullscreen)?>><?=$this->text("label_fullscreen_native")?></option>
+          </select>
+        </p>
+        <p>
+          <label for="fotorama_transition"><?=$this->text("label_transition")?></label>
+          <select id="fotorama_transition" name="transition">
+            <option value="slide" <?=$this->selected("slide", $gallery->transition)?>><?=$this->text("label_slide")?></option>
+            <option value="crossfade" <?=$this->selected("crossfade", $gallery->transition)?>><?=$this->text("label_crossfade")?></option>
+            <option value="dissolve" <?=$this->selected("dissolve", $gallery->transition)?>><?=$this->text("label_dissolve")?></option>
+          </select>
+        </p>
+      </fieldset>
     </div>
     <p class="fotorama_controls">
       <button name="fotorama_do"><?=$this->text("label_save")?></button>
@@ -137,5 +140,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       </p>
       <iframe src="" loading="lazy"></iframe>
     </figure>
+  </dialog>
+  <dialog class="fotorama_progress">
+    <p class="xh_info"><?=$this->text("message_save_progress")?></p>
+    <progress></progress>
   </dialog>
 </article>

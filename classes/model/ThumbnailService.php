@@ -36,7 +36,54 @@ class ThumbnailService
         $this->cacheFolder = $cacheFolder;
     }
 
-    public function thumbnail(string $folder, string $filename, int $size): string
+    /** @return array<string,string> */
+    public function thumbnails(string $filename): array
+    {
+        $res = [];
+        $pathinfo = pathinfo($filename);
+        $dirname = $pathinfo["dirname"] ?? ".";
+        $pattern = '/^' . preg_quote($pathinfo["filename"], "/") . '-(\d+w)\.jpg$/';
+        if (($dir = @opendir($this->cacheFolder . $dirname)) !== false) {
+            while (($entry = readdir($dir)) !== false) {
+                if (preg_match($pattern, $entry, $matches)) {
+                    $res[$matches[1]] = $this->cacheFolder . $dirname . "/" . $matches[0];
+                }
+            }
+        }
+        natsort($res);
+        return $res;
+    }
+
+    public function createThumbnails(string $folder, string $filename): void
+    {
+        if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
+            return;
+        }
+        if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
+            return;
+        }
+        $basename = $this->basename($filename);
+        $w1 = imagesx($source);
+        $h1 = imagesy($source);
+        for (
+            $w2 = intdiv($w1, 2), $h2 = intdiv($h1, 2);
+            $w2 >= 300 || $h2 >= 150;
+            $w2 = intdiv($w2, 2), $h2 = intdiv($h2, 2)
+        ) {
+            $thumb = "$basename-{$w2}w.jpg";
+            if (is_file($thumb) && filemtime($thumb) >= filemtime($folder . $filename)) {
+                continue;
+            }
+            if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
+                continue;
+            }
+            imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
+            $icc = $this->icc($folder . $filename);
+            $this->save($dest, $thumb, $icc);
+        }
+    }
+
+    private function basename(string $filename): string
     {
         $pathinfo = pathinfo($filename);
         $dirname = $pathinfo["dirname"] ?? ".";
@@ -44,45 +91,7 @@ class ThumbnailService
             mkdir($this->cacheFolder . $dirname, 0777, true);
             chmod($this->cacheFolder . $dirname, 0777);
         }
-        $extension = $pathinfo["extension"] ?? "jpg";
-        $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-64." . $extension;
-        if (!is_file($thumb) || filemtime($thumb) < filemtime($folder . $filename)) {
-            if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
-                return $folder . $filename;
-            }
-            if (imagesx($source) < $size || imagesy($source) < $size) {
-                return $folder . $filename;
-            }
-            if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
-                return $folder . $filename;
-            }
-            $w1 = imagesx($source);
-            $h1 = imagesy($source);
-            if ($w1 < $h1) {
-                $w2 = $size;
-                $h2 = (int) round($w2 / $w1 * $h1);
-            } else {
-                $h2 = $size;
-                $w2 = (int) round($h2 / $h1 * $w1);
-            }
-            if (($dest = imagecreatetruecolor($w2, $h2)) === false) {
-                return $folder . $filename;
-            }
-            imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
-            ob_start();
-            if (!imagejpeg($dest)) {
-                ob_clean();
-                return $folder . $filename;
-            }
-            $data = (string) ob_get_clean();
-            if (($icc = $this->icc($folder . $filename)) !== null) {
-                $data = $this->embedIcc($data, $icc);
-            }
-            file_put_contents($thumb, $data);
-            imagedestroy($source);
-            imagedestroy($dest);
-        }
-        return $thumb;
+        return $this->cacheFolder . $dirname . "/" . $pathinfo["filename"];
     }
 
     private function orientation(string $path): int
@@ -130,6 +139,22 @@ class ThumbnailService
             case 8:
                 return imagerotate($image, 90, 0) ?: null;
         }
+    }
+
+    /** @param GdImage $image */
+    private function save($image, string $dst, ?string $icc): bool
+    {
+        imageinterlace($image, true);
+        ob_start();
+        if (!imagejpeg($image)) {
+            ob_clean();
+            return false;
+        }
+        $data = (string) ob_get_clean();
+        if ($icc !== null) {
+            $data = $this->embedIcc($data, $icc);
+        }
+        return file_put_contents($dst, $data) !== false;
     }
 
     private function icc(string $path): ?string

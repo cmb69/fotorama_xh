@@ -3,3 +3,5 @@ includes:
 parameters:
   typeAliases:
     GdImage: resource
+  ignoreErrors:
+    - '/Parameter #2 \$interlace of function imageinterlace expects int, true given/'

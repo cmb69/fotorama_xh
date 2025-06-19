@@ -1,3 +1,5 @@
+<?php
+
 /**
  * Copyright (c) Christoph M. Becker
  *
@@ -17,17 +19,33 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// @ts-check
+namespace Fotorama\Dto;
 
-document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
-    init(/** @type {HTMLElement} */ (element));
-});
+class ImageDto
+{
+    public string $filename;
+    public string $caption;
+    public string $description;
+    public string $thumbnail;
+    public string $srcset;
+    public string $width;
+    public string $height;
 
-/** @param {HTMLElement} element */
-function init(element) {
-    const config = JSON.parse(element.dataset.config || "{}");
-    // @ts-expect-error
-    jQuery(".fotorama", element).fotorama(config);
-    // @ts-expect-error
-    new SimpleLightbox(".fotorama_lightbox a");
+    public function __construct(
+        string $filename,
+        string $caption,
+        string $description,
+        string $thumbnail,
+        string $srcset,
+        string $width,
+        string $height
+    ) {
+        $this->filename = $filename;
+        $this->caption = $caption;
+        $this->description = $description;
+        $this->thumbnail = $thumbnail;
+        $this->srcset = $srcset;
+        $this->width = $width;
+        $this->height = $height;
+    }
 }

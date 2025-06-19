@@ -1,5 +1,9 @@
 /* simple customization */
 
+div.fotorama_lightbox {
+    --flex-grow: 1; /* 0 or 1 */
+}
+
 article.fotorama_editor {
     --general-columns: 1fr 1fr; /* 3 columns: 1fr 1fr 1fr */
     --thumb-small: 100px;
@@ -14,6 +18,28 @@ figure.fotorama_gallery {}
 figure.fotorama_gallery figcaption {
     font-size: larger;
     text-align: center;
+}
+
+/* lightbox */
+
+div.fotorama_lightbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+div.fotorama_lightbox a {
+    height: 150px;
+    flex-grow: var(--flex-grow, 1);
+    border: none;
+}
+div.fotorama_lightbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+div.fotorama_lightbox img[src$="/external.svg"] {
+    object-fit: fill;
 }
 
 /* overview */
@@ -79,6 +105,12 @@ article.fotorama_editor .fotorama_controls {
 article.fotorama_editor .fotorama_gallery {
     display: grid;
     grid-template-columns: var(--general-columns, 1fr 1fr);
+    column-gap: 1em;
+}
+article.fotorama_editor .fotorama_fotorama {
+    display: grid;
+    grid-template-columns: var(--general-columns, 1fr 1fr);
+    grid-column: 1/-1;
     column-gap: 1em;
 }
 article.fotorama_editor .fotorama_gallery label {
@@ -182,6 +214,17 @@ article.fotorama_editor .fotorama_filebrowser p {
 article.fotorama_editor .fotorama_filebrowser iframe {
     border: 0;
     grid-column: 1/3;
+}
+
+/* save progress dialog */
+
+article.fotorama_editor .fotorama_progress {
+    margin: auto;
+    padding: 1em;
+    width: 30em;
+}
+article.fotorama_editor .fotorama_progress progress {
+    width: 100%;
 }
 
 /* delete confirmation */

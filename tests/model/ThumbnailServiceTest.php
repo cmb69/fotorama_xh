@@ -18,56 +18,52 @@ class ThumbnailServiceTest extends TestCase
         return new ThumbnailService(vfsStream::url("root/cache/"));
     }
 
-    public function testMakesHorizontalThumbnail(): void
+    public function testCreatesThumbnails(): void
     {
-        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2.jpg", 32);
-        $this->assertFileExists($out);
-        $size = getimagesize($out);
-        $this->assertSame(72, $size[0]);
-        $this->assertSame(32, $size[1]);
+        $sut = $this->sut();
+        $sut->createThumbnails(__DIR__ . "/../data/", "white.jpg");
+        $thumbs = $sut->thumbnails("white.jpg");
+        $this->assertEquals(
+            ["320w" => "vfs://root/cache/./white-320w.jpg", "640w" => "vfs://root/cache/./white-640w.jpg"],
+            $thumbs,
+        );
+        $size = getimagesize($thumbs["320w"]);
+        $this->assertSame(320, $size[0]);
+        $this->assertSame(240, $size[1]);
+        $size = getimagesize($thumbs["640w"]);
+        $this->assertSame(640, $size[0]);
+        $this->assertSame(480, $size[1]);
     }
 
-    public function testMakesVerticalThumbnail(): void
-    {
-        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2_vertical.jpg", 32);
-        $this->assertFileExists($out);
-        $size = getimagesize($out);
-        $this->assertSame(32, $size[0]);
-        $this->assertSame(72, $size[1]);
-    }
-
-    public function testDoesNotCreateUpscaledThumbnail(): void
-    {
-        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", "XH2.jpg", 64);
-        $this->assertSame(__DIR__ . "/../data/XH2.jpg", $out);
-    }
-
-    /** @dataProvider orientation */
+    /**
+     * @requires extension exif
+     * @dataProvider orientation
+     */
     public function testHeedsOrientation(string $basename, string $col1, string $col2, string $col3, string $col4): void
     {
-        $out = $this->sut()->thumbnail(__DIR__ . "/../data/", $basename, 64);
-        $im = imagecreatefromjpeg($out);
-        $this->assertSame(128, imagesx($im));
-        $this->assertSame(64, imagesy($im));
+        $this->sut()->createThumbnails(__DIR__ . "/../data/", "$basename.jpg");
+        $im = imagecreatefromjpeg(vfsStream::url("root/cache/$basename-400w.jpg"));
+        $this->assertSame(400, imagesx($im));
+        $this->assertSame(200, imagesy($im));
         imagetruecolortopalette($im, false, 4);
         $colors = $this->colors($im);
-        $this->assertSame($colors[$col1], imagecolorat($im, 31, 15));
-        $this->assertSame($colors[$col2], imagecolorat($im, 95, 15));
-        $this->assertSame($colors[$col3], imagecolorat($im, 31, 47));
-        $this->assertSame($colors[$col4], imagecolorat($im, 95, 47));
+        $this->assertSame($colors[$col1], imagecolorat($im, 100, 50));
+        $this->assertSame($colors[$col2], imagecolorat($im, 300, 50));
+        $this->assertSame($colors[$col3], imagecolorat($im, 100, 150));
+        $this->assertSame($colors[$col4], imagecolorat($im, 300, 150));
     }
 
     public function orientation(): array
     {
         return [
-            ["orientation1.jpg", "red", "green", "blue", "white"],
-            ["orientation2.jpg", "green", "red", "white", "blue"],
-            ["orientation3.jpg", "white", "blue", "green", "red"],
-            ["orientation4.jpg", "blue", "white", "red", "green"],
-            ["orientation5.jpg", "red", "blue", "green", "white"],
-            ["orientation6.jpg", "blue", "red", "white", "green"],
-            ["orientation7.jpg", "white", "green", "blue", "red"],
-            ["orientation8.jpg", "green", "white", "red", "blue"],
+            ["orientation1", "red", "green", "blue", "white"],
+            ["orientation2", "green", "red", "white", "blue"],
+            ["orientation3", "white", "blue", "green", "red"],
+            ["orientation4", "blue", "white", "red", "green"],
+            ["orientation5", "red", "blue", "green", "white"],
+            ["orientation6", "blue", "red", "white", "green"],
+            ["orientation7", "white", "green", "blue", "red"],
+            ["orientation8", "green", "white", "red", "blue"],
         ];
     }
 
@@ -93,8 +89,8 @@ class ThumbnailServiceTest extends TestCase
             AAAAAAAAAGN1cnYAAAAAAAAAAQIzAABjdXJ2AAAAAAAAAAECMwAAY3VydgAAAAAAAAABAjMAAFhZWiAAAAAAAAC3agAAQjsAAAAAWF
             laIAAAAAAAABnbAAC5hwAADRxYWVogAAAAAAAAJZEAAAQ+AADGEQ==
             EOS;
-        $this->sut()->thumbnail(__DIR__ . "/../data/", "Momiji-WideRGB-yes.jpg", 64);
-        getimagesize(__DIR__ . "/../data/Momiji-WideRGB-yes.jpg", $info);
+        $this->sut()->createThumbnails(__DIR__ . "/../data/", "Momiji-WideRGB-yes.jpg");
+        getimagesize(vfsStream::url("root/cache/Momiji-WideRGB-yes-300w.jpg"), $info);
         $this->assertSame(str_replace("\n", "", $icc), base64_encode($info["APP2"]));
     }
 

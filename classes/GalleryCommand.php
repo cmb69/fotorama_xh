@@ -21,6 +21,8 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Fotorama;
 
+use Exception;
+use Fotorama\Dto\ImageDto;
 use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
@@ -33,7 +35,8 @@ use Plib\View;
 class GalleryCommand
 {
     private string $pluginFolder;
-    private string $imageFolder;
+    /** @var array<string,string> */
+    private array $conf;
     private DocumentStore $store;
     private ImageFinder $imageFinder;
     private ThumbnailService $thumbnailService;
@@ -41,9 +44,10 @@ class GalleryCommand
     private View $view;
     private bool $jqueryIncluded = false;
 
+    /** @param array<string,string> $conf */
     public function __construct(
         string $pluginFolder,
-        string $imageFolder,
+        array $conf,
         DocumentStore $store,
         ImageFinder $imageFinder,
         ThumbnailService $thumbnailService,
@@ -51,7 +55,7 @@ class GalleryCommand
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
-        $this->imageFolder = $imageFolder;
+        $this->conf = $conf;
         $this->store = $store;
         $this->imageFinder = $imageFinder;
         $this->thumbnailService = $thumbnailService;
@@ -66,17 +70,31 @@ class GalleryCommand
         }
         if (!$this->jqueryIncluded) {
             $this->jquery->include();
-            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama.js");
+            $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama/fotorama.js");
             $this->jqueryIncluded = true;
         }
-        return Response::create($this->view->render("gallery", [
+        return Response::create($this->view->render($this->conf["gallery_frontend"], [
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
-            "stylesheet" => $this->pluginFolder . "lib/fotorama.css",
+            "lightbox_script" => $this->lightboxScript(),
+            "stylesheet" => $this->stylesheet(),
+            "rel" => "fotorama-" . $name,
             "caption" => $gallery->caption() ?? "",
             "config" => $this->jsConfig($gallery),
-            "images" => $this->pictureDtos($gallery),
+            "images" => $this->pictureDtos($request, $gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
+    }
+
+    private function lightboxScript(): ?string
+    {
+        switch ($this->conf["gallery_frontend"]) {
+            case "fotorama":
+                return null;
+            case "lightbox":
+                return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.js";
+            default:
+                throw new Exception("unsupported lightbox");
+        }
     }
 
     private function script(): string
@@ -87,14 +105,28 @@ class GalleryCommand
         return $this->pluginFolder . "fotorama.js";
     }
 
+    private function stylesheet(): string
+    {
+        switch ($this->conf["gallery_frontend"]) {
+            case "fotorama":
+                return $this->pluginFolder . "lib/fotorama/fotorama.css";
+            case "lightbox":
+                return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.css";
+            default:
+                throw new Exception("unsupported lightbox");
+        }
+    }
+
     /** @return array<string,mixed> */
     private function jsConfig(Gallery $gallery): array
     {
         $config = [];
         $width = $ratio = null;
-        if (($gallery->width() === null || $gallery->ratio() === null) && $gallery->firstImagePath() !== null) {
-            if (($size = $this->imageFinder->size($gallery->firstImagePath()))) {
-                [$width, $height] = $size;
+        if (($gallery->width() === null || $gallery->ratio() === null) && !empty($gallery->images())) {
+            $firstImage = $gallery->images()[0];
+            if ($firstImage->width() !== null && $firstImage->height() !== null) {
+                $width = $firstImage->width();
+                $height = $firstImage->height();
                 $ratio = "$width/$height";
             }
         }
@@ -117,39 +149,58 @@ class GalleryCommand
         return $config;
     }
 
-    /** @return iterable<object{filename:string,caption:string,thumbnail:string}> */
-    private function pictureDtos(Gallery $gallery): iterable
+    /** @return iterable<ImageDto> */
+    private function pictureDtos(Request $request, Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
-            if ($isAbsoluteUrl = $this->isAbsoluteUrl($pic->path())) {
+            if ($this->isAbsoluteUrl($pic->path())) {
                 $filename = $pic->path();
+                $description = "external image";
+                $thumbnails = [];
+                $thumbnail = $this->pluginFolder . "images/external.svg";
+                $width = "100";
+                $height = "100";
             } else {
-                $filename = $this->imageFolder . $gallery->path() . '/' . $pic->path();
-            }
-            if ($gallery->thumbs()) {
-                if ($isAbsoluteUrl) {
-                    $thumbnail = $this->pluginFolder . "images/external.jpg";
-                } else {
-                    if ($this->imageFinder->filename($gallery->path() . "/" . $pic->path()) === null) {
-                        $thumbnail = $filename;
-                    } else {
-                        $thumbnail = $this->thumbnailService->thumbnail(
-                            $this->imageFolder,
-                            $gallery->path() . '/' . $pic->path(),
-                            64
-                        );
-                    }
+                if (($filename = $this->imageFinder->filename($gallery->path() . "/" . $pic->path())) === null) {
+                    continue;
                 }
-            } else {
-                $thumbnail = $filename;
+                $filename = $request->url()->path($filename)->relative();
+                $description = $pic->description() ?? $pic->caption() ?? "";
+                $thumbnails = $this->thumbnailService->thumbnails($gallery->path() . "/" . $pic->path());
+                $thumbnail = $this->thumbnail($thumbnails);
+                $thumbnail = $thumbnail !== null ? $request->url()->path($thumbnail)->relative() : $filename;
+                $width = (string) $pic->width();
+                $height = (string) $pic->height();
             }
-            yield (object) [
-                "filename" => $filename,
-                "caption" => $pic->caption() ?? "",
-                "description" => $pic->description() ?? $pic->caption() ?? "",
-                "thumbnail" => $thumbnail,
-            ];
+            yield new ImageDto(
+                $filename,
+                $pic->caption() ?? "",
+                $description,
+                $thumbnail,
+                $this->srcset($request, $thumbnails),
+                $width,
+                $height,
+            );
         }
+    }
+
+    /** @param array<string,string> $thumbnails */
+    private function thumbnail(array $thumbnails): ?string
+    {
+        if (($key = array_key_first($thumbnails)) === null) {
+            return null;
+        }
+        return $thumbnails[$key];
+    }
+
+    /** @param array<string,string> $thumbnails */
+    private function srcset(Request $request, array $thumbnails): string
+    {
+        $srcset = [];
+        foreach ($thumbnails as $w => $filename) {
+            $srcset[] = $request->url()->path($filename)->relative() . " " . $w;
+        }
+        return implode(", ", $srcset);
     }
 
     private function isAbsoluteUrl(string $url): bool

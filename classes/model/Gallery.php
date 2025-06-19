@@ -155,14 +155,6 @@ final class Gallery implements Document
         return $this->images;
     }
 
-    public function firstImagePath(): ?string
-    {
-        if (empty($this->images)) {
-            return null;
-        }
-        return $this->path . "/" . $this->images[0]->path();
-    }
-
     public function checksum(): ?string
     {
         return $this->checksum;

@@ -105,6 +105,8 @@ var fotorama = (function () {
                 });
             });
             imagesInput.value = JSON.stringify(records);
+            const progress = /** @type {HTMLDialogElement} */ (article.querySelector("dialog.fotorama_progress"));
+            progress.showModal()
         });
         const closeButton = /** @type {HTMLButtonElement} */ (filebrowser.querySelector("button.fotorama_close"));
         closeButton.addEventListener("click", () => {
@@ -123,7 +125,7 @@ var fotorama = (function () {
             const clone = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
             const li = /** @type {HTMLLIElement} */ (clone.querySelector("li"));
             const thumb = /** @type {HTMLInputElement} */ (clone.querySelector("input.fotorama_thumb"));
-            thumb.src = image ? baseUrl + image.path : "";
+            thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
             const path = /** @type {HTMLInputElement} */ (clone.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
             path.addEventListener("change", () => {

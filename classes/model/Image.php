@@ -29,12 +29,16 @@ class Image
     private string $path;
     private ?string $caption = null;
     private ?string $description = null;
+    private ?int $width = null;
+    private ?int $height = null;
 
     public static function fromElement(DOMElement $element): self
     {
         $that = new self($element->getAttribute("path"));
         $that->caption = $element->hasAttribute("caption") ? $element->getAttribute("caption") : null;
         $that->description = $element->hasAttribute("description") ? $element->getAttribute("description") : null;
+        $that->width = $element->hasAttribute("width") ? (int) $element->getAttribute("width") : null;
+        $that->height = $element->hasAttribute("height") ? (int) $element->getAttribute("height") : null;
         return $that;
     }
 
@@ -58,6 +62,16 @@ class Image
         return $this->description;
     }
 
+    public function height(): ?int
+    {
+        return $this->height;
+    }
+
+    public function width(): ?int
+    {
+        return $this->width;
+    }
+
     public function setCaption(string $caption): void
     {
         $this->caption = $caption ?: null;
@@ -66,6 +80,12 @@ class Image
     public function setDescription(string $description): void
     {
         $this->description = $description ?: null;
+    }
+
+    public function setDimensions(int $width, int $height): void
+    {
+        $this->width = $width;
+        $this->height = $height;
     }
 
     public function toElement(DOMDocument $document): DOMElement
@@ -77,6 +97,12 @@ class Image
         }
         if ($this->description !== null) {
             $image->setAttribute("description", $this->description);
+        }
+        if ($this->width !== null) {
+            $image->setAttribute("width", (string) $this->width);
+        }
+        if ($this->height !== null) {
+            $image->setAttribute("height", (string) $this->height);
         }
         return $image;
     }

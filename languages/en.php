@@ -16,6 +16,7 @@ $plugin_tx['fotorama']['label_description'] = "Description";
 $plugin_tx['fotorama']['label_dissolve'] = "Dissolve";
 $plugin_tx['fotorama']['label_edit'] = "Edit";
 $plugin_tx['fotorama']['label_folder'] = "Folder";
+$plugin_tx['fotorama']['label_fotorama_frontend'] = "Fotorama Frontend";
 $plugin_tx['fotorama']['label_fullscreen'] = "Fullscreen";
 $plugin_tx['fotorama']['label_fullscreen_false'] = "no";
 $plugin_tx['fotorama']['label_fullscreen_true'] = "Viewport";
@@ -42,6 +43,7 @@ $plugin_tx['fotorama']['help_width'] = "(number or percentage)";
 $plugin_tx['fotorama']['message_clear_cache'] = "Clear the thumbnail cache?";
 $plugin_tx['fotorama']['message_conflict'] = "The gallery has been modified in the meantime! Save again to overwrite these changes.";
 $plugin_tx['fotorama']['message_delete'] = "Delete the “%s” gallery?";
+$plugin_tx['fotorama']['message_save_progress'] = "Saving may take a while, because thumbnails may need to be created. Please be patient!";
 $plugin_tx['fotorama']['message_valid'] = "The gallery “%s” is valid!";
 
 $plugin_tx['fotorama']['error_clear_cache'] = "Cannot clear the thumbnail cache!";
@@ -64,6 +66,7 @@ $plugin_tx['fotorama']['syscheck_writable'] = "%s is writable: %s";
 $plugin_tx['fotorama']['syscheck_yes'] = "yes";
 $plugin_tx['fotorama']['syscheck_no'] = "no";
 
+$plugin_tx['fotorama']['cf_gallery_frontend'] = "The frontend to use to present the galleries.";
 $plugin_tx['fotorama']['cf_default_width'] = "The default width of new galleries; either a plain number giving the width in pixels (e.g. 400) or a percentage of the available horizontal space (e.g. 100%).  If left empty, the width of the first gallery image is used.";
 $plugin_tx['fotorama']['cf_default_ratio'] = "The default aspect ration of new galleries; either a fraction (e.g. 400/300 or 16/9) or a decimal numer (e.g. 1.3333).  If left empty, the aspect ratio of the first gallery image is used.";
 $plugin_tx['fotorama']['cf_default_nav'] = "The default navigation of new galleries; either empty for a slim dot navigation, or thumbs for a thumbnail navigation.";

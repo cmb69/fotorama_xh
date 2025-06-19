@@ -121,7 +121,7 @@ dass beispielsweise das Bild nicht verfügbar ist,
 und unter Umständen rechtliche Einschränkungen gelten.
 Beachten Sie, dass für externe Bilder keine Vorschaubilder generiert werden, 
 sondern statt dessen ein Standard-Vorschaubild angezeigt wird,
-das Sie durch Ersetzen von `plugins/fotorama/images/external.jpg`
+das Sie durch Ersetzen von `plugins/fotorama/images/external.svg`
 mit einem Bild Ihrer Wahl ändern können.
 
 Sie können externe Bilder und Bilder im Gallerieordner beliebig mischen.
@@ -179,16 +179,19 @@ Copyright 2015-2021 Christoph M. Becker
 
 ## Danksagung
 
-Dieses Plugin verwendet [Fotorama](https://fotorama.io/)
-zur Anzeige der Galerien.
+Dieses Plugin verwendet [Fotorama](https://fotorama.io/) zur Anzeige der Galerien.
 Vielen Dank an Artem Polikarpov, dem Entwickler dieser Bibliothek,
+für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
+
+Dieses Plugin verwendet [SimpleLightbox](https://simplelightbox.js.org/) zur Anzeige der Galerien.
+Vielen Dank an Andre Rinas, dem Entwickler dieser Bibliothek,
 für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
 
 Das Pluginlogo wurde von [Everaldo Coelho](https://www.everaldo.com/) gestaltet.
 Vielen Dank für die Veröffentlichung unter LGPL.
-Das Plugin verwendet ebenfalls Icons aus dem
-[Oxygen Icon-Set](http://www.oxygen-icons.org/).
-Vielen Dank für die Veröffentlichung dieses Icon-Sets unter GPL.
+
+[`external.svg`](https://commons.wikimedia.org/w/index.php?curid=112311856)
+wurde von Pigeon43 gestaltet. Vielen Dank für die Veröffentlichung unter CC BY-SA 4.0.
 
 Vielen Dank an [Jeffrey Friedl](https://regex.info/blog/photo-tech/color-spaces-page2)
 für die schöne Demonstration der Wirkung von eingebetten ICC-Farbprofilen.

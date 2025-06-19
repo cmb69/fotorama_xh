@@ -13,8 +13,9 @@ use Plib\FakeRequest;
 use Plib\Jquery;
 use Plib\View;
 
-class GalleryViewTest extends TestCase
+class GalleryCommandTest extends TestCase
 {
+    private array $conf;
     private DocumentStore $store;
     /** @var ImageFinder&Stub */
     private $imageFinder;
@@ -26,8 +27,10 @@ class GalleryViewTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
         $this->store = new DocumentStore(__DIR__ . "/" . "data/");
         $this->imageFinder = $this->createStub(ImageFinder::class);
+        $this->imageFinder->method("filename")->willReturnArgument(0);
         $this->thumbnailService = $this->createStub(ThumbnailService::class);
         $this->jquery = $this->createMock(Jquery::class);
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
@@ -37,7 +40,7 @@ class GalleryViewTest extends TestCase
     {
         return new GalleryCommand(
             "./plugins/fotorama/",
-            "./",
+            $this->conf,
             $this->store,
             $this->imageFinder,
             $this->thumbnailService,
@@ -46,7 +49,15 @@ class GalleryViewTest extends TestCase
         );
     }
 
-    public function testRendersGallery(): void
+    public function testRendersLightboxGallery(): void
+    {
+        $this->conf["gallery_frontend"] = "lightbox";
+        $request = new FakeRequest();
+        $response = $this->sut()($request, "test");
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testRendersFotoramaGallery(): void
     {
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");

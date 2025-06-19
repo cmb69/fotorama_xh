@@ -1,5 +1,7 @@
 <?php
 
+$plugin_cf['fotorama']['gallery_frontend'] = "fotorama";
+
 $plugin_cf['fotorama']['default_width'] = "";
 $plugin_cf['fotorama']['default_ratio'] = "";
 $plugin_cf['fotorama']['default_nav'] = "";
