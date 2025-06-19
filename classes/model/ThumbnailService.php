@@ -43,7 +43,7 @@ class ThumbnailService
         $pathinfo = pathinfo($filename);
         $dirname = $pathinfo["dirname"] ?? ".";
         $pattern = '/^' . preg_quote($pathinfo["filename"], "/") . '-(\d+w)\.jpg$/';
-        if (($dir = opendir($this->cacheFolder . $dirname)) !== false) {
+        if (($dir = @opendir($this->cacheFolder . $dirname)) !== false) {
             while (($entry = readdir($dir)) !== false) {
                 if (preg_match($pattern, $entry, $matches)) {
                     $res[$matches[1]] = $this->cacheFolder . $dirname . "/" . $matches[0];

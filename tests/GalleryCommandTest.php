@@ -30,6 +30,7 @@ class GalleryCommandTest extends TestCase
         $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["fotorama"];
         $this->store = new DocumentStore(__DIR__ . "/" . "data/");
         $this->imageFinder = $this->createStub(ImageFinder::class);
+        $this->imageFinder->method("filename")->willReturnArgument(0);
         $this->thumbnailService = $this->createStub(ThumbnailService::class);
         $this->jquery = $this->createMock(Jquery::class);
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
@@ -39,7 +40,6 @@ class GalleryCommandTest extends TestCase
     {
         return new GalleryCommand(
             "./plugins/fotorama/",
-            "./",
             $this->conf,
             $this->store,
             $this->imageFinder,

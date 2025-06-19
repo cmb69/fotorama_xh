@@ -35,11 +35,10 @@ use Plib\View;
 class GalleryCommand
 {
     private string $pluginFolder;
-    private string $imageFolder;
     /** @var array<string,string> */
     private array $conf;
     private DocumentStore $store;
-    private ImageFinder $imageFinder; // @phpstan-ignore-line
+    private ImageFinder $imageFinder;
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
@@ -48,7 +47,6 @@ class GalleryCommand
     /** @param array<string,string> $conf */
     public function __construct(
         string $pluginFolder,
-        string $imageFolder,
         array $conf,
         DocumentStore $store,
         ImageFinder $imageFinder,
@@ -57,7 +55,6 @@ class GalleryCommand
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
-        $this->imageFolder = $imageFolder;
         $this->conf = $conf;
         $this->store = $store;
         $this->imageFinder = $imageFinder;
@@ -164,7 +161,9 @@ class GalleryCommand
                 $width = "100";
                 $height = "100";
             } else {
-                $filename = $this->imageFolder . $gallery->path() . "/" . $pic->path();
+                if (($filename = $this->imageFinder->filename($gallery->path() . "/" . $pic->path())) === null) {
+                    continue;
+                }
                 $filename = $request->url()->path($filename)->relative();
                 $description = $pic->description() ?? $pic->caption() ?? "";
                 $thumbnails = $this->thumbnailService->thumbnails($gallery->path() . "/" . $pic->path());

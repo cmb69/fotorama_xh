@@ -41,7 +41,6 @@ class Plugin
         if (self::$galleryView === null) {
             self::$galleryView = new GalleryCommand(
                 $pth["folder"]["plugins"] . "fotorama/",
-                $pth["folder"]["images"],
                 $plugin_cf["fotorama"],
                 self::store(),
                 self::imageFinder(),
