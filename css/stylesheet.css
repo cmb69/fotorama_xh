@@ -129,7 +129,7 @@ article.fotorama_editor .fotorama_images ol {
 }
 article.fotorama_editor .fotorama_images li {
     display: grid;
-    grid-template-columns: var(--thumb-small, 100px) 1fr 5em;
+    grid-template-columns: var(--thumb-small, 100px) 1fr 2em;
     grid-column-gap: 1em;
     border: none;
     border-top: 1px dotted #888;
@@ -183,8 +183,9 @@ article.fotorama_editor .fotorama_images textarea {
 }
 article.fotorama_editor .fotorama_images .fotorama_image_controls {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 1em;
 }
 article.fotorama_editor .fotorama_images .fotorama_controls span {
     display: inline;
