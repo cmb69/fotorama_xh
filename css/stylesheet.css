@@ -135,11 +135,18 @@ article.fotorama_editor .fotorama_images li {
     border-top: 1px dotted #888;
     padding: 0.5em 0;
 }
+article.fotorama_editor .fotorama_images li.fotorama_drag {
+    opacity: 0.4;
+}
+article.fotorama_editor .fotorama_images li.fotorama_drop {
+    opacity: 0.4;
+}
 article.fotorama_editor .fotorama_images .fotorama_thumb {
     width: var(--thumb-small, 100px);
     height: var(--thumb-small, 100px);
     margin: auto;
     object-fit: contain;
+    cursor: grab;
 }
 article.fotorama_editor .fotorama_images .fotorama_image_details {
     display: flex;

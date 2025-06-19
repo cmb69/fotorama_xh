@@ -82,6 +82,26 @@ var fotorama = (function () {
             }
             event.target.focus();
         });
+        ol.addEventListener("dragenter", dragging);
+        ol.addEventListener("dragover", dragging);
+        ol.addEventListener("dragleave", event => {
+            if (!(event.target instanceof HTMLElement)) return;
+            const li = event.target.closest("li");
+            if (li === null) return;
+            li.classList.remove("fotorama_drop");
+        });
+        ol.addEventListener("dragend", () => {
+            ol.querySelectorAll("li").forEach(li => li.classList.remove("fotorama_drag", "fotorama_drop"));
+        });
+        ol.addEventListener("drop", (event) => {
+            if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
+            const nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
+            const src = ol.children[nth];
+            const li = (event.target.closest("li"));
+            if (li === null) return;
+            const current = Array.from(ol.children).indexOf(li);
+            ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
+        });
         const button = /** @type {HTMLButtonElement} */ (form.querySelector("button.fotorama_add_image"));
         button.addEventListener("click", () => {
             image(null);
@@ -150,6 +170,14 @@ var fotorama = (function () {
             deleteImage.addEventListener("click", () => {
                 li.remove();
             });
+            thumb.addEventListener("dragstart", (event) => {
+                const dt = event.dataTransfer;
+                if (dt === null) return;
+                dt.setDragImage(thumb, thumb.width / 2, thumb.height / 2);
+                dt.setData("application/x.fotorama-image", Array.from(ol.children).indexOf(li).toString());
+                dt.effectAllowed = "move";
+                li.classList.add("fotorama_drag");
+            })
             ol.appendChild(clone);
         }
 
@@ -167,6 +195,17 @@ var fotorama = (function () {
             currentFilebrowser = filebrowser;
             currentBaseUrl = baseUrl;
             currentPath = path;
+        }
+
+        /** @param {DragEvent} event */
+        function dragging(event) {
+            if (event.dataTransfer && event.dataTransfer.types.includes("application/x.fotorama-image")) {
+                if (!(event.target instanceof HTMLElement)) return;
+                const li = (event.target.closest("li"));
+                if (li === null) return;
+                event.preventDefault();
+                li.classList.add("fotorama_drop");
+            }
         }
     }
 
