@@ -13,6 +13,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $action
  * @var string $token
  * @var string $base_url
+ * @var bool $fotorama_frontend
  * @var GalleryDto $gallery
  */
 ?>
@@ -36,6 +37,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
         <label for="fotorama_caption"><?=$this->text("label_caption")?></label>
         <textarea id="fotorama_caption" name="caption" rows="2"><?=$this->esc($gallery->caption)?></textarea>
       </p>
+<?if ($fotorama_frontend):?>
       <fieldset class="fotorama_fotorama">
         <legend><?=$this->text("label_fotorama_frontend")?></legend>
         <p>
@@ -81,6 +83,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
           </select>
         </p>
       </fieldset>
+<?endif?>
     </div>
     <p class="fotorama_controls">
       <button name="fotorama_do"><?=$this->text("label_save")?></button>

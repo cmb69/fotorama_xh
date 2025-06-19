@@ -231,6 +231,7 @@ class GalleryAdminCommand
             "action" => $request->url()->relative(),
             "token" => $this->csrfProtector->token(),
             "base_url" => $this->imageFinder->filename(""),
+            "fotorama_frontend" => $this->conf["gallery_frontend"] === "fotorama",
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
     }
