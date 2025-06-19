@@ -81,8 +81,11 @@ class ImageFinder
 
     private function isImage(string $filename): bool
     {
-        return is_file($filename)
-            && in_array(pathinfo($filename, PATHINFO_EXTENSION), ["jpeg", "jpg", "JPEG", "JPG"], true);
+        $extensions = ["jpeg", "jpg", "JPEG", "JPG"];
+        if (function_exists("imagecreatefromwebp")) {
+            $extensions[] = "webp";
+        }
+        return is_file($filename) && in_array(pathinfo($filename, PATHINFO_EXTENSION), $extensions, true);
     }
 
     /** @return ?array{int,int} */

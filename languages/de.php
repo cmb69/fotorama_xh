@@ -59,6 +59,7 @@ $plugin_tx['fotorama']['error_well-formed'] = "Die Galerie „%s“ ist nicht wo
 
 $plugin_tx['fotorama']['syscheck_title'] = "System-Prüfung";
 $plugin_tx['fotorama']['syscheck_extension'] = "PHP Erweiterung %s verfügbar: %s";
+$plugin_tx['fotorama']['syscheck_gd_feature'] = "%s wird unterstützt: %s";
 $plugin_tx['fotorama']['syscheck_phpversion'] = "PHP Version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_plibversion'] = "Plib_XH Version ≥ %s: %s";
 $plugin_tx['fotorama']['syscheck_xhversion'] = "CMSimple_XH Version ≥ %s: %s";

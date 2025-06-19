@@ -56,9 +56,11 @@ class PluginInfoCommand
             $this->checkPhpVersion("7.4.0"),
             $this->checkExtension("dom", true),
             $this->checkExtension("gd", false),
+            $this->checkGdFeature("JPEG", true),
+            $this->checkGdFeature("WebP", false),
             $this->checkExtension("exif", false),
             $this->checkXHVersion("1.7.0"),
-            $this->checkPlibVersion("1.10"),
+            $this->checkPlibVersion("1.11"),
             $this->checkWritability($this->pluginFolder . "cache/"),
             $this->checkWritability($this->pluginFolder . "config/"),
             $this->checkWritability($this->pluginFolder . "css/"),
@@ -78,6 +80,13 @@ class PluginInfoCommand
         $okay = $this->systemChecker->checkExtension($extension);
         $severity = $okay ? "success" : ($mandatory ? "fail" : "warning");
         return $this->view->message($severity, "syscheck_extension", $extension, $this->state($okay));
+    }
+
+    private function checkGdFeature(string $feature, bool $mandatory): string
+    {
+        $okay = $this->systemChecker->checkGdFeature($feature);
+        $severity = $okay ? "success" : ($mandatory ? "fail" : "warning");
+        return $this->view->message($severity, "syscheck_gd_feature", $feature, $this->state($okay));
     }
 
     private function checkXhVersion(string $version): string

@@ -56,7 +56,12 @@ class ThumbnailService
 
     public function createThumbnails(string $folder, string $filename): void
     {
-        if (($source = imagecreatefromjpeg($folder . $filename)) === false) {
+        if (
+            ($source = imagecreatefromjpeg($folder . $filename)) === false
+            && (!function_exists("imagecreatefromwebp")
+                || ($source = imagecreatefromwebp($folder . $filename)) === false
+            )
+        ) {
             return;
         }
         if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
