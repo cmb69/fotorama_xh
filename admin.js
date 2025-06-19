@@ -88,6 +88,10 @@ var fotorama = (function () {
             const input = /** @type {HTMLInputElement} */ (ol.querySelector("li:last-child input.fotorama_thumb"));
             input.focus();
         });
+        const progress = /** @type {HTMLDialogElement} */ (article.querySelector("dialog.fotorama_progress"));
+        addEventListener("pagehide", () => {
+            progress.close()
+        });
         form.addEventListener("submit", event => {
             if (event.submitter instanceof HTMLInputElement && event.submitter.type === "image") {
                 event.preventDefault();
@@ -105,7 +109,6 @@ var fotorama = (function () {
                 });
             });
             imagesInput.value = JSON.stringify(records);
-            const progress = /** @type {HTMLDialogElement} */ (article.querySelector("dialog.fotorama_progress"));
             progress.showModal()
         });
         const closeButton = /** @type {HTMLButtonElement} */ (filebrowser.querySelector("button.fotorama_close"));
