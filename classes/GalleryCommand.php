@@ -42,7 +42,6 @@ class GalleryCommand
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
     private View $view;
-    private bool $jqueryIncluded = false;
 
     /** @param array<string,string> $conf */
     public function __construct(
@@ -68,10 +67,9 @@ class GalleryCommand
         if (($gallery = Gallery::read($name, $this->store)) === null) {
             return Response::create($this->view->message("fail", "error_load", $name));
         }
-        if (!$this->jqueryIncluded) {
+        if ($this->conf["gallery_frontend"] === "fotorama") {
             $this->jquery->include();
             $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama/fotorama.js");
-            $this->jqueryIncluded = true;
         }
         return Response::create($this->view->render($this->conf["gallery_frontend"], [
             "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),

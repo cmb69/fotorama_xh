@@ -33,23 +33,18 @@ class Plugin
 {
     public const VERSION = "1.0beta2";
 
-    private static ?GalleryCommand $galleryView = null;
-
     public static function galleryCommand(): GalleryCommand
     {
         global $pth, $plugin_cf;
-        if (self::$galleryView === null) {
-            self::$galleryView = new GalleryCommand(
-                $pth["folder"]["plugins"] . "fotorama/",
-                $plugin_cf["fotorama"],
-                self::store(),
-                self::imageFinder(),
-                self::thumbnailService(),
-                new Jquery($pth["folder"]["plugins"] . "jquery/"),
-                self::view()
-            );
-        }
-        return self::$galleryView;
+        return new GalleryCommand(
+            $pth["folder"]["plugins"] . "fotorama/",
+            $plugin_cf["fotorama"],
+            self::store(),
+            self::imageFinder(),
+            self::thumbnailService(),
+            new Jquery($pth["folder"]["plugins"] . "jquery/"),
+            self::view()
+        );
     }
 
     public static function galleryAdminCommand(): GalleryAdminCommand

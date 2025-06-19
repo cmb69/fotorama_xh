@@ -64,15 +64,4 @@ class GalleryCommandTest extends TestCase
         $response = $this->sut()($request, "test");
         Approvals::verifyHtml($response->output());
     }
-
-    public function testIncludeJqueryOnce(): void
-    {
-        $this->conf["gallery_frontend"] = "fotorama";
-        $this->jquery->expects($this->once())->method("include");
-        $this->jquery->expects($this->once())->method("includePlugin")->with("fotorama");
-        $sut = $this->sut();
-        $request = new FakeRequest();
-        $sut($request, "test");
-        $sut($request, "test");
-    }
 }

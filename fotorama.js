@@ -27,7 +27,12 @@ document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
 function init(element) {
     const config = JSON.parse(element.dataset.config || "{}");
     // @ts-expect-error
-    jQuery(".fotorama", element).fotorama(config);
-    // @ts-expect-error
-    new SimpleLightbox(".fotorama_lightbox a");
+    if ("jQuery" in window && "fotorama" in jQuery()) {
+        // @ts-expect-error
+        jQuery(".fotorama", element).fotorama(config);
+    }
+    if ("SimpleLightbox" in window) {
+        // @ts-expect-error
+        new SimpleLightbox(".fotorama_lightbox a");
+    }
 }
