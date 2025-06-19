@@ -6,8 +6,7 @@ div.fotorama_lightbox {
 
 article.fotorama_editor {
     --general-columns: 1fr 1fr; /* 3 columns: 1fr 1fr 1fr */
-    --thumb-small: 100px;
-    --thumb-large: 150px;
+    --thumb-size: 100px;
     --display-image-labels: block; /* block or none */
     --filebrowser-size: 80%;
 }
@@ -129,7 +128,7 @@ article.fotorama_editor .fotorama_images ol {
 }
 article.fotorama_editor .fotorama_images li {
     display: grid;
-    grid-template-columns: var(--thumb-small, 100px) 1fr 2em;
+    grid-template-columns: var(--thumb-size, 100px) 1fr 2em;
     grid-column-gap: 1em;
     border: none;
     border-top: 1px dotted #888;
@@ -142,8 +141,8 @@ article.fotorama_editor .fotorama_images li.fotorama_drop {
     opacity: 0.4;
 }
 article.fotorama_editor .fotorama_images .fotorama_thumb {
-    width: var(--thumb-small, 100px);
-    height: var(--thumb-small, 100px);
+    width: var(--thumb-size, 100px);
+    height: var(--thumb-size, 100px);
     margin: auto;
     object-fit: contain;
     cursor: grab;
@@ -170,8 +169,8 @@ article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images li 
     margin: 0;
 }
 article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_thumb {
-    width: var(--thumb-large, 150px);
-    height: var(--thumb-large, 150px);
+    width: var(--thumb-size, 100px);
+    height: var(--thumb-size, 100px);
 }
 article.fotorama_editor .fotorama_images .fotorama_input_plus {
     display: flex;
