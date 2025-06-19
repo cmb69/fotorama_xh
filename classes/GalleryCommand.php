@@ -22,6 +22,7 @@ along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
 namespace Fotorama;
 
 use Exception;
+use Fotorama\Dto\ImageDto;
 use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
@@ -151,7 +152,7 @@ class GalleryCommand
         return $config;
     }
 
-    /** @return iterable<object{filename:string,caption:string,description:string,thumbnail:string,srcset:string,width:string,height:string}> */
+    /** @return iterable<ImageDto> */
     private function pictureDtos(Request $request, Gallery $gallery): iterable
     {
         foreach ($gallery->images() as $pic) {
@@ -172,15 +173,15 @@ class GalleryCommand
                 $width = (string) $pic->width();
                 $height = (string) $pic->height();
             }
-            yield (object) [
-                "filename" => $filename,
-                "caption" => $pic->caption() ?? "",
-                "description" => $description,
-                "thumbnail" => $thumbnail,
-                "srcset" => $this->srcset($request, $thumbnails),
-                "width" => $width,
-                "height" => $height,
-            ];
+            yield new ImageDto(
+                $filename,
+                $pic->caption() ?? "",
+                $description,
+                $thumbnail,
+                $this->srcset($request, $thumbnails),
+                $width,
+                $height,
+            );
         }
     }
 

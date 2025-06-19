@@ -1,5 +1,6 @@
 <?php
 
+use Fotorama\Dto\ImageDto;
 use Plib\View;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
@@ -10,7 +11,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var string $stylesheet
  * @var string $caption
  * @var array<string,mixed> $config
- * @var list<object{filename:string,caption:string,description:string,thumbnail:string,srcset:string,width:string,height:string}> $images
+ * @var list<ImageDto> $images
  * @var bool $thumbnails
  */
 ?>
