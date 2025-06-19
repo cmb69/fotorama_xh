@@ -59,6 +59,7 @@ class GalleryCommandTest extends TestCase
 
     public function testRendersFotoramaGallery(): void
     {
+        $this->conf["gallery_frontend"] = "fotorama";
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");
         Approvals::verifyHtml($response->output());
@@ -66,6 +67,7 @@ class GalleryCommandTest extends TestCase
 
     public function testIncludeJqueryOnce(): void
     {
+        $this->conf["gallery_frontend"] = "fotorama";
         $this->jquery->expects($this->once())->method("include");
         $this->jquery->expects($this->once())->method("includePlugin")->with("fotorama");
         $sut = $this->sut();
