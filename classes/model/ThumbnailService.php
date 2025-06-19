@@ -62,12 +62,7 @@ class ThumbnailService
         if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
             return;
         }
-        $pathinfo = pathinfo($filename);
-        $dirname = $pathinfo["dirname"] ?? ".";
-        if ($dirname !== "." && !is_dir($this->cacheFolder . $dirname)) {
-            mkdir($this->cacheFolder . $dirname, 0777, true);
-            chmod($this->cacheFolder . $dirname, 0777);
-        }
+        $basename = $this->basename($filename);
         $w1 = imagesx($source);
         $h1 = imagesy($source);
         for (
@@ -75,7 +70,7 @@ class ThumbnailService
             $w2 >= 300 || $h2 >= 150;
             $w2 = intdiv($w2, 2), $h2 = intdiv($h2, 2)
         ) {
-            $thumb = $this->cacheFolder . $dirname . "/" . $pathinfo["filename"] . "-$w2" . "w.jpg";
+            $thumb = "$basename-{$w2}w.jpg";
             if (is_file($thumb) && filemtime($thumb) >= filemtime($folder . $filename)) {
                 continue;
             }
@@ -83,18 +78,20 @@ class ThumbnailService
                 continue;
             }
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $w2, $h2, $w1, $h1);
-            imageinterlace($dest, true);
-            ob_start();
-            if (!imagejpeg($dest)) {
-                ob_clean();
-                continue;
-            }
-            $data = (string) ob_get_clean();
-            if (($icc = $this->icc($folder . $filename)) !== null) {
-                $data = $this->embedIcc($data, $icc);
-            }
-            file_put_contents($thumb, $data);
+            $icc = $this->icc($folder . $filename);
+            $this->save($dest, $thumb, $icc);
         }
+    }
+
+    private function basename(string $filename): string
+    {
+        $pathinfo = pathinfo($filename);
+        $dirname = $pathinfo["dirname"] ?? ".";
+        if ($dirname !== "." && !is_dir($this->cacheFolder . $dirname)) {
+            mkdir($this->cacheFolder . $dirname, 0777, true);
+            chmod($this->cacheFolder . $dirname, 0777);
+        }
+        return $this->cacheFolder . $dirname . "/" . $pathinfo["filename"];
     }
 
     private function orientation(string $path): int
@@ -142,6 +139,22 @@ class ThumbnailService
             case 8:
                 return imagerotate($image, 90, 0) ?: null;
         }
+    }
+
+    /** @param GdImage $image */
+    private function save($image, string $dst, ?string $icc): bool
+    {
+        imageinterlace($image, true);
+        ob_start();
+        if (!imagejpeg($image)) {
+            ob_clean();
+            return false;
+        }
+        $data = (string) ob_get_clean();
+        if ($icc !== null) {
+            $data = $this->embedIcc($data, $icc);
+        }
+        return file_put_contents($dst, $data) !== false;
     }
 
     private function icc(string $path): ?string
