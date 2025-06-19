@@ -85,6 +85,9 @@ class ImageFinder
         if (function_exists("imagecreatefromwebp")) {
             $extensions[] = "webp";
         }
+        if (function_exists("imagecreatefromavif")) {
+            $extensions[] = "avif";
+        }
         return is_file($filename) && in_array(pathinfo($filename, PATHINFO_EXTENSION), $extensions, true);
     }
 

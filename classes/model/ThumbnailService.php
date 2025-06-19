@@ -56,12 +56,7 @@ class ThumbnailService
 
     public function createThumbnails(string $folder, string $filename): void
     {
-        if (
-            ($source = imagecreatefromjpeg($folder . $filename)) === false
-            && (!function_exists("imagecreatefromwebp")
-                || ($source = imagecreatefromwebp($folder . $filename)) === false
-            )
-        ) {
+        if (($source = $this->loadGdImage($folder . $filename)) === null) {
             return;
         }
         if (($source = $this->normalize($source, $this->orientation($folder . $filename))) === null) {
@@ -86,6 +81,21 @@ class ThumbnailService
             $icc = $this->icc($folder . $filename);
             $this->save($dest, $thumb, $icc);
         }
+    }
+
+    /** @return ?GdImage */
+    private function loadGdImage(string $filename)
+    {
+        if (($source = imagecreatefromjpeg($filename)) !== false) {
+            return $source;
+        }
+        if (function_exists("imagecreatefromwebp") && ($source = imagecreatefromwebp($filename)) !== false) {
+            return $source;
+        }
+        if (function_exists("imagecreatefromavif") && ($source = imagecreatefromavif($filename)) !== false) {
+            return $source;
+        }
+        return null;
     }
 
     private function basename(string $filename): string

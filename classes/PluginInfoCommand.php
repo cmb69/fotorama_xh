@@ -58,6 +58,7 @@ class PluginInfoCommand
             $this->checkExtension("gd", false),
             $this->checkGdFeature("JPEG", true),
             $this->checkGdFeature("WebP", false),
+            $this->checkGdFeature("AVIF", false),
             $this->checkExtension("exif", false),
             $this->checkXHVersion("1.7.0"),
             $this->checkPlibVersion("1.11"),
