@@ -89,6 +89,9 @@ class GalleryCommand
             case "fotorama":
                 return null;
             case "lightbox":
+                if (is_file($this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.js")) {
+                    return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.js";
+                }
                 return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.js";
             default:
                 throw new Exception("unsupported lightbox");
@@ -109,6 +112,9 @@ class GalleryCommand
             case "fotorama":
                 return $this->pluginFolder . "lib/fotorama/fotorama.css";
             case "lightbox":
+                if (is_file($this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.css")) {
+                    return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.css";
+                }
                 return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.css";
             default:
                 throw new Exception("unsupported lightbox");
