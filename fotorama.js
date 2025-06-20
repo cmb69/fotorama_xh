@@ -20,7 +20,7 @@
 // @ts-check
 
 document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
-    init(/** @type {HTMLElement} */ (element));
+    init(/**@type {HTMLElement}*/(element));
 });
 
 /** @param {HTMLElement} element */

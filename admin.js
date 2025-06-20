@@ -22,15 +22,15 @@
 "use strict";
 
 var fotorama = (function () {
-    /** @type {HTMLDialogElement} */
+    /**@type {HTMLDialogElement}*/
     var currentFilebrowser;
-    /** @type {string} */
+    /**@type {string}*/
     var currentBaseUrl;
-    /** @type {HTMLInputElement} */
+    /**@type {HTMLInputElement}*/
     var currentPath;
 
     document.querySelectorAll("article.fotorama_editor").forEach(article => {
-        editor(/** @type {HTMLElement} */ (article));
+        editor(/**@type {HTMLElement}*/(article));
     });
     return {
         setLink: setLink,
@@ -38,29 +38,29 @@ var fotorama = (function () {
 
     /** @param {HTMLElement} article */
     function editor (article) {
-        const form = /** @type {HTMLFormElement} */ (article.querySelector("form"));
-        const imagesInput = /** @type {HTMLInputElement} */ (article.querySelector("input[name=gallery_images]"));
+        const form = /**@type {HTMLFormElement}*/(article.querySelector("form"));
+        const imagesInput = /**@type {HTMLInputElement}*/(article.querySelector("input[name=gallery_images]"));
         const images = JSON.parse(imagesInput.value);
-        const ol = /** @type {HTMLOListElement} */ (article.querySelector("ol"));
-        const path = /** @type {HTMLInputElement} */ (form.querySelector("input.fotorama_path"));
+        const ol = /**@type {HTMLOListElement}*/(article.querySelector("ol"));
+        const path = /**@type {HTMLInputElement}*/(form.querySelector("input.fotorama_path"));
         let baseUrl = ol.dataset.baseUrl + path.value + "/";
-        const template = /** @type {HTMLTemplateElement} */ (article.querySelector("template.fotorama_template"));
-        const filebrowser = /** @type {HTMLDialogElement} */ (article.querySelector("dialog.fotorama_filebrowser"));
+        const template = /**@type {HTMLTemplateElement}*/(article.querySelector("template.fotorama_template"));
+        const filebrowser = /**@type {HTMLDialogElement}*/(article.querySelector("dialog.fotorama_filebrowser"));
         images.forEach(image);
         path.addEventListener("change", () => {
             baseUrl = ol.dataset.baseUrl + path.value + "/";
             ol.querySelectorAll("li input.fotorama_thumb").forEach(input => {
                 const li = input.parentElement;
                 if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-                const path = /** @type {HTMLInputElement} */ (li.querySelector("input.fotorama_path"));
-                /** @type {HTMLInputElement} */ (input).src = baseUrl + path.value;
+                const path = /**@type {HTMLInputElement}*/(li.querySelector("input.fotorama_path"));
+                /**@type {HTMLInputElement}*/(input).src = baseUrl + path.value;
             });
         });
         ol.addEventListener("keydown", event => {
             if (!(event.target instanceof HTMLInputElement) || event.target.type !== "image") {
                 return;
             }
-            const checkbox = /** @type {HTMLInputElement} */ (form.querySelector("input.fotorama_hide_details"));
+            const checkbox = /**@type {HTMLInputElement}*/(form.querySelector("input.fotorama_hide_details"));
             const li = event.target.parentElement;
             if (!(li instanceof HTMLLIElement)) throw "assertion failure";
             switch (event.code) {
@@ -69,7 +69,9 @@ var fotorama = (function () {
                     if (checkbox.checked ? event.code === "ArrowDown" : event.code === "ArrowRight") {
                         return;
                     }
-                    const reference = li.nextElementSibling ? li.nextElementSibling.nextElementSibling : ol.firstElementChild;
+                    const reference = li.nextElementSibling
+                        ? li.nextElementSibling.nextElementSibling
+                        : ol.firstElementChild;
                     ol.insertBefore(li, reference);
                     break;
                 case "ArrowLeft":
@@ -102,13 +104,13 @@ var fotorama = (function () {
             const current = Array.from(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
         });
-        const button = /** @type {HTMLButtonElement} */ (form.querySelector("button.fotorama_add_image"));
+        const button = /**@type {HTMLButtonElement}*/(form.querySelector("button.fotorama_add_image"));
         button.addEventListener("click", () => {
             image(null);
-            const input = /** @type {HTMLInputElement} */ (ol.querySelector("li:last-child input.fotorama_thumb"));
+            const input = /**@type {HTMLInputElement}*/(ol.querySelector("li:last-child input.fotorama_thumb"));
             input.focus();
         });
-        const progress = /** @type {HTMLDialogElement} */ (article.querySelector("dialog.fotorama_progress"));
+        const progress = /**@type {HTMLDialogElement}*/(article.querySelector("dialog.fotorama_progress"));
         addEventListener("pagehide", () => {
             progress.close()
         });
@@ -120,53 +122,53 @@ var fotorama = (function () {
             }
             let records = [];
             ol.querySelectorAll("li").forEach(li => {
-                const description = /** @type {HTMLTextAreaElement} */
+                const description = /**@type {HTMLTextAreaElement}*/
                     (li.querySelector("textarea.fotorama_description"));
                 records.push({
-                    path: /** @type {HTMLInputElement} */ (li.querySelector("input.fotorama_path")).value,
-                    caption: /** @type {HTMLTextAreaElement} */ (li.querySelector("textarea.fotorama_caption")).value,
+                    path: /**@type {HTMLInputElement}*/(li.querySelector("input.fotorama_path")).value,
+                    caption: /**@type {HTMLTextAreaElement}*/(li.querySelector("textarea.fotorama_caption")).value,
                     description: description.value,
                 });
             });
             imagesInput.value = JSON.stringify(records);
             progress.showModal()
         });
-        const closeButton = /** @type {HTMLButtonElement} */ (filebrowser.querySelector("button.fotorama_close"));
+        const closeButton = /**@type {HTMLButtonElement}*/(filebrowser.querySelector("button.fotorama_close"));
         closeButton.addEventListener("click", () => {
             filebrowser.close();
         });
-        const iframe = /** @type {HTMLIFrameElement} */ (filebrowser.querySelector("iframe"));
+        const iframe = /**@type {HTMLIFrameElement}*/(filebrowser.querySelector("iframe"));
         iframe.addEventListener("load", () => {
-            const figcaption = /** @type {HTMLElement} */ (filebrowser.querySelector("figcaption"));
-            const controls = /** @type {HTMLParagraphElement} */ (filebrowser.querySelector("p"));
+            const figcaption = /**@type {HTMLElement}*/(filebrowser.querySelector("figcaption"));
+            const controls = /**@type {HTMLParagraphElement}*/(filebrowser.querySelector("p"));
             const height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
             iframe.width = (filebrowser.clientWidth - 20).toString();
             iframe.height = (filebrowser.clientHeight - height - 20).toString();
         });
 
         function image(image) {
-            const clone = /** @type {DocumentFragment} */ (template.content.cloneNode(true));
-            const li = /** @type {HTMLLIElement} */ (clone.querySelector("li"));
-            const thumb = /** @type {HTMLInputElement} */ (clone.querySelector("input.fotorama_thumb"));
+            const clone = /**@type {DocumentFragment}*/(template.content.cloneNode(true));
+            const li = /**@type {HTMLLIElement}*/(clone.querySelector("li"));
+            const thumb = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_thumb"));
             thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
-            const path = /** @type {HTMLInputElement} */ (clone.querySelector("input.fotorama_path"));
+            const path = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
             path.addEventListener("change", () => {
                 thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
             });
-            const caption = /** @type {HTMLTextAreaElement} */ (clone.querySelector("textarea.fotorama_caption"));
+            const caption = /**@type {HTMLTextAreaElement}*/(clone.querySelector("textarea.fotorama_caption"));
             caption.value = image ? image.caption : "";
-            const description = /** @type {HTMLTextAreaElement} */ (clone.querySelector("textarea.fotorama_description"));
+            const description = /**@type {HTMLTextAreaElement}*/(clone.querySelector("textarea.fotorama_description"));
             description.value = image ? image.description : "";
-            const pickImage = /** @type {HTMLButtonElement} */ (clone.querySelector("button.fotorama_pick_image"));
+            const pickImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_pick_image"));
             pickImage.addEventListener("click", () => {
                 openFilebrowser(path);
             });
-            const moveImage = /** @type {HTMLButtonElement} */ (clone.querySelector("button.fotorama_move_image"));
+            const moveImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_move_image"));
             moveImage.addEventListener("click", () => {
                 ol.insertBefore(li, li.previousElementSibling);
             });
-            const deleteImage = /** @type {HTMLButtonElement} */ (clone.querySelector("button.fotorama_delete_image"));
+            const deleteImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_delete_image"));
             deleteImage.addEventListener("click", () => {
                 li.remove();
             });
@@ -183,7 +185,7 @@ var fotorama = (function () {
 
         /** @param {HTMLInputElement} path */
         function openFilebrowser(path) {
-            const iframe = /** @type {HTMLIFrameElement} */ (filebrowser.querySelector("iframe"));
+            const iframe = /**@type {HTMLIFrameElement}*/(filebrowser.querySelector("iframe"));
             const matches = baseUrl.match(/^(\.+\/)(.*)$/);
             if (matches === null) throw "assertion failure";
             const p = matches[1];
