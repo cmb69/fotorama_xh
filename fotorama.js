@@ -33,6 +33,11 @@ function init(element) {
     }
     if ("SimpleLightbox" in window) {
         // @ts-expect-error
-        new SimpleLightbox(".fotorama_lightbox a");
+        new SimpleLightbox(".fotorama_lightbox a", {
+            uniqueImages: false,
+            scaleImageToRatio: true,
+            captionHTML: false,
+            alertError: false
+        });
     }
 }
