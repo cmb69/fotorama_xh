@@ -31,7 +31,7 @@ use Plib\View;
 
 class Plugin
 {
-    public const VERSION = "1.0";
+    public const VERSION = "1.1-dev";
 
     public static function galleryCommand(): GalleryCommand
     {

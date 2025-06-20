@@ -27,7 +27,7 @@ class PluginInfoCommandTest extends TestCase
     public function testRendersPluginInfo(): void
     {
         $response = $this->sut()();
-        $this->assertSame("Fotorama 1.0", $response->title());
+        $this->assertSame("Fotorama 1.1-dev", $response->title());
         Approvals::verifyHtml($response->output());
     }
 }
