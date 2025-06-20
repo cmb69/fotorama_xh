@@ -1,20 +1,17 @@
 # Fotorama_XH
 
-Fotorama_XH ermöglicht das Einbetten von [Fotorama](https://fotorama.io/)
-Galerien auf CMSimple_XH Seiten.
-Das Plugin bietet keinerlei Bild-Upload-Möglichkeit,
-sondern verwendet statt dessen Bilder aus dem Bilderordner von CMSimple_XH
-oder von irgendwo im World Wide Web (bislang wird nur JPEG unterstützt).
-Jede Galerie kann individuell konfiguriert werden,
-und jedes Bild kann eine zusätzliche Beschriftung erhalten.
+Fotorama_XH ermöglicht die Präsentation von Bildergalerien auf einer Website.
+Die Galerien sind vollständig responsiv, Vorschaubilder werden automatisch
+generiert, und die Galerieverwaltung im Backend bietet eine vollwertige
+Nutzerschnittstelle.
 
 - [Voraussetzungen](#voraussetzungen)
 - [Installation](#installation)
 - [Einstellungen](#einstellungen)
 - [Verwendung](#verwendung)
-  - [Vorbereiten einer Galerie](#vorbereiten-einer-galerie)
+  - [Galerie-Verwaltung](#galerie-verwaltung)
+  - [Vorschaubilder](#vorschaubilder)
   - [Externe Bilder](#externe-bilder)
-  - [Einbetten einer Galerie](#einbetten-einer-galerie)
   - [Manuelle Bearbeitung der Galeriedateien](#manuelle-bearbeitung-der-galeriedateien)
 - [Einschränkungen](#einschränkungen)
 - [Fehlerbehebung](#fehlerbehebung)
@@ -74,69 +71,89 @@ fortgeschrittene CSS Kenntnisse zur Anpassung.
 
 ## Verwendung
 
-### Vorbereiten einer Galerie
+Um eine Galerie auf einer Seite einzubinden, schreiben Sie:
 
-Navigieren Sie zu `Plugins` → `Fotorama` → `Galerien`,
-und verwenden Sie das Formular um eine erste Galerie
-mit allen Bildern des gewählten Ordners zu erstellen.
-Die Galerie wird im `content/` Ordner von CMSimple_XH gespeichert.
-Jede Sprache hat ihren eigenen Satz von Galerie-Definitionen,
-so dass Sie die Bildbeschriftungen übersetzen können.
+    {{{fotorama('name')}}}
 
-Nachdem die Galerie erfolgreich erstellt wurde,
-werden Sie zum Galerie-Editor weiter geleitet,
-wo Sie die Feinabstimmung der Galerie vornehmen können.
-Sie können Bilder hinzufügen und entfernen,
-und deren Reihenfolge verändern.
+wobei `name` durch den den Namen einer Galerie zu ersetzen ist, die zuvor in der
+[Galerie-Verwaltung](#galerie-verwaltung) angelegt wurde.
 
-- `width` und `ratio`:
-  Werden diese Attribute ausgelassen,
-  dann werden Breite und Seitenverhältnis durch das erste Bild bestimmt.
-  Beachten Sie, dass die Größe der Bilder angepasst wird,
-  so dass diese zu Breite/Seitenverhältnis passen,
-  damit es möglich ist, Bilder im Hoch- und Querformat
-  in derselben Galerie ohne Verzerrung zu mischen.
-- `nav`:
-  Die erforderlichen Vorschaubilder werden bei Bedarf automatisch erzeugt,
-  und im `cache/` Ordner des Plugins gespeichert.
-- `fullscreen`:
-  Dies erlaubt dem Besucher in die Vollbildansicht zu wechseln.
-  Wählen Sie entweder `true`,
-  was die Vollbildansicht auf das Browserfenster beschränkt,
-  aber auch in älteren Browsern funktioniert,
-  oder `native`, was den gesamten Bildschirm verwendet,
-  wenn vom Browser unterstützt.
+Es können mehrere Galerien auf einer Seite eingebunden werden.
 
-Wird die Galerie gespeichert, wird sie automatisch gegen das RelaxNG Schema validiert
-(`gallery.rng`).
+### Galerie-Verwaltung
+
+Die Galerien werden unter `Plugins` → `Fotorama` → `Galerien` verwaltet.
+Die Nutzerschnittstelle ist weitgehend selbsterklärend; es gilt: Probieren geht
+über Studieren. Ein paar Hinweise sind dennoch angebracht:
+
+* Fotorama ist für mäßig große Bilder (etwa ein paar Mega-Pixel) optimiert.
+  Das Laden von sehr großen Bildern kann für Besucher mit einer eher langsamen
+  Internetverbindung zu lange dauern; das Betrachten kleiner Bilder auf großen
+  Bildschirmen oder Retina-Geräten ist unangenehm.
+  Unterstützt Ihr Server WebP oder gar AVIF (das wird in der Systemprüfung
+  angezeigt), sollten sie erwägen diese Formate zu verwenden, da sie bessere
+  Kompression als JPEG bieten, und heutzutage weithin unterstützt werden
+  (allerdings nicht so universell wie JPEG).
+
+* Nur Bilder innerhalb des Bilderordners von CMSimple_XH werden voll unterstützt;
+  während im Backend Vorschaubilder für Bilder ausserhalb des Bilderordners
+  angezeigt werden, werden die Bilder in den eigentlichen Galerien nicht angezeigt.
+
+* Das Ordnen der Bilder kann per Tastatur oder Drag and Drop erfolgen; die
+  Vorschaubilder können fokusiert werden, und dann mit den Pfeiltasten verschoben
+  werden; oder sie können an die gewünschte Stelle gezogen werden.
+
+* `Details ausblenden` zeigt die Bilder in einer kompakten Darstellung,
+  die besonders zum Ordnen und dem Hinzufügen mehrerer Bilder geeignet ist.
+
+* Während die `Beschriftung`en angezeigt werden, dienen die `Beschreibung`en als
+  alt Attribute der Bilder, was eine wichtige Information für sehbehinderte
+  Nutzer ist. Daher sollten Sie erwägen `Beschreibung`en hinzuzufügen, die die
+  Bilder tatsächlich beschreiben (so als würden sie das Bild am Telefon
+  beschreiben).
+
+### Vorschaubilder
+
+Das Plugin erzeugt Vorschaubilder der Bilder, immer wenn die Galerie im Backend
+gespeichert wird. Diese werden unter `plugins/fotorama/cache/` abgelegt; die
+Ordnerstruktur spiegelt die Ordnerstruktur des Bilderordners von CMSimple_XH.
+Die Vorschaubilder werden in mehreren Größen erzeugt, so dass zeitgemäße Browser
+die geeignetste Größe auswählen können. Normalerweise müssen Sie sich nicht um
+den Vorschaubilder-Cache kümmern; nur wenn sie mit vielen Galerien/Bilder
+experimentieren, aber später entscheiden, diese nicht zu veröffentlichen,
+können Sie den Cache löschen (entweder im Backend oder per FTP) um etwas
+Speicherplatz zu sparen. Danach sollten sie alle noch exisitierenden Galerien
+speichern, damit die nötigen Vorschaubilder erzeugt werden.
+
+Es ist zu beachten, dass die Vorschaubilddateien für jedermann zugänglich sind.
+Sind die Originalbilder im Bilderordner von CMSimple_XH geschützt, dann sollten
+sie den selben Schutz auch auf den Vorschaubilder-Cache anwenden.
+
+Es ist weiterhin zu beachten, dass die Vorschaubilder *keine* Bild-Metadaten
+enthalten (außer ICC Farbprofilen), die möglicherweise in den Originalbildern
+gespeichert sind.
 
 ### Externe Bilder
 
-Es ist ebenfalls möglich externe Bilder
-(d.h. Bilder außerhalb von Ihrem Bilderordner)
-durch Angabe der vollständig qualifizierten URL des Bildes
-anzuzeigen.
-Wie in diesem Fall üblich ist zu beachten,
-dass beispielsweise das Bild nicht verfügbar ist,
-und unter Umständen rechtliche Einschränkungen gelten.
-Beachten Sie, dass für externe Bilder keine Vorschaubilder generiert werden, 
-sondern statt dessen ein Standard-Vorschaubild angezeigt wird,
-das Sie durch Ersetzen von `plugins/fotorama/images/external.svg`
+Es ist ebenfalls möglich externe Bilder (d.h. Bilder außerhalb von Ihrem
+Bilderordner) durch Angabe der vollständig qualifizierten URL des Bildes
+zu verwenden.
+Wie in diesem Fall üblich ist zu beachten, dass möglicherweise das Bild nicht
+verfügbar ist, und dass das Bild vom Browser des Besucher geladen wird, was
+möglicherweise datenschutzrechtlich bedenklich ist.
+Es ist zu beachten, dass aus rechtlichen Gründen für externe Bilder keine
+Vorschaubilder generiert werden, sondern statt dessen ein Standard-Vorschaubild
+angezeigt wird, das Sie durch Ersetzen von `plugins/fotorama/images/external.svg`
 mit einem Bild Ihrer Wahl ändern können.
 
-Sie können externe Bilder und Bilder im Gallerieordner beliebig mischen.
+Sie können externe und interne Bilder in einer Galerie beliebig mischen.
 
-### Einbetten einer Galerie
-
-Um eine Galerie auf einer Seite einzubinden, schreiben Sie einfach:
-
-    {{{fotorama('%NAME%')}}}
-
-wobei `%NAME%` der Name der Galerie ist, z.B.
-
-    {{{fotorama('urlaub')}}}
+Es ist allerdings zu beachten, dass externe Bilder aus den oben genannten
+Gründen am besten vermieden werden.
 
 ### Manuelle Bearbeitung der Galeriedateien
+
+Die Galerien werden im `content/` Ordner von CMSimple_XH gespeichert.
 
 Werden Galeriedateien manuell bearbeitet, wird empfohlen einen Editor mit
 Unterstützung von RelaxNG-Schemata zu verwenden, und gegen `gallery.rng` im Wurzelordner
@@ -144,10 +161,14 @@ des Plugins zu validieren. Wird das nicht getan, kann es passieren, dass die
 Galerien nicht geladen werden können. In diesem Fall kann der `Prüfen` Schalter
 in der Pluginverwaltung genutzt werden, um herauszufinden wo der Fehler liegt.
 
+Es ist zu beachten, dass es nach der manuellen Bearbeitung einer Galeriedatei
+sinnvoll ist, die Galerie erneut im Backend zu speichern, da dann die Bildgrößen
+aktualisiert werden, und ebenso die benötigten Vorschaubilder erzeugt werden.
+
 ## Einschränkungen
 
-Damit die Galerien *voll* funktionstüchtig sind,
-muss JavaScript im Browser des Besuchers aktiviert sein.
+Damit die Galerien *voll* funktionstüchtig sind, wird ein zeitgemäßer Browser
+mit JavaScript-Unterstützung benötigt.
 
 Ist die PHP exif Erweiterung nicht verfügbar, werden Vorschaubilder von Bildern
 mit Exif `Orientation` Markern nicht korrekt angezeigt (sie sind dann rotiert
@@ -179,12 +200,12 @@ Copyright 2015-2021 Christoph M. Becker
 
 ## Danksagung
 
-Dieses Plugin verwendet [Fotorama](https://fotorama.io/) zur Anzeige der Galerien.
-Vielen Dank an Artem Polikarpov, dem Entwickler dieser Bibliothek,
-für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
-
 Dieses Plugin verwendet [SimpleLightbox](https://simplelightbox.js.org/) zur Anzeige der Galerien.
 Vielen Dank an Andre Rinas, dem Entwickler dieser Bibliothek,
+für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
+
+Dieses Plugin verwendet [Fotorama](https://fotorama.io/) zur Anzeige der Galerien.
+Vielen Dank an Artem Polikarpov, dem Entwickler dieser Bibliothek,
 für seine großartige Arbeit, und für die Veröffentlichung unter MIT-Lizenz.
 
 Das Pluginlogo wurde von [Everaldo Coelho](https://www.everaldo.com/) gestaltet.

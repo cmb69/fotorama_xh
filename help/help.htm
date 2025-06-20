@@ -30,7 +30,7 @@
 </head>
 <body>
 <h1 id="fotorama_xh">Fotorama_XH</h1>
-<p>Fotorama_XH facilitates to embed <a href="https://fotorama.io/">Fotorama</a> galleries on CMSimple_XH pages. The plugin does not offer any image upload facility, but instead uses images from the images folder of CMSimple_XH or from somewhere else on the World Wide Web (only JPEG is supported for now). Every gallery can have its own settings, and every image can have an additional caption.</p>
+<p>Fotorama_XH facilitates the presentation of image galleries on a website. The galleries are fully responsive, thumbnails are automatically created, and the gallery administration in the back-end offers a full-fledged user interface.</p>
 <ul>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#download">Download</a></li>
@@ -38,9 +38,9 @@
 <li><a href="#settings">Settings</a></li>
 <li><a href="#usage">Usage</a>
 <ul>
-<li><a href="#prepare-a-gallery">Prepare a gallery</a></li>
+<li><a href="#gallery-administration">Gallery Administration</a></li>
+<li><a href="#thumbnails">Thumbnails</a></li>
 <li><a href="#external-images">External images</a></li>
-<li><a href="#embed-a-gallery">Embed a gallery</a></li>
 <li><a href="#manual-editing-of-gallery-files">Manual Editing of Gallery Files</a></li>
 </ul></li>
 <li><a href="#limitations">Limitations</a></li>
@@ -68,27 +68,33 @@
 <p>Localization is done under <code>Language</code>. You can translate the character strings to your own language, if there is no appropriate language file available, or customize them according to your needs.</p>
 <p>The look of Fotorama_XH can be customized under <code>Stylesheet</code>. At the top of the file you find a <code>simple customization</code> section which allows for some simple customizations. Everything below needs advanced CSS knowledge to customize.</p>
 <h2 id="usage">Usage</h2>
-<h3 id="prepare-a-gallery">Prepare a gallery</h3>
-<p>Navigate to <code>Plugins</code> → <code>Fotorama</code> → <code>Galleries</code> and use the form to create an initial gallery with all images of the chosen folder. The gallery will be stored in the <code>content/</code> folder of CMSimple_XH. Each language has its own set of gallery definitions, so you can localize the image captions.</p>
-<p>After having successfully created the gallery, you are redirected to the gallery editor where you can fine-tune the gallery. You can add and remove images, and reorder them.</p>
+<p>To embed a gallery on a page, write:</p>
+<pre><code>{{{fotorama(&#39;name&#39;)}}}</code></pre>
+<p>where <code>name</code> has to be replaced with the name of a gallery you have created in the <a href="#gallery-administration">gallery administration</a>.</p>
+<p>You can embed multiple galleries on a single page.</p>
+<h3 id="gallery-administration">Gallery Administration</h3>
+<p>You can administrate your galleries under <code>Plugins</code> → <code>Fotorama</code> → <code>Galleries</code>. The user interface is pretty much self-explaining; if in doubt, try it out. Still, a couple of notes are in order:</p>
 <ul>
-<li><code>width</code> and <code>ratio</code>: If these attributes are omitted, the width and aspect ratio are determined by the first image. Note that the images will be resized to fit within the width/ratio, so that it is possible to have portrait and landscape images mixed in the same gallery without distortion.</li>
-<li><code>nav</code>: The required thumbnails are automatically generated on demand, and stored in the <code>cache/</code> folder of the plugin.</li>
-<li><code>fullscreen</code>: This allows the visitor to enter fullscreen mode. Choose either <code>true</code>, what will restrict the fullscreen mode to the browser window, but also works for older browsers, or <code>native</code> what uses the full screen size if supported by the browser.</li>
+<li><p>Fotorama is optimized for moderately large images (say, a few mega pixels). Loading of very large images may take too long for visitors who may have a rather slow internet connection; small images are not pleasant to view on large screens or retina devices. If your server supports WebP or even AVIF (that is reported in the system check), consider to use these formats, since they offer better compression than JPEG, and are widely supported nowadays (not as universially as JPEG, though).</p></li>
+<li><p>Only images inside of the images folder of CMSimple_XH are fully supported; while thumbnails will be displayed in the back-end for images outside of the folder, the images will not be shown in the actual galleries.</p></li>
+<li><p>Ordering of the images is possible via keyboard or drag and drop; the image thumbnails serve as handles; you can focus them, and then use the up and down (or left and right) arrows to move the images; or drag them to the desired place.</p></li>
+<li><p><code>Hide details</code> shows the images in a compact view, which is particularly suitable for ordering or adding multiple images.</p></li>
+<li><p>While the <code>caption</code>s are displayed, the <code>description</code>s serve as alt attributes of the images, which is important information for visually impaired users. So consider to add <code>description</code>s which actually <em>describe</em> the image (like you might describe the image in a phone call).</p></li>
 </ul>
-<p>When the gallery is saved, it is automatically validated against the RelaxNG schema (<code>gallery.rng</code>).</p>
+<h3 id="thumbnails">Thumbnails</h3>
+<p>The plugin creates thumbnails of the images whenever a gallery is saved in the back-end. These are stored under <code>plugins/fotorama/cache/</code>, and the folder structure mirrors the structure of the image folder of CMSimple_XH. The thumbnails are created in multiple sizes, so contemporary browsers can choose the best fitting size. Usually, there is no need to care about the thumbnail cache; only when you are experimenting with many galleries/images, but later decide to not publish these galleries, you can clear the cache (either from the back-end or via FTP) to save some disk space. Afterwards, you should save all still existing galleries, so the required thumbnails are created.</p>
+<p>Note that the thumbnail files are accessible to everyone. If the original files in the image folder of CMSimple_XH are protected, you need to apply the same protection to the thumbnail cache.</p>
+<p>Also note that the thumbnails do <em>not</em> retain any image meta data (except for ICC color profiles) possibly stored in the original images.</p>
 <h3 id="external-images">External images</h3>
-<p>It is also possible to show external images (i.e. images outside your images folder) by specifying the fully qualified absolute URL. The usual caveats apply in this case, for instance, the image might not be available, and there might be legal constraints. Note that no thumbnails are generated for external images, but rather a default thumbnail is shown which you can change by replacing <code>plugins/fotorama/images/external.svg</code> with an image of your choice.</p>
-<p>You can freely mix external images and images in the gallery folder.</p>
-<h3 id="embed-a-gallery">Embed a gallery</h3>
-<p>To embed a gallery on a page simply write:</p>
-<pre><code>{{{fotorama(&#39;%NAME%&#39;)}}}</code></pre>
-<p>where <code>%NAME%</code> is the name of the gallery, e.g.</p>
-<pre><code>{{{fotorama(&#39;holidays&#39;)}}}</code></pre>
+<p>It is also possible to use external images (i.e. images outside the images folder) by specifying the fully qualified absolute URL. The usual caveats apply in this case, for instance, the image might not be available, and the image is loaded on behalf of visitors, possibly violating their privacy. Note that for legal reasons, no thumbnails are generated for external images, but rather a default thumbnail is shown which you can change by replacing <code>plugins/fotorama/images/external.svg</code> with an image of your choice.</p>
+<p>You can freely mix external and internal images in a gallery.</p>
+<p>Note, though, that external images are best avoided for the reasons stated above.</p>
 <h3 id="manual-editing-of-gallery-files">Manual Editing of Gallery Files</h3>
-<p>If you edit gallery files manually, it is recommended to use an editor with support for RelaxNG schema, and to validate against <code>gallery.rng</code> in the root folder of the plugin. Failure to do so might cause load errors of the charts. If that happens, you can use the <code>Check</code> button in the plugin administration to find out what is wrong with the gallery.</p>
+<p>The galleries are stored in the <code>content/</code> folder of CMSimple_XH.</p>
+<p>If you edit gallery files manually, it is recommended to use an editor with support for RelaxNG schema, and to validate against <code>gallery.rng</code> in the root folder of the plugin. Failure to do so might cause load errors of the galleries. If that happens, you can use the <code>Check</code> button in the plugin administration to find out what is wrong with the gallery.</p>
+<p>Note that after manual editing of a gallery file, it is reasonable to save it again from the back-end, since the image dimensions are updated then, and also any required thumbnails will be created.</p>
 <h2 id="limitations">Limitations</h2>
-<p>For the galleries to be <em>fully</em> functional, JavaScript has to be enabled in the browser of the visitor.</p>
+<p>For the galleries to be <em>fully</em> functional, a contemporary browser with JavaScript is required.</p>
 <p>If the PHP exif extension is not available, thumbnails of images with Exif <code>Orientation</code> tags will not be displayed properly (they are rotated and or flipped).</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>Report bugs and ask for support either on <a href="https://github.com/cmb69/fotorama_xh/issues">Github</a> or in the <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
@@ -98,8 +104,8 @@
 <p>You should have received a copy of the GNU General Public License along with Fotorama_XH. If not, see <a href="https://www.gnu.org/licenses/" class="uri">https://www.gnu.org/licenses/</a>.</p>
 <p>Copyright 2015-2021 Christoph M. Becker</p>
 <h2 id="credits">Credits</h2>
-<p>This plugin is powered by <a href="https://fotorama.io/">Fotorama</a>. Many thanks to Artem Polikarpov, the developer of this library, for his great work, and for publishing it under MIT license.</p>
-<p>The plugin is powered by <a href="https://simplelightbox.js.org/">SimpleLightbox</a>. Many thanks to Andre Rinas, the developer of this library, for his great work, and for publishing it under MIT license.</p>
+<p>The plugin uses <a href="https://simplelightbox.js.org/">SimpleLightbox</a>. Many thanks to Andre Rinas, the developer of this library, for his great work, and for publishing it under MIT license.</p>
+<p>This plugin uses <a href="https://fotorama.io/">Fotorama</a>. Many thanks to Artem Polikarpov, the developer of this library, for his great work, and for publishing it under MIT license.</p>
 <p>The plugin icon is designed by <a href="https://www.everaldo.com/">Everaldo Coelho</a>. Many thanks for publishing this icon under LGPL.</p>
 <p><a href="https://commons.wikimedia.org/w/index.php?curid=112311856"><code>external.svg</code></a> is designed by Pigeon43. Many thanks for publishing this icon under CC BY-SA 4.0.</p>
 <p>Many thanks to <a href="https://regex.info/blog/photo-tech/color-spaces-page2">Jeffrey Friedl</a> for nicely demonstrating the effects of embedded ICC color profiles.</p>

@@ -81,17 +81,17 @@
   <descriptions>
     <!-- description of the plugin, ca. 200 characters, you can use <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i>. -->
     <description lang="en">
-      Fotorama_XH facilitates to embed Fotorama galleries on CMSimple_XH pages.
-      The plugin does not offer any image upload facility,
-      but instead uses images from the image folder of CMSimple_XH (only JPEG is supported for now).
-      Every gallery can have its own settings, and every image can have an additional caption.
+      Fotorama_XH facilitates the presentation of image galleries on a website.
+      The galleries are fully responsive, thumbnails are automatically created,
+      and the gallery administration in the back-end offers a full-fledged user
+      interface.
     </description>
     <!-- Beschreibung des Plugins, ca. 200 Zeichen, es können <br/>, <ol></ol>, <ul></ul>, <li></li>, <b></b>, <i></i> genutzt werden. -->
     <description lang="de">
-      Fotorama_XH ermöglicht das Einbetten von Fotorama Galerien auf CMSimple_XH Seiten.
-      Das Plugin bietet keinerlei Bild-Upload-Möglichkeit, sondern verwendet statt dessen Bilder
-      aus dem Bilderordner von CMSimple_XH (bislang wird nur JPEG unterstützt).
-      Jede Galerie kann individuell konfiguriert werden, und jedes Bild kann eine zusätzliche Beschriftung erhalten.
+      Fotorama_XH ermöglicht die Präsentation von Bildergalerien auf einer Website.
+      Die Galerien sind vollständig responsiv, Vorschaubilder werden automatisch
+      generiert, und die Galerieverwaltung im Backend bietet eine vollwertige
+      Nutzerschnittstelle.
     </description>
     <!-- additional languages are possible, i.e. da, fr, pl, ... -->
     <!-- The use of this language is limited by the website where the repository is hosted. -->
