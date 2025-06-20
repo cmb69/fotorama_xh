@@ -119,7 +119,7 @@
     <delete dir="export"/>
     <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
     <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-    <zip destfile="Fotorama_XH-1.0beta2.zip" basedir="dist" prefix="fotorama/"/>
+    <zip destfile="Fotorama_XH-1.0.zip" basedir="dist" prefix="fotorama/"/>
     <delete dir="dist"/>
   </target>
 
