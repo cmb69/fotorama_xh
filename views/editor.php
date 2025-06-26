@@ -18,7 +18,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<script src="<?=$this->esc($script)?>" defer></script>
+<script type="module" src="<?=$this->esc($script)?>"></script>
 <article class="fotorama_editor">
   <h1>Fotorama – <?=$this->esc($name)?></h1>
 <?if ($error):?>
