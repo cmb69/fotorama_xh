@@ -17,9 +17,10 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* jshint browser:true, strict:implied */
 // @ts-check
 
-import {assert} from "./assert.js";
+import {assert} from "./assert.js"; // jshint ignore:line
 
 /** @type {HTMLDialogElement} */
 var currentFilebrowser;

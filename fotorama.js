@@ -17,9 +17,10 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* jshint browser:true, strict:implied */
 // @ts-check
 
-import {assert} from "./assert.js";
+import {assert} from "./assert.js"; // jshint ignore:line
 
 document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) {
     assert(element instanceof HTMLElement);
@@ -30,13 +31,13 @@ document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) 
 function init(element) {
     var config = JSON.parse(element.dataset.config || "{}");
     // @ts-expect-error
-    if ("jQuery" in window && "fotorama" in jQuery()) {
+    if ("jQuery" in window && "fotorama" in jQuery()) { // jshint ignore:line
         // @ts-expect-error
-        jQuery(".fotorama", element).fotorama(config);
+        jQuery(".fotorama", element).fotorama(config); // jshint ignore:line
     }
     if ("SimpleLightbox" in window) {
         // @ts-expect-error
-        new SimpleLightbox(".fotorama_lightbox a", {
+        new SimpleLightbox(".fotorama_lightbox a", { // jshint ignore:line
             uniqueImages: false,
             scaleImageToRatio: true,
             captionHTML: false,

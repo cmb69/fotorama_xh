@@ -40,13 +40,16 @@
     </exec>
   </target>
 
-  <target name="tsc" description="run ts-check">
+  <target name="js" description="run JS checks">
+    <exec executable="jshint" passthru="true" checkreturn="true">
+      <arg line="admin.js fotorama.js"/>
+    </exec>
     <exec executable="tsc" passthru="true" checkreturn="true">
       <arg line="--noEmit --checkJS --lib es2016,dom admin.js fotorama.js"/>
     </exec>
   </target>
 
-  <target name="check" description="runs all checks" depends="sniff,stan,test,tsc"/>
+  <target name="check" description="runs all checks" depends="sniff,stan,test,js"/>
 
   <target name="coverage" description="generates coverage report">
     <exec executable="phpunit" passthru="true" checkreturn="true">
