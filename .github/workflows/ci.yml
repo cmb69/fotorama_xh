@@ -50,6 +50,8 @@ jobs:
           cd cmsimplexh/plugins/fotorama
           patch vendor/approvals/approval-tests/src/Reporters/DiffInfo.php .github/DiffInfo.php.patch
           patch vendor/approvals/approval-tests/src/Approvals.php .github/Approvals.php.patch
+      - name: Install JS tools
+        run: npm install -g jshint
       - name: phing sniff
         run: cd cmsimplexh/plugins/fotorama && PATH=tools:vendor/bin:$PATH phing sniff
       - name: phing stan
