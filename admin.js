@@ -79,9 +79,8 @@ function editor (article) {
                 if (checkbox.checked ? event.code === "ArrowDown" : event.code === "ArrowRight") {
                     return;
                 }
-                const reference = li.nextElementSibling
-                    ? li.nextElementSibling.nextElementSibling
-                    : ol.firstElementChild;
+                const next = li.nextElementSibling;
+                const reference = next ? next.nextElementSibling : ol.firstElementChild;
                 ol.insertBefore(li, reference);
                 break;
             case "ArrowLeft":
@@ -127,7 +126,7 @@ function editor (article) {
     const progress = article.querySelector("dialog.fotorama_progress");
     assert(progress instanceof HTMLDialogElement);
     addEventListener("pagehide", function () {
-        progress.close()
+        progress.close();
     });
     form.addEventListener("submit", function (event) {
         if (event.submitter instanceof HTMLInputElement && event.submitter.type === "image") {
@@ -150,7 +149,7 @@ function editor (article) {
             });
         });
         imagesInput.value = JSON.stringify(records);
-        progress.showModal()
+        progress.showModal();
     });
     const closeButton = filebrowser.querySelector("button.fotorama_close");
     assert(closeButton instanceof HTMLButtonElement);
@@ -213,7 +212,7 @@ function editor (article) {
             dt.setData("application/x.fotorama-image", Array.from(ol.children).indexOf(li).toString());
             dt.effectAllowed = "move";
             li.classList.add("fotorama_drag");
-        })
+        });
         ol.appendChild(clone);
     }
 
