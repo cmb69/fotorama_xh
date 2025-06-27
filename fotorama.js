@@ -19,8 +19,11 @@
 
 // @ts-check
 
+import {assert} from "./assert.js";
+
 document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
-    init(/**@type {HTMLElement}*/(element));
+    assert(element instanceof HTMLElement);
+    init(element);
 });
 
 /** @param {HTMLElement} element */

@@ -85,6 +85,17 @@
     </exec>
     <unzip file="export.zip" todir="export"/>
     <delete file="export.zip"/>
+    <reflexive>
+      <fileset dir="export">
+        <include name="admin.js"/>
+        <include name="fotorama.js"/>
+      </fileset>
+      <filterchain>
+        <linecontainsregexp negate="true">
+          <regexp pattern="^\s*assert\("/>
+        </linecontainsregexp>
+      </filterchain>
+    </reflexive>
     <jsMin targetDir="dist" suffix=".min" failonerror="true">
       <fileset dir="export">
         <include name="admin.js"/>

@@ -19,47 +19,60 @@
 
 // @ts-check
 
-/**@type {HTMLDialogElement}*/
+import {assert} from "./assert.js";
+
+/** @type {HTMLDialogElement} */
 var currentFilebrowser;
-/**@type {string}*/
+/** @type {string} */
 var currentBaseUrl;
-/**@type {HTMLInputElement}*/
+/** @type {HTMLInputElement} */
 var currentPath;
 
 document.querySelectorAll("article.fotorama_editor").forEach(article => {
-    editor(/**@type {HTMLElement}*/(article));
+    assert(article instanceof HTMLElement);
+    editor(article);
 });
-/**@type any*/(window).fotorama = {
+
+/** @type {any} */(window).fotorama = {
     setLink: setLink,
 };
 
 /** @param {HTMLElement} article */
 function editor (article) {
-    const form = /**@type {HTMLFormElement}*/(article.querySelector("form"));
-    const imagesInput = /**@type {HTMLInputElement}*/(article.querySelector("input[name=gallery_images]"));
+    const form = article.querySelector("form");
+    assert(form instanceof HTMLFormElement);
+    const imagesInput = article.querySelector("input[name=gallery_images]");
+    assert(imagesInput instanceof HTMLInputElement);
     const images = JSON.parse(imagesInput.value);
-    const ol = /**@type {HTMLOListElement}*/(article.querySelector("ol"));
-    const path = /**@type {HTMLInputElement}*/(form.querySelector("input.fotorama_path"));
+    const ol = article.querySelector("ol");
+    assert(ol instanceof HTMLOListElement);
+    const path = form.querySelector("input.fotorama_path");
+    assert(path instanceof HTMLInputElement);
     let baseUrl = ol.dataset.baseUrl + path.value + "/";
-    const template = /**@type {HTMLTemplateElement}*/(article.querySelector("template.fotorama_template"));
-    const filebrowser = /**@type {HTMLDialogElement}*/(article.querySelector("dialog.fotorama_filebrowser"));
+    const template = article.querySelector("template.fotorama_template");
+    assert(template instanceof HTMLTemplateElement);
+    const filebrowser = article.querySelector("dialog.fotorama_filebrowser");
+    assert(filebrowser instanceof HTMLDialogElement);
     images.forEach(image);
     path.addEventListener("change", () => {
         baseUrl = ol.dataset.baseUrl + path.value + "/";
         ol.querySelectorAll("li input.fotorama_thumb").forEach(input => {
+            assert(input instanceof HTMLInputElement);
             const li = input.parentElement;
-            if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-            const path = /**@type {HTMLInputElement}*/(li.querySelector("input.fotorama_path"));
-            /**@type {HTMLInputElement}*/(input).src = baseUrl + path.value;
+            assert(li instanceof HTMLLIElement);
+            const path = li.querySelector("input.fotorama_path");
+            assert(path instanceof HTMLInputElement);
+            input.src = baseUrl + path.value;
         });
     });
     ol.addEventListener("keydown", event => {
         if (!(event.target instanceof HTMLInputElement) || event.target.type !== "image") {
             return;
         }
-        const checkbox = /**@type {HTMLInputElement}*/(form.querySelector("input.fotorama_hide_details"));
+        const checkbox = form.querySelector("input.fotorama_hide_details");
+        assert(checkbox instanceof HTMLInputElement);
         const li = event.target.parentElement;
-        if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+        assert(li instanceof HTMLLIElement);
         switch (event.code) {
             case "ArrowRight":
             case "ArrowDown":
@@ -101,13 +114,16 @@ function editor (article) {
         const current = Array.from(ol.children).indexOf(li);
         ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
     });
-    const button = /**@type {HTMLButtonElement}*/(form.querySelector("button.fotorama_add_image"));
+    const button = form.querySelector("button.fotorama_add_image");
+    assert(button instanceof HTMLButtonElement);
     button.addEventListener("click", () => {
         image(null);
-        const input = /**@type {HTMLInputElement}*/(ol.querySelector("li:last-child input.fotorama_thumb"));
+        const input = ol.querySelector("li:last-child input.fotorama_thumb");
+        assert(input instanceof HTMLInputElement);
         input.focus();
     });
-    const progress = /**@type {HTMLDialogElement}*/(article.querySelector("dialog.fotorama_progress"));
+    const progress = article.querySelector("dialog.fotorama_progress");
+    assert(progress instanceof HTMLDialogElement);
     addEventListener("pagehide", () => {
         progress.close()
     });
@@ -119,53 +135,72 @@ function editor (article) {
         }
         let records = [];
         ol.querySelectorAll("li").forEach(li => {
-            const description = /**@type {HTMLTextAreaElement}*/
-                (li.querySelector("textarea.fotorama_description"));
+            const path = li.querySelector("input.fotorama_path");
+            assert(path instanceof HTMLInputElement);
+            const caption = li.querySelector("textarea.fotorama_caption");
+            assert(caption instanceof HTMLTextAreaElement);
+            const description = li.querySelector("textarea.fotorama_description");
+            assert(description instanceof HTMLTextAreaElement);
             records.push({
-                path: /**@type {HTMLInputElement}*/(li.querySelector("input.fotorama_path")).value,
-                caption: /**@type {HTMLTextAreaElement}*/(li.querySelector("textarea.fotorama_caption")).value,
+                path: path.value,
+                caption: caption.value,
                 description: description.value,
             });
         });
         imagesInput.value = JSON.stringify(records);
         progress.showModal()
     });
-    const closeButton = /**@type {HTMLButtonElement}*/(filebrowser.querySelector("button.fotorama_close"));
+    const closeButton = filebrowser.querySelector("button.fotorama_close");
+    assert(closeButton instanceof HTMLButtonElement);
     closeButton.addEventListener("click", () => {
         filebrowser.close();
     });
-    const iframe = /**@type {HTMLIFrameElement}*/(filebrowser.querySelector("iframe"));
+    const iframe = filebrowser.querySelector("iframe");
+    assert(iframe instanceof HTMLIFrameElement);
     iframe.addEventListener("load", () => {
-        const figcaption = /**@type {HTMLElement}*/(filebrowser.querySelector("figcaption"));
-        const controls = /**@type {HTMLParagraphElement}*/(filebrowser.querySelector("p"));
+        const figcaption = filebrowser.querySelector("figcaption");
+        assert(figcaption instanceof HTMLElement);
+        const controls = filebrowser.querySelector("p");
+        assert(controls instanceof HTMLParagraphElement);
         const height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
         iframe.width = (filebrowser.clientWidth - 20).toString();
         iframe.height = (filebrowser.clientHeight - height - 20).toString();
     });
 
     function image(image) {
-        const clone = /**@type {DocumentFragment}*/(template.content.cloneNode(true));
-        const li = /**@type {HTMLLIElement}*/(clone.querySelector("li"));
-        const thumb = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_thumb"));
+        assert(template instanceof HTMLTemplateElement);
+        const clone = template.content.cloneNode(true);
+        assert(clone instanceof DocumentFragment);
+        const li = clone.querySelector("li");
+        assert(li instanceof HTMLLIElement);
+        const thumb = clone.querySelector("input.fotorama_thumb");
+        assert(thumb instanceof HTMLInputElement);
         thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
-        const path = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_path"));
+        const path = clone.querySelector("input.fotorama_path");
+        assert(path instanceof HTMLInputElement);
         path.value = image ? image.path : "";
         path.addEventListener("change", () => {
             thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
         });
-        const caption = /**@type {HTMLTextAreaElement}*/(clone.querySelector("textarea.fotorama_caption"));
+        const caption = clone.querySelector("textarea.fotorama_caption");
+        assert(caption instanceof HTMLTextAreaElement);
         caption.value = image ? image.caption : "";
-        const description = /**@type {HTMLTextAreaElement}*/(clone.querySelector("textarea.fotorama_description"));
+        const description = clone.querySelector("textarea.fotorama_description");
+        assert(description instanceof HTMLTextAreaElement);
         description.value = image ? image.description : "";
-        const pickImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_pick_image"));
+        const pickImage = clone.querySelector("button.fotorama_pick_image");
+        assert(pickImage instanceof HTMLButtonElement);
         pickImage.addEventListener("click", () => {
             openFilebrowser(path);
         });
-        const moveImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_move_image"));
+        const moveImage = clone.querySelector("button.fotorama_move_image");
+        assert(moveImage instanceof HTMLButtonElement);
+        assert(ol instanceof HTMLOListElement);
         moveImage.addEventListener("click", () => {
             ol.insertBefore(li, li.previousElementSibling);
         });
-        const deleteImage = /**@type {HTMLButtonElement}*/(clone.querySelector("button.fotorama_delete_image"));
+        const deleteImage = clone.querySelector("button.fotorama_delete_image");
+        assert(deleteImage instanceof HTMLButtonElement);
         deleteImage.addEventListener("click", () => {
             li.remove();
         });
@@ -182,9 +217,11 @@ function editor (article) {
 
     /** @param {HTMLInputElement} path */
     function openFilebrowser(path) {
-        const iframe = /**@type {HTMLIFrameElement}*/(filebrowser.querySelector("iframe"));
+        assert(filebrowser instanceof HTMLDialogElement);
+        const iframe = filebrowser.querySelector("iframe");
+        assert(iframe instanceof HTMLIFrameElement);
         const matches = baseUrl.match(/^(\.+\/)(.*)$/);
-        if (matches === null) throw "assertion failure";
+        assert(matches !== null);
         const p = matches[1];
         const prefix = encodeURIComponent(matches[1]);
         const subdir = encodeURIComponent(matches[2].slice(0, -1));
