@@ -223,10 +223,8 @@ function editor (article) {
         assert(iframe instanceof HTMLIFrameElement);
         const matches = baseUrl.match(/^(\.+\/)(.*)$/);
         assert(matches !== null);
-        const p = matches[1];
-        const prefix = encodeURIComponent(matches[1]);
-        const subdir = encodeURIComponent(matches[2].slice(0, -1));
-        const url = `${p}?filebrowser=editorbrowser&editor=fotorama&prefix=${prefix}&type=image&subdir=${subdir}`;
+        const url = matches[1] + "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
+            encodeURIComponent(matches[1]) + "&type=image&subdir=" + encodeURIComponent(matches[2].slice(0, -1));
         iframe.src = url;
         filebrowser.showModal();
         currentFilebrowser = filebrowser;
