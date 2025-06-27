@@ -56,5 +56,5 @@ jobs:
         run: cd cmsimplexh/plugins/fotorama && PATH=tools:vendor/bin:$PATH phing stan
       - name: phing test
         run: cd cmsimplexh/plugins/fotorama && PATH=tools:vendor/bin:$PATH phing test
-      - name: phing tsc
-        run: cd cmsimplexh/plugins/fotorama && PATH=tools:vendor/bin:$PATH phing tsc
+      - name: phing js
+        run: cd cmsimplexh/plugins/fotorama && PATH=tools:vendor/bin:$PATH phing js
