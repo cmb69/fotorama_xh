@@ -28,7 +28,7 @@ var currentBaseUrl;
 /** @type {HTMLInputElement} */
 var currentPath;
 
-document.querySelectorAll("article.fotorama_editor").forEach(article => {
+document.querySelectorAll("article.fotorama_editor").forEach(function (article) {
     assert(article instanceof HTMLElement);
     editor(article);
 });
@@ -54,9 +54,9 @@ function editor (article) {
     const filebrowser = article.querySelector("dialog.fotorama_filebrowser");
     assert(filebrowser instanceof HTMLDialogElement);
     images.forEach(image);
-    path.addEventListener("change", () => {
+    path.addEventListener("change", function () {
         baseUrl = ol.dataset.baseUrl + path.value + "/";
-        ol.querySelectorAll("li input.fotorama_thumb").forEach(input => {
+        ol.querySelectorAll("li input.fotorama_thumb").forEach(function (input) {
             assert(input instanceof HTMLInputElement);
             const li = input.parentElement;
             assert(li instanceof HTMLLIElement);
@@ -65,7 +65,7 @@ function editor (article) {
             input.src = baseUrl + path.value;
         });
     });
-    ol.addEventListener("keydown", event => {
+    ol.addEventListener("keydown", function (event) {
         if (!(event.target instanceof HTMLInputElement) || event.target.type !== "image") {
             return;
         }
@@ -96,16 +96,18 @@ function editor (article) {
     });
     ol.addEventListener("dragenter", dragging);
     ol.addEventListener("dragover", dragging);
-    ol.addEventListener("dragleave", event => {
+    ol.addEventListener("dragleave", function (event) {
         if (!(event.target instanceof HTMLElement)) return;
         const li = event.target.closest("li");
         if (li === null) return;
         li.classList.remove("fotorama_drop");
     });
-    ol.addEventListener("dragend", () => {
-        ol.querySelectorAll("li").forEach(li => li.classList.remove("fotorama_drag", "fotorama_drop"));
+    ol.addEventListener("dragend", function () {
+        ol.querySelectorAll("li").forEach(function (li) {
+            li.classList.remove("fotorama_drag", "fotorama_drop");
+        });
     });
-    ol.addEventListener("drop", (event) => {
+    ol.addEventListener("drop", function (event) {
         if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
         const nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
         const src = ol.children[nth];
@@ -116,7 +118,7 @@ function editor (article) {
     });
     const button = form.querySelector("button.fotorama_add_image");
     assert(button instanceof HTMLButtonElement);
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
         image(null);
         const input = ol.querySelector("li:last-child input.fotorama_thumb");
         assert(input instanceof HTMLInputElement);
@@ -124,17 +126,17 @@ function editor (article) {
     });
     const progress = article.querySelector("dialog.fotorama_progress");
     assert(progress instanceof HTMLDialogElement);
-    addEventListener("pagehide", () => {
+    addEventListener("pagehide", function () {
         progress.close()
     });
-    form.addEventListener("submit", event => {
+    form.addEventListener("submit", function (event) {
         if (event.submitter instanceof HTMLInputElement && event.submitter.type === "image") {
             event.preventDefault();
             event.submitter.focus();
             return;
         }
         let records = [];
-        ol.querySelectorAll("li").forEach(li => {
+        ol.querySelectorAll("li").forEach(function (li) {
             const path = li.querySelector("input.fotorama_path");
             assert(path instanceof HTMLInputElement);
             const caption = li.querySelector("textarea.fotorama_caption");
@@ -152,12 +154,12 @@ function editor (article) {
     });
     const closeButton = filebrowser.querySelector("button.fotorama_close");
     assert(closeButton instanceof HTMLButtonElement);
-    closeButton.addEventListener("click", () => {
+    closeButton.addEventListener("click", function () {
         filebrowser.close();
     });
     const iframe = filebrowser.querySelector("iframe");
     assert(iframe instanceof HTMLIFrameElement);
-    iframe.addEventListener("load", () => {
+    iframe.addEventListener("load", function () {
         const figcaption = filebrowser.querySelector("figcaption");
         assert(figcaption instanceof HTMLElement);
         const controls = filebrowser.querySelector("p");
@@ -179,7 +181,7 @@ function editor (article) {
         const path = clone.querySelector("input.fotorama_path");
         assert(path instanceof HTMLInputElement);
         path.value = image ? image.path : "";
-        path.addEventListener("change", () => {
+        path.addEventListener("change", function () {
             thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
         });
         const caption = clone.querySelector("textarea.fotorama_caption");
@@ -190,21 +192,21 @@ function editor (article) {
         description.value = image ? image.description : "";
         const pickImage = clone.querySelector("button.fotorama_pick_image");
         assert(pickImage instanceof HTMLButtonElement);
-        pickImage.addEventListener("click", () => {
+        pickImage.addEventListener("click", function () {
             openFilebrowser(path);
         });
         const moveImage = clone.querySelector("button.fotorama_move_image");
         assert(moveImage instanceof HTMLButtonElement);
         assert(ol instanceof HTMLOListElement);
-        moveImage.addEventListener("click", () => {
+        moveImage.addEventListener("click", function () {
             ol.insertBefore(li, li.previousElementSibling);
         });
         const deleteImage = clone.querySelector("button.fotorama_delete_image");
         assert(deleteImage instanceof HTMLButtonElement);
-        deleteImage.addEventListener("click", () => {
+        deleteImage.addEventListener("click", function () {
             li.remove();
         });
-        thumb.addEventListener("dragstart", (event) => {
+        thumb.addEventListener("dragstart", function (event) {
             const dt = event.dataTransfer;
             if (dt === null) return;
             dt.setDragImage(thumb, thumb.width / 2, thumb.height / 2);
