@@ -17,6 +17,7 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* jshint: strict:implied */
 // @ts-check
 
 document.querySelectorAll("figure.fotorama_gallery").forEach((element) => {
