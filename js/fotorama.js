@@ -19,8 +19,8 @@
 
 // @ts-check
 
-document.querySelectorAll("figure.fotorama_gallery").forEach(element => {
-    init(/**@type {HTMLElement}*/(element));
+document.querySelectorAll("figure.fotorama_gallery").forEach((element) => {
+    init(/**@type {HTMLElement}*/ (element));
 });
 
 /** @param {HTMLElement} element */
@@ -37,7 +37,7 @@ function init(element) {
             uniqueImages: false,
             scaleImageToRatio: true,
             captionHTML: false,
-            alertError: false
+            alertError: false,
         });
     }
 }
