@@ -32,7 +32,7 @@ var fotorama = (function () {
     /** @type {HTMLCanvasElement} */
     var canvas;
 
-    document.querySelectorAll("article.fotorama_editor").forEach((article) => {
+    document.querySelectorAll("article.fotorama_editor").forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
     return {
@@ -62,16 +62,16 @@ var fotorama = (function () {
             article.querySelector("dialog.fotorama_filebrowser")
         );
         images.forEach(image);
-        path.addEventListener("change", () => {
+        path.addEventListener("change", function () {
             baseUrl = ol.dataset.baseUrl + path.value + "/";
-            ol.querySelectorAll("li img.fotorama_thumb").forEach((input) => {
+            ol.querySelectorAll("li img.fotorama_thumb").forEach(function (input) {
                 var li = input.parentElement;
                 if (!(li instanceof HTMLLIElement)) throw "assertion failure";
                 var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
                 /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
             });
         });
-        ol.addEventListener("keydown", (event) => {
+        ol.addEventListener("keydown", function (event) {
             if (!(event.target instanceof HTMLImageElement)) {
                 return;
             }
@@ -105,20 +105,20 @@ var fotorama = (function () {
         });
         ol.addEventListener("dragenter", dragging);
         ol.addEventListener("dragover", dragging);
-        ol.addEventListener("dragleave", (event) => {
+        ol.addEventListener("dragleave", function (event) {
             if (!(event.target instanceof HTMLElement)) return;
             var li = event.target.closest("li");
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         });
-        ol.addEventListener("dragend", () => {
-            ol.querySelectorAll("li").forEach((li) =>
-                li.classList.remove("fotorama_drag", "fotorama_drop")
-            );
+        ol.addEventListener("dragend", function () {
+            ol.querySelectorAll("li").forEach(function (li) {
+                li.classList.remove("fotorama_drag", "fotorama_drop");
+            });
             canvas.remove();
             canvas = null;
         });
-        ol.addEventListener("drop", (event) => {
+        ol.addEventListener("drop", function (event) {
             if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
             var nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
             var src = ol.children[nth];
@@ -130,7 +130,7 @@ var fotorama = (function () {
         var button = /**@type {HTMLButtonElement}*/ (
             form.querySelector("button.fotorama_add_image")
         );
-        button.addEventListener("click", () => {
+        button.addEventListener("click", function () {
             image(null);
             var input = /**@type {HTMLInputElement}*/ (
                 ol.querySelector("li:last-child img.fotorama_thumb")
@@ -140,12 +140,12 @@ var fotorama = (function () {
         var progress = /**@type {HTMLDialogElement}*/ (
             article.querySelector("dialog.fotorama_progress")
         );
-        addEventListener("pagehide", () => {
+        addEventListener("pagehide", function () {
             progress.close();
         });
-        form.addEventListener("submit", () => {
+        form.addEventListener("submit", function () {
             var records = [];
-            ol.querySelectorAll("li").forEach((li) => {
+            ol.querySelectorAll("li").forEach(function (li) {
                 var description =
                     /**@type {HTMLTextAreaElement}*/
                     (li.querySelector("textarea.fotorama_description"));
@@ -164,11 +164,11 @@ var fotorama = (function () {
         var closeButton = /**@type {HTMLButtonElement}*/ (
             filebrowser.querySelector("button.fotorama_close")
         );
-        closeButton.addEventListener("click", () => {
+        closeButton.addEventListener("click", function () {
             filebrowser.close();
         });
         var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
-        iframe.addEventListener("load", () => {
+        iframe.addEventListener("load", function () {
             var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
             var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
             var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
@@ -183,7 +183,7 @@ var fotorama = (function () {
             thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
             var path = /**@type {HTMLInputElement}*/ (clone.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
-            path.addEventListener("change", () => {
+            path.addEventListener("change", function () {
                 thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
             });
             var caption = /**@type {HTMLTextAreaElement}*/ (
@@ -197,22 +197,22 @@ var fotorama = (function () {
             var pickImage = /**@type {HTMLButtonElement}*/ (
                 clone.querySelector("button.fotorama_pick_image")
             );
-            pickImage.addEventListener("click", () => {
+            pickImage.addEventListener("click", function () {
                 openFilebrowser(path);
             });
             var moveImage = /**@type {HTMLButtonElement}*/ (
                 clone.querySelector("button.fotorama_move_image")
             );
-            moveImage.addEventListener("click", () => {
+            moveImage.addEventListener("click", function () {
                 ol.insertBefore(li, li.previousElementSibling);
             });
             var deleteImage = /**@type {HTMLButtonElement}*/ (
                 clone.querySelector("button.fotorama_delete_image")
             );
-            deleteImage.addEventListener("click", () => {
+            deleteImage.addEventListener("click", function () {
                 li.remove();
             });
-            thumb.addEventListener("dragstart", (event) => {
+            thumb.addEventListener("dragstart", function (event) {
                 var dt = event.dataTransfer;
                 if (dt === null) return;
                 canvas = document.createElement("canvas");
