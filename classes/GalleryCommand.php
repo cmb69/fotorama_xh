@@ -100,10 +100,10 @@ class GalleryCommand
 
     private function script(): string
     {
-        if (is_file($this->pluginFolder . "fotorama.min.js")) {
-            return $this->pluginFolder . "fotorama.min.js";
+        if (is_file($this->pluginFolder . "js/fotorama.min.js")) {
+            return $this->pluginFolder . "js/fotorama.min.js";
         }
-        return $this->pluginFolder . "fotorama.js";
+        return $this->pluginFolder . "js/fotorama.js";
     }
 
     private function stylesheet(): string
