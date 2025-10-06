@@ -256,7 +256,7 @@ var fotorama = (function () {
         function dragging(event) {
             if (
                 event.dataTransfer &&
-                event.dataTransfer.types.includes("application/x.fotorama-image")
+                event.dataTransfer.types.indexOf("application/x.fotorama-image") >= 0
             ) {
                 if (!(event.target instanceof HTMLElement)) return;
                 const li = event.target.closest("li");
