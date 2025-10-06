@@ -116,6 +116,9 @@ article.fotorama_editor .fotorama_fotorama {
 article.fotorama_editor .fotorama_gallery label {
     display: block;
 }
+article.fotorama_editor label.fotorama_images {
+    grid-column: 1/-1;
+}
 article.fotorama_editor .fotorama_gallery input:not([type]),
 article.fotorama_editor .fotorama_gallery input[type=number],
 article.fotorama_editor .fotorama_gallery textarea {

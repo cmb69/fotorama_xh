@@ -41,11 +41,17 @@ var fotorama = (function () {
 
     /** @param {HTMLElement} article */
     function editor(article) {
+        /** @type {NodeListOf<HTMLScriptElement>} */ (
+            article.querySelectorAll("script[type='text/x-template']")
+        ).forEach(function (script) {
+            script.outerHTML = script.text;
+        });
         const form = /**@type {HTMLFormElement}*/ (article.querySelector("form"));
-        const imagesInput = /**@type {HTMLInputElement}*/ (
-            article.querySelector("input[name=gallery_images]")
+        const imagesInput = /**@type {HTMLTextAreaElement}*/ (
+            article.querySelector("textarea[name=gallery_images]")
         );
         const images = JSON.parse(imagesInput.value);
+        imagesInput.parentElement.style.display = "none";
         const ol = /**@type {HTMLOListElement}*/ (article.querySelector("ol"));
         const path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
         let baseUrl = ol.dataset.baseUrl + path.value + "/";
