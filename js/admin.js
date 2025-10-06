@@ -32,7 +32,7 @@ var fotorama = (function () {
     /** @type {HTMLCanvasElement} */
     var canvas;
 
-    document.querySelectorAll("article.fotorama_editor").forEach(function (article) {
+    array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
     return {
@@ -64,7 +64,7 @@ var fotorama = (function () {
         images.forEach(image);
         path.addEventListener("change", function () {
             baseUrl = ol.dataset.baseUrl + path.value + "/";
-            ol.querySelectorAll("li img.fotorama_thumb").forEach(function (input) {
+            array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
                 var li = input.parentElement;
                 if (!(li instanceof HTMLLIElement)) throw "assertion failure";
                 var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
@@ -112,7 +112,7 @@ var fotorama = (function () {
             li.classList.remove("fotorama_drop");
         });
         ol.addEventListener("dragend", function () {
-            ol.querySelectorAll("li").forEach(function (li) {
+            array(ol.querySelectorAll("li")).forEach(function (li) {
                 li.classList.remove("fotorama_drag", "fotorama_drop");
             });
             canvas.remove();
@@ -145,7 +145,7 @@ var fotorama = (function () {
         });
         form.addEventListener("submit", function () {
             var records = [];
-            ol.querySelectorAll("li").forEach(function (li) {
+            array(ol.querySelectorAll("li")).forEach(function (li) {
                 var description =
                     /**@type {HTMLTextAreaElement}*/
                     (li.querySelector("textarea.fotorama_description"));
