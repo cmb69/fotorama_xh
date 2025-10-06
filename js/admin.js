@@ -126,7 +126,7 @@ var fotorama = (function () {
             const src = ol.children[nth];
             const li = event.target.closest("li");
             if (li === null) return;
-            const current = Array.from(ol.children).indexOf(li);
+            const current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
         });
         const button = /**@type {HTMLButtonElement}*/ (
@@ -234,7 +234,7 @@ var fotorama = (function () {
                 dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 dt.setData(
                     "application/x.fotorama-image",
-                    Array.from(ol.children).indexOf(li).toString()
+                    array(ol.children).indexOf(li).toString()
                 );
                 dt.effectAllowed = "move";
                 li.classList.add("fotorama_drag");
@@ -277,9 +277,8 @@ var fotorama = (function () {
     function setLink(url) {
         currentFilebrowser.close();
         const prefix = commonPrefix(currentBaseUrl, url);
-        const slashes = currentBaseUrl.substring(prefix.length).match(/\//g);
-        currentPath.value =
-            "../".repeat(slashes ? slashes.length : 0) + url.substring(prefix.length);
+        var base = currentBaseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
+        currentPath.value = base + url.substring(prefix.length);
         currentPath.dispatchEvent(new Event("change"));
 
         /**
@@ -294,5 +293,10 @@ var fotorama = (function () {
             }
             return res;
         }
+    }
+
+    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
+    function array(arrayLike) {
+        return Array.prototype.slice.call(arrayLike);
     }
 })();
