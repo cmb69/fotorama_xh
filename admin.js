@@ -28,6 +28,8 @@ var fotorama = (function () {
     var currentBaseUrl;
     /**@type {HTMLInputElement}*/
     var currentPath;
+    /** @type {HTMLCanvasElement} */
+    var canvas;
 
     document.querySelectorAll("article.fotorama_editor").forEach(article => {
         editor(/**@type {HTMLElement}*/(article));
@@ -49,7 +51,7 @@ var fotorama = (function () {
         images.forEach(image);
         path.addEventListener("change", () => {
             baseUrl = ol.dataset.baseUrl + path.value + "/";
-            ol.querySelectorAll("li input.fotorama_thumb").forEach(input => {
+            ol.querySelectorAll("li img.fotorama_thumb").forEach(input => {
                 const li = input.parentElement;
                 if (!(li instanceof HTMLLIElement)) throw "assertion failure";
                 const path = /**@type {HTMLInputElement}*/(li.querySelector("input.fotorama_path"));
@@ -57,7 +59,7 @@ var fotorama = (function () {
             });
         });
         ol.addEventListener("keydown", event => {
-            if (!(event.target instanceof HTMLInputElement) || event.target.type !== "image") {
+            if (!(event.target instanceof HTMLImageElement)) {
                 return;
             }
             const checkbox = /**@type {HTMLInputElement}*/(form.querySelector("input.fotorama_hide_details"));
@@ -94,6 +96,8 @@ var fotorama = (function () {
         });
         ol.addEventListener("dragend", () => {
             ol.querySelectorAll("li").forEach(li => li.classList.remove("fotorama_drag", "fotorama_drop"));
+            canvas.remove();
+            canvas = null;
         });
         ol.addEventListener("drop", (event) => {
             if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
@@ -107,19 +111,14 @@ var fotorama = (function () {
         const button = /**@type {HTMLButtonElement}*/(form.querySelector("button.fotorama_add_image"));
         button.addEventListener("click", () => {
             image(null);
-            const input = /**@type {HTMLInputElement}*/(ol.querySelector("li:last-child input.fotorama_thumb"));
+            const input = /**@type {HTMLInputElement}*/(ol.querySelector("li:last-child img.fotorama_thumb"));
             input.focus();
         });
         const progress = /**@type {HTMLDialogElement}*/(article.querySelector("dialog.fotorama_progress"));
         addEventListener("pagehide", () => {
             progress.close()
         });
-        form.addEventListener("submit", event => {
-            if (event.submitter instanceof HTMLInputElement && event.submitter.type === "image") {
-                event.preventDefault();
-                event.submitter.focus();
-                return;
-            }
+        form.addEventListener("submit", () => {
             let records = [];
             ol.querySelectorAll("li").forEach(li => {
                 const description = /**@type {HTMLTextAreaElement}*/
@@ -149,7 +148,7 @@ var fotorama = (function () {
         function image(image) {
             const clone = /**@type {DocumentFragment}*/(template.content.cloneNode(true));
             const li = /**@type {HTMLLIElement}*/(clone.querySelector("li"));
-            const thumb = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_thumb"));
+            const thumb = /**@type {HTMLImageElement}*/(clone.querySelector("img.fotorama_thumb"));
             thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
             const path = /**@type {HTMLInputElement}*/(clone.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
@@ -175,7 +174,21 @@ var fotorama = (function () {
             thumb.addEventListener("dragstart", (event) => {
                 const dt = event.dataTransfer;
                 if (dt === null) return;
-                dt.setDragImage(thumb, thumb.width / 2, thumb.height / 2);
+                canvas = document.createElement("canvas");
+                let ratio = thumb.naturalWidth / thumb.naturalHeight;
+                if (ratio >= 1) {
+                    canvas.width = 100;
+                    canvas.height = 100 / ratio;
+                } else {
+                    canvas.width = 100 * ratio;
+                    canvas.height = 100;
+                }
+                let ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+                ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
+                canvas.style.position = "absolute";
+                canvas.style.left = "-100%";
+                document.body.append(canvas);
+                dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 dt.setData("application/x.fotorama-image", Array.from(ol.children).indexOf(li).toString());
                 dt.effectAllowed = "move";
                 li.classList.add("fotorama_drag");
