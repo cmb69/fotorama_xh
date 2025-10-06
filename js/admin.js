@@ -245,11 +245,12 @@ var fotorama = (function () {
             var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
             var matches = baseUrl.match(/^(\.+\/)(.*)$/);
             if (matches === null) throw "assertion failure";
-            var p = matches[1];
-            var prefix = encodeURIComponent(matches[1]);
-            var subdir = encodeURIComponent(matches[2].slice(0, -1));
-            var url = `${p}?filebrowser=editorbrowser&editor=fotorama&prefix=${prefix}&type=image&subdir=${subdir}`;
-            iframe.src = url;
+            iframe.src =
+                matches[1] +
+                "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
+                encodeURIComponent(matches[1]) +
+                "&type=image&subdir=" +
+                encodeURIComponent(matches[2].slice(0, -1));
             filebrowser.showModal();
             currentFilebrowser = filebrowser;
             currentBaseUrl = baseUrl;
