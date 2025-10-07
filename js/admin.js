@@ -95,7 +95,7 @@
                 this.element.querySelector("div.fotorama_filebrowser_backdrop")
             );
             images.forEach(image);
-            path.addEventListener("change", onPathChange);
+            path.addEventListener("change", this.updateThumbUrls.bind(this));
             this.detailToggle.onchange = this.toggleDetails.bind(this);
             ol.addEventListener("keydown", this.onKeydown.bind(this));
             ol.addEventListener("dragenter", this.onDrag.bind(this));
@@ -121,24 +121,14 @@
                 filebrowser.style.display = "none";
             });
 
-            function onPathChange() {
-                var baseUrl = self.baseUrl;
-                array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
-                    var li = input.parentElement;
-                    if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-                    var path = /**@type {HTMLInputElement}*/ (
-                        li.querySelector("input.fotorama_path")
-                    );
-                    /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
-                });
-            }
-
             /** @type {(image: Image) => void} */
             function image(image) {
                 ol.insertAdjacentHTML("beforeend", self.template.text);
                 var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
                 var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
-                thumb.src = image ? (!image.path.match(/:\/\//) ? self.baseUrl : "") + image.path : "";
+                thumb.src = image
+                    ? (!image.path.match(/:\/\//) ? self.baseUrl : "") + image.path
+                    : "";
                 var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
                 path.value = image ? image.path : "";
                 path.addEventListener("change", function () {
@@ -238,7 +228,7 @@
                 var prefix = commonPrefix(baseUrl, url);
                 var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
                 path.value = base + url.substring(prefix.length);
-                onPathChange();
+                self.updateThumbUrls();
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -311,6 +301,15 @@
         /** @type {() => void} */
         toggleDetails: function () {
             this.ol.classList.toggle("fotorama_hide_details");
+        },
+        updateThumbUrls: function () {
+            var baseUrl = this.baseUrl;
+            array(this.ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
+                var li = input.parentElement;
+                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+                var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
+                /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
+            });
         },
         /** @type {() => void} */
         dehydrateImages: function () {
