@@ -49,8 +49,8 @@
         var template = /**@type {HTMLScriptElement}*/ (
             article.querySelector("script.fotorama_template")
         );
-        var filebrowser = /**@type {HTMLDialogElement}*/ (
-            article.querySelector("dialog.fotorama_filebrowser")
+        var filebrowser = /**@type {HTMLElement}*/ (
+            article.querySelector("div.fotorama_filebrowser_backdrop")
         );
         images.forEach(image);
         path.addEventListener("change", function () {
@@ -141,11 +141,11 @@
             );
             input.focus();
         });
-        var progress = /**@type {HTMLDialogElement}*/ (
-            article.querySelector("dialog.fotorama_progress")
+        var progress = /**@type {HTMLElement}*/ (
+            article.querySelector("div.fotorama_progress_backdrop")
         );
         addEventListener("pagehide", function () {
-            progress.close();
+            progress.style.display = "none";
         });
         form.addEventListener("submit", function () {
             var records = [];
@@ -163,13 +163,13 @@
                 });
             });
             imagesInput.value = JSON.stringify(records);
-            progress.showModal();
+            progress.style.display = "";
         });
         var closeButton = /**@type {HTMLButtonElement}*/ (
             filebrowser.querySelector("button.fotorama_close")
         );
         closeButton.addEventListener("click", function () {
-            filebrowser.close();
+            filebrowser.style.display = "none";
         });
 
         function image(image) {
@@ -245,13 +245,14 @@
                 encodeURIComponent(matches[1]) +
                 "&type=image&subdir=" +
                 encodeURIComponent(matches[2].slice(0, -1));
-            filebrowser.showModal();
+            filebrowser.style.display = "";
             iframe.onload = function () {
                 var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
                 var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
                 var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
-                iframe.width = (filebrowser.clientWidth - 20).toString();
-                iframe.height = (filebrowser.clientHeight - height - 20).toString();
+                var inner = filebrowser.firstElementChild;
+                iframe.width = (inner.clientWidth - 20).toString();
+                iframe.height = (inner.clientHeight - height - 20).toString();
                 // @ts-ignore
                 iframe.contentWindow.setLink = setLink.bind(null, filebrowser, baseUrl, path);
             };
@@ -273,7 +274,7 @@
 
     /** @type {(filebrowser: HTMLDialogElement, baseUrl: string, path: HTMLInputElement, url: string) => void} */
     function setLink(filebrowser, baseUrl, path, url) {
-        filebrowser.close();
+        filebrowser.style.display = "none";
         var prefix = commonPrefix(baseUrl, url);
         var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
         path.value = base + url.substring(prefix.length);
