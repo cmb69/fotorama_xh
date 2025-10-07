@@ -29,34 +29,37 @@
     }
 
     var editor = {
+        /** @type {HTMLElement} */
+        element: undefined,
         /** @param {HTMLElement} article */
         init: function (article) {
+            this.element = article;
             /** @type {HTMLCanvasElement} */
             var canvas;
             /** @type {HTMLScriptElement[]} */ (
-                array(article.querySelectorAll("script[type='text/x-template']"))
+                array(this.element.querySelectorAll("script[type='text/x-template']"))
             ).forEach(function (script) {
                 script.outerHTML = script.text;
             });
-            var form = /**@type {HTMLFormElement}*/ (article.querySelector("form"));
+            var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
             var imagesInput = /**@type {HTMLTextAreaElement}*/ (
-                article.querySelector("textarea[name=gallery_images]")
+                this.element.querySelector("textarea[name=gallery_images]")
             );
             var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
-            var ol = /**@type {HTMLOListElement}*/ (article.querySelector("ol"));
+            var ol = /**@type {HTMLOListElement}*/ (this.element.querySelector("ol"));
             var path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
             var baseUrl = ol.dataset.baseUrl + path.value + "/";
             var template = /**@type {HTMLScriptElement}*/ (
-                article.querySelector("script.fotorama_template")
+                this.element.querySelector("script.fotorama_template")
             );
             var filebrowser = /**@type {HTMLElement}*/ (
-                article.querySelector("div.fotorama_filebrowser_backdrop")
+                this.element.querySelector("div.fotorama_filebrowser_backdrop")
             );
             images.forEach(image);
             path.addEventListener("change", onPathChange);
             var detailToggle = /** @type {HTMLInputElement} */ (
-                article.querySelector(".fotorama_hide_details")
+                this.element.querySelector(".fotorama_hide_details")
             );
             detailToggle.onchange = function () {
                 ol.classList.toggle("fotorama_hide_details");
@@ -136,7 +139,7 @@
                 input.focus();
             });
             var progress = /**@type {HTMLElement}*/ (
-                article.querySelector("div.fotorama_progress_backdrop")
+                this.element.querySelector("div.fotorama_progress_backdrop")
             );
             addEventListener("pagehide", function () {
                 progress.style.display = "none";
