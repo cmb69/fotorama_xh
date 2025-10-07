@@ -22,6 +22,13 @@
 "use strict";
 
 (function () {
+    /**
+     * @typedef {object} Image
+     * @prop {string} path
+     * @prop {string} caption
+     * @prop {string} description
+     */
+
     /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
     function array(arrayLike) {
         return Array.prototype.slice.call(arrayLike);
@@ -144,7 +151,7 @@
                 progress.style.display = "none";
             });
             form.addEventListener("submit", function () {
-                var records = [];
+                var records = /** @type {Image[]} */ ([]);
                 array(ol.querySelectorAll("li")).forEach(function (li) {
                     var description =
                         /**@type {HTMLTextAreaElement}*/
@@ -181,6 +188,7 @@
                 });
             }
 
+            /** @type {(image: Image) => void} */
             function image(image) {
                 ol.insertAdjacentHTML("beforeend", template.text);
                 var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));

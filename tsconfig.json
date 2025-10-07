@@ -4,8 +4,7 @@
     "checkJs": true,
     "noEmit": true,
     "strict": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false
+    "strictNullChecks": false
   },
   "files": [
     "js/admin.js",
