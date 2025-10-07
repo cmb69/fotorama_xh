@@ -153,27 +153,8 @@
                 );
                 input.focus();
             });
-            var progress = this.progress;
             addEventListener("pagehide", this.hideProgress.bind(this));
-            form.addEventListener("submit", function () {
-                var records = /** @type {Image[]} */ ([]);
-                array(ol.querySelectorAll("li")).forEach(function (li) {
-                    var description =
-                        /**@type {HTMLTextAreaElement}*/
-                        (li.querySelector("textarea.fotorama_description"));
-                    records.push({
-                        path: /**@type {HTMLInputElement}*/ (
-                            li.querySelector("input.fotorama_path")
-                        ).value,
-                        caption: /**@type {HTMLTextAreaElement}*/ (
-                            li.querySelector("textarea.fotorama_caption")
-                        ).value,
-                        description: description.value,
-                    });
-                });
-                imagesInput.value = JSON.stringify(records);
-                progress.style.display = "";
-            });
+            form.addEventListener("submit", this.dehydrateImages.bind(this));
             var closeButton = /**@type {HTMLButtonElement}*/ (
                 filebrowser.querySelector("button.fotorama_close")
             );
@@ -317,6 +298,25 @@
                     return res;
                 }
             }
+        },
+        /** @type {() => void} */
+        dehydrateImages: function () {
+            var records = /** @type {Image[]} */ ([]);
+            array(this.ol.querySelectorAll("li")).forEach(function (li) {
+                var description =
+                    /**@type {HTMLTextAreaElement}*/
+                    (li.querySelector("textarea.fotorama_description"));
+                records.push({
+                    path: /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"))
+                        .value,
+                    caption: /**@type {HTMLTextAreaElement}*/ (
+                        li.querySelector("textarea.fotorama_caption")
+                    ).value,
+                    description: description.value,
+                });
+            });
+            this.imagesInput.value = JSON.stringify(records);
+            this.progress.style.display = "";
         },
         /** @type {() => void} */
         hideProgress: function () {
