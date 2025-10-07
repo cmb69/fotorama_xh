@@ -219,18 +219,8 @@
                     iframe.width = (inner.clientWidth - 20).toString();
                     iframe.height = (inner.clientHeight - height - 20).toString();
                     // @ts-ignore
-                    iframe.contentWindow.setLink = setLink.bind(null, path);
+                    iframe.contentWindow.setLink = self.setImagePath.bind(self, path);
                 };
-            }
-
-            /** @type {(path: HTMLInputElement, url: string) => void} */
-            function setLink(path, url) {
-                self.closeFilebrowser();
-                var baseUrl = self.baseUrl;
-                var prefix = commonPrefix(baseUrl, url);
-                var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
-                path.value = base + url.substring(prefix.length);
-                self.updateThumbUrls();
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -303,6 +293,15 @@
         /** @type {() => void} */
         toggleDetails: function () {
             this.ol.classList.toggle("fotorama_hide_details");
+        },
+        /** @type {(path: HTMLInputElement, url: string) => void} */
+        setImagePath: function (path, url) {
+            this.closeFilebrowser();
+            var baseUrl = this.baseUrl;
+            var prefix = commonPrefix(baseUrl, url);
+            var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
+            path.value = base + url.substring(prefix.length);
+            this.updateThumbUrls();
         },
         closeFilebrowser: function () {
             this.filebrowser.style.display = "none";
