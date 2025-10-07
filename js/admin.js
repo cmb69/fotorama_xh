@@ -131,7 +131,7 @@ var fotorama = (function () {
         });
         ol.addEventListener("drop", function (event) {
             if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
-            var nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
+            var nth = parseInt(event.dataTransfer.getData("text"));
             var src = ol.children[nth];
             var li = event.target;
             while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
@@ -244,10 +244,7 @@ var fotorama = (function () {
                     document.body.appendChild(canvas);
                     dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 }
-                dt.setData(
-                    "application/x.fotorama-image",
-                    array(ol.children).indexOf(li).toString()
-                );
+                dt.setData("text", array(ol.children).indexOf(li).toString());
                 dt.effectAllowed = "move";
                 li.classList.add("fotorama_drag");
             });
@@ -272,10 +269,8 @@ var fotorama = (function () {
 
         /** @param {DragEvent} event */
         function dragging(event) {
-            if (
-                event.dataTransfer &&
-                array(event.dataTransfer.types).indexOf("application/x.fotorama-image") >= 0
-            ) {
+            var types = array(event.dataTransfer.types);
+            if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
                 if (!(event.target instanceof HTMLElement)) return;
                 var li = event.target;
                 while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
