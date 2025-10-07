@@ -75,6 +75,10 @@
         get filebrowser() {
             return this.element.querySelector("div.fotorama_filebrowser_backdrop");
         },
+        /** @type {HTMLIFrameElement} */
+        get iframe() {
+            return this.filebrowser.querySelector("iframe");
+        },
         /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
@@ -195,7 +199,7 @@
 
             /** @type {(path: HTMLInputElement) => void} */
             function openFilebrowser(path) {
-                var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
+                var iframe = self.iframe;
                 var matches = self.baseUrl.match(/^(\.+\/)(.*)$/);
                 if (matches === null) throw "assertion failure";
                 iframe.src =
@@ -216,6 +220,7 @@
                         Math.max(figcaption.scrollHeight, controls.scrollHeight)
                     );
                     var inner = filebrowser.firstElementChild;
+                    var iframe = self.iframe;
                     iframe.width = (inner.clientWidth - 20).toString();
                     iframe.height = (inner.clientHeight - height - 20).toString();
                     // @ts-ignore
