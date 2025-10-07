@@ -80,38 +80,7 @@
             images.forEach(image);
             path.addEventListener("change", onPathChange);
             this.detailToggle.onchange = this.toggleDetails.bind(this);
-            ol.addEventListener("keydown", function (event) {
-                if (!(event.target instanceof HTMLImageElement)) {
-                    return;
-                }
-                var checkbox = self.detailToggle;
-                var li = event.target.parentElement;
-                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-                var key = event.key;
-                if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
-                    key = "Arrow" + key;
-                }
-                switch (key) {
-                    case "ArrowRight":
-                    case "ArrowDown":
-                        if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
-                            return;
-                        }
-                        var reference = li.nextElementSibling
-                            ? li.nextElementSibling.nextElementSibling
-                            : ol.firstElementChild;
-                        ol.insertBefore(li, reference);
-                        break;
-                    case "ArrowLeft":
-                    case "ArrowUp":
-                        if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
-                            return;
-                        }
-                        ol.insertBefore(li, li.previousElementSibling);
-                        break;
-                }
-                event.target.focus();
-            });
+            ol.addEventListener("keydown", this.onKeydown.bind(this));
             ol.addEventListener("dragenter", this.onDrag.bind(this));
             ol.addEventListener("dragover", this.onDrag.bind(this));
             ol.addEventListener("dragleave", this.onDragLeave.bind(this));
@@ -263,6 +232,40 @@
                     return res;
                 }
             }
+        },
+        /** @type {(event: KeyboardEvent) => void} */
+        onKeydown: function (event) {
+            if (!(event.target instanceof HTMLImageElement)) {
+                return;
+            }
+            var checkbox = this.detailToggle;
+            var li = event.target.parentElement;
+            if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+            var key = event.key;
+            if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
+                key = "Arrow" + key;
+            }
+            var ol = this.ol;
+            switch (key) {
+                case "ArrowRight":
+                case "ArrowDown":
+                    if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
+                        return;
+                    }
+                    var reference = li.nextElementSibling
+                        ? li.nextElementSibling.nextElementSibling
+                        : ol.firstElementChild;
+                    ol.insertBefore(li, reference);
+                    break;
+                case "ArrowLeft":
+                case "ArrowUp":
+                    if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
+                        return;
+                    }
+                    ol.insertBefore(li, li.previousElementSibling);
+                    break;
+            }
+            event.target.focus();
         },
         /** @type {(event: DragEvent) => void} */
         onDrag: function (event) {
