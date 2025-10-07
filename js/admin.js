@@ -37,6 +37,10 @@
     var editor = Object.freeze({
         /** @type {HTMLElement} */
         element: undefined,
+        /**@type {HTMLElement}*/
+        get progress() {
+            return this.element.querySelector("div.fotorama_progress_backdrop");
+        },
         /** @type {(article: HTMLElement) => void} */
         init: function () {
             /** @type {HTMLCanvasElement} */
@@ -143,12 +147,8 @@
                 );
                 input.focus();
             });
-            var progress = /**@type {HTMLElement}*/ (
-                this.element.querySelector("div.fotorama_progress_backdrop")
-            );
-            addEventListener("pagehide", function () {
-                progress.style.display = "none";
-            });
+            var progress = this.progress;
+            addEventListener("pagehide", this.hideProgress.bind(this));
             form.addEventListener("submit", function () {
                 var records = /** @type {Image[]} */ ([]);
                 array(ol.querySelectorAll("li")).forEach(function (li) {
@@ -311,6 +311,10 @@
                     return res;
                 }
             }
+        },
+        /** @type {() => void} */
+        hideProgress: function () {
+            this.progress.style.display = "none";
         },
     });
 
