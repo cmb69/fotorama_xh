@@ -23,6 +23,11 @@
 "use strict";
 
 (function () {
+    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
+    function array(arrayLike) {
+        return Array.prototype.slice.call(arrayLike);
+    }
+
     array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
@@ -294,10 +299,5 @@
                 return res;
             }
         }
-    }
-
-    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
-    function array(arrayLike) {
-        return Array.prototype.slice.call(arrayLike);
     }
 })();
