@@ -45,6 +45,10 @@
         get ol() {
             return this.element.querySelector("ol");
         },
+        /** @type {HTMLInputElement} */
+        get detailToggle() {
+            return this.element.querySelector(".fotorama_hide_details");
+        },
         /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
@@ -73,10 +77,7 @@
             );
             images.forEach(image);
             path.addEventListener("change", onPathChange);
-            var detailToggle = /** @type {HTMLInputElement} */ (
-                this.element.querySelector(".fotorama_hide_details")
-            );
-            detailToggle.onchange = this.toggleDetails.bind(this);
+            this.detailToggle.onchange = this.toggleDetails.bind(this);
             ol.addEventListener("keydown", function (event) {
                 if (!(event.target instanceof HTMLImageElement)) {
                     return;
