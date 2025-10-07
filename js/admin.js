@@ -209,23 +209,7 @@
                     "&type=image&subdir=" +
                     encodeURIComponent(matches[2].slice(0, -1));
                 filebrowser.style.display = "";
-                iframe.onload = function () {
-                    var figcaption = /**@type {HTMLElement}*/ (
-                        filebrowser.querySelector("figcaption")
-                    );
-                    var controls = /**@type {HTMLParagraphElement}*/ (
-                        filebrowser.querySelector("p")
-                    );
-                    var height = Math.ceil(
-                        Math.max(figcaption.scrollHeight, controls.scrollHeight)
-                    );
-                    var inner = filebrowser.firstElementChild;
-                    var iframe = self.iframe;
-                    iframe.width = (inner.clientWidth - 20).toString();
-                    iframe.height = (inner.clientHeight - height - 20).toString();
-                    // @ts-ignore
-                    iframe.contentWindow.setLink = self.setImagePath.bind(self, path);
-                };
+                iframe.onload = self.initFilebrowser.bind(self, path);
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -307,6 +291,19 @@
             var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
             path.value = base + url.substring(prefix.length);
             this.updateThumbUrls();
+        },
+        /** @type {(path: HTMLInputElement) => void} */
+        initFilebrowser: function (path) {
+            var filebrowser = this.filebrowser;
+            var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
+            var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
+            var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
+            var inner = filebrowser.firstElementChild;
+            var iframe = this.iframe;
+            iframe.width = (inner.clientWidth - 20).toString();
+            iframe.height = (inner.clientHeight - height - 20).toString();
+            // @ts-ignore
+            iframe.contentWindow.setLink = this.setImagePath.bind(this, path);
         },
         closeFilebrowser: function () {
             this.filebrowser.style.display = "none";
