@@ -114,13 +114,7 @@
             });
             ol.addEventListener("dragenter", dragging);
             ol.addEventListener("dragover", dragging);
-            ol.addEventListener("dragleave", function (event) {
-                if (!(event.target instanceof HTMLElement)) return;
-                var li = event.target;
-                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
-                if (li === null) return;
-                li.classList.remove("fotorama_drop");
-            });
+            ol.addEventListener("dragleave", this.onDragLeave.bind(this));
             ol.addEventListener("dragend", function () {
                 array(ol.querySelectorAll("li")).forEach(function (li) {
                     li.classList.remove("fotorama_drag");
@@ -297,6 +291,14 @@
                     return res;
                 }
             }
+        },
+        /** @type {(event: DragEvent) => void} */
+        onDragLeave: function (event) {
+            if (!(event.target instanceof HTMLElement)) return;
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            if (li === null) return;
+            li.classList.remove("fotorama_drop");
         },
         /** @type {() => void} */
         toggleDetails: function () {
