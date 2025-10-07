@@ -71,7 +71,9 @@ var fotorama = (function () {
                 /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
             });
         });
-        var detailToggle = /** @type {HTMLInputElement} */ (article.querySelector(".fotorama_hide_details"));
+        var detailToggle = /** @type {HTMLInputElement} */ (
+            article.querySelector(".fotorama_hide_details")
+        );
         detailToggle.onchange = function () {
             ol.classList.toggle("fotorama_hide_details");
         };
@@ -84,12 +86,14 @@ var fotorama = (function () {
             );
             var li = event.target.parentElement;
             if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-            switch (event.code) {
+            var key = event.key;
+            if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
+                key = "Arrow" + key;
+            }
+            switch (key) {
                 case "ArrowRight":
                 case "ArrowDown":
-                    if (
-                        checkbox.checked ? event.code === "ArrowDown" : event.code === "ArrowRight"
-                    ) {
+                    if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
                         return;
                     }
                     var reference = li.nextElementSibling
@@ -99,7 +103,7 @@ var fotorama = (function () {
                     break;
                 case "ArrowLeft":
                 case "ArrowUp":
-                    if (checkbox.checked ? event.code === "ArrowUp" : event.code === "ArrowLeft") {
+                    if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
                         return;
                     }
                     ol.insertBefore(li, li.previousElementSibling);
