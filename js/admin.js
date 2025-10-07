@@ -41,6 +41,10 @@
         get imagesInput() {
             return this.element.querySelector("textarea[name=gallery_images]");
         },
+        /**@type {HTMLOListElement}*/
+        get ol() {
+            return this.element.querySelector("ol");
+        },
         /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
@@ -58,7 +62,7 @@
             var imagesInput = this.imagesInput;
             var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
-            var ol = /**@type {HTMLOListElement}*/ (this.element.querySelector("ol"));
+            var ol = this.ol;
             var path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
             var baseUrl = ol.dataset.baseUrl + path.value + "/";
             var template = /**@type {HTMLScriptElement}*/ (
