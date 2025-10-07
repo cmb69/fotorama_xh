@@ -37,6 +37,10 @@
     var editor = Object.freeze({
         /** @type {HTMLElement} */
         element: undefined,
+        /** @type {HTMLTextAreaElement} */
+        get imagesInput() {
+            return this.element.querySelector("textarea[name=gallery_images]");
+        },
         /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
@@ -51,9 +55,7 @@
                 script.outerHTML = script.text;
             });
             var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
-            var imagesInput = /**@type {HTMLTextAreaElement}*/ (
-                this.element.querySelector("textarea[name=gallery_images]")
-            );
+            var imagesInput = this.imagesInput;
             var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
             var ol = /**@type {HTMLOListElement}*/ (this.element.querySelector("ol"));
