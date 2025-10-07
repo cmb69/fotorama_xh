@@ -152,7 +152,7 @@
                     li.querySelector("button.fotorama_pick_image")
                 );
                 pickImage.addEventListener("click", function () {
-                    openFilebrowser(path);
+                    self.openFilebrowser(path);
                 });
                 var moveImage = /**@type {HTMLButtonElement}*/ (
                     li.querySelector("button.fotorama_move_image")
@@ -195,21 +195,6 @@
                     canvas.style.left = "-100%";
                     document.body.appendChild(canvas);
                 }
-            }
-
-            /** @type {(path: HTMLInputElement) => void} */
-            function openFilebrowser(path) {
-                var iframe = self.iframe;
-                var matches = self.baseUrl.match(/^(\.+\/)(.*)$/);
-                if (matches === null) throw "assertion failure";
-                iframe.src =
-                    matches[1] +
-                    "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
-                    encodeURIComponent(matches[1]) +
-                    "&type=image&subdir=" +
-                    encodeURIComponent(matches[2].slice(0, -1));
-                filebrowser.style.display = "";
-                iframe.onload = self.initFilebrowser.bind(self, path);
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -291,6 +276,20 @@
             var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
             path.value = base + url.substring(prefix.length);
             this.updateThumbUrls();
+        },
+        /** @type {(path: HTMLInputElement) => void} */
+        openFilebrowser: function (path) {
+            var iframe = this.iframe;
+            var matches = this.baseUrl.match(/^(\.+\/)(.*)$/);
+            if (matches === null) throw "assertion failure";
+            iframe.src =
+                matches[1] +
+                "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
+                encodeURIComponent(matches[1]) +
+                "&type=image&subdir=" +
+                encodeURIComponent(matches[2].slice(0, -1));
+            this.filebrowser.style.display = "";
+            iframe.onload = this.initFilebrowser.bind(this, path);
         },
         /** @type {(path: HTMLInputElement) => void} */
         initFilebrowser: function (path) {
