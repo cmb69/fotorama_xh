@@ -72,6 +72,10 @@
             return this.element.querySelector("script.fotorama_template");
         },
         /**@type {HTMLElement}*/
+        get filebrowser() {
+            return this.element.querySelector("div.fotorama_filebrowser_backdrop");
+        },
+        /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
         },
@@ -91,9 +95,7 @@
             imagesInput.parentElement.style.display = "none";
             var ol = this.ol;
             var path = this.path;
-            var filebrowser = /**@type {HTMLElement}*/ (
-                this.element.querySelector("div.fotorama_filebrowser_backdrop")
-            );
+            var filebrowser = this.filebrowser;
             images.forEach(image);
             path.addEventListener("change", this.updateThumbUrls.bind(this));
             this.detailToggle.onchange = this.toggleDetails.bind(this);
