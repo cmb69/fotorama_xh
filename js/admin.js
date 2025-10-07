@@ -49,12 +49,17 @@
         get detailToggle() {
             return this.element.querySelector(".fotorama_hide_details");
         },
+        /**@type {HTMLScriptElement}*/
+        get template() {
+            return this.element.querySelector("script.fotorama_template");
+        },
         /**@type {HTMLElement}*/
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
         },
         /** @type {(article: HTMLElement) => void} */
         init: function () {
+            var self = this;
             /** @type {HTMLCanvasElement} */
             var canvas;
             /** @type {HTMLScriptElement[]} */ (
@@ -69,9 +74,6 @@
             var ol = this.ol;
             var path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
             var baseUrl = ol.dataset.baseUrl + path.value + "/";
-            var template = /**@type {HTMLScriptElement}*/ (
-                this.element.querySelector("script.fotorama_template")
-            );
             var filebrowser = /**@type {HTMLElement}*/ (
                 this.element.querySelector("div.fotorama_filebrowser_backdrop")
             );
@@ -149,7 +151,7 @@
 
             /** @type {(image: Image) => void} */
             function image(image) {
-                ol.insertAdjacentHTML("beforeend", template.text);
+                ol.insertAdjacentHTML("beforeend", self.template.text);
                 var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
                 var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
                 thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
