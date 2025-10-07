@@ -257,7 +257,7 @@
                 iframe.width = (inner.clientWidth - 20).toString();
                 iframe.height = (inner.clientHeight - height - 20).toString();
                 // @ts-ignore
-                iframe.contentWindow.setLink = setLink.bind(null, filebrowser, baseUrl, path);
+                iframe.contentWindow.setLink = setLink.bind(null, path);
             };
         }
 
@@ -274,8 +274,8 @@
             }
         }
 
-        /** @type {(filebrowser: HTMLDialogElement, baseUrl: string, path: HTMLInputElement, url: string) => void} */
-        function setLink(filebrowser, baseUrl, path, url) {
+        /** @type {(path: HTMLInputElement, url: string) => void} */
+        function setLink(path, url) {
             filebrowser.style.display = "none";
             var prefix = commonPrefix(baseUrl, url);
             var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
