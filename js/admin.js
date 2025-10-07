@@ -34,12 +34,11 @@
         return Array.prototype.slice.call(arrayLike);
     }
 
-    var editor = {
+    var editor = Object.freeze({
         /** @type {HTMLElement} */
         element: undefined,
         /** @type {(article: HTMLElement) => void} */
-        init: function (article) {
-            this.element = article;
+        init: function () {
             /** @type {HTMLCanvasElement} */
             var canvas;
             /** @type {HTMLScriptElement[]} */ (
@@ -313,9 +312,11 @@
                 }
             }
         },
-    };
+    });
 
     array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
-        Object.create(editor).init(/**@type {HTMLElement}*/ (article));
+        Object.create(editor, {
+            element: { value: article },
+        }).init();
     });
 })();
