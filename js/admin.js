@@ -51,6 +51,10 @@
         get imagesInput() {
             return this.element.querySelector("textarea[name=gallery_images]");
         },
+        /**@type {HTMLInputElement}*/
+        get path() {
+            return this.element.querySelector("input.fotorama_path");
+        },
         /**@type {HTMLOListElement}*/
         get ol() {
             return this.element.querySelector("ol");
@@ -82,7 +86,7 @@
             var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
             var ol = this.ol;
-            var path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
+            var path = this.path;
             var baseUrl = ol.dataset.baseUrl + path.value + "/";
             var filebrowser = /**@type {HTMLElement}*/ (
                 this.element.querySelector("div.fotorama_filebrowser_backdrop")
