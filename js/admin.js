@@ -76,9 +76,7 @@
             var detailToggle = /** @type {HTMLInputElement} */ (
                 this.element.querySelector(".fotorama_hide_details")
             );
-            detailToggle.onchange = function () {
-                ol.classList.toggle("fotorama_hide_details");
-            };
+            detailToggle.onchange = this.toggleDetails.bind(this);
             ol.addEventListener("keydown", function (event) {
                 if (!(event.target instanceof HTMLImageElement)) {
                     return;
@@ -298,6 +296,10 @@
                     return res;
                 }
             }
+        },
+        /** @type {() => void} */
+        toggleDetails: function () {
+            this.ol.classList.toggle("fotorama_hide_details");
         },
         /** @type {() => void} */
         dehydrateImages: function () {
