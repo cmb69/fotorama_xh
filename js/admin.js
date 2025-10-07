@@ -122,6 +122,7 @@
             if (li === null) return;
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
+            event.preventDefault();
         });
         var button = /**@type {HTMLButtonElement}*/ (
             form.querySelector("button.fotorama_add_image")
