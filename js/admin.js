@@ -37,7 +37,7 @@
     var editor = {
         /** @type {HTMLElement} */
         element: undefined,
-        /** @param {HTMLElement} article */
+        /** @type {(article: HTMLElement) => void} */
         init: function (article) {
             this.element = article;
             /** @type {HTMLCanvasElement} */
@@ -251,7 +251,7 @@
                 });
             }
 
-            /** @param {HTMLInputElement} path */
+            /** @type {(path: HTMLInputElement) => void} */
             function openFilebrowser(path) {
                 var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
                 var matches = baseUrl.match(/^(\.+\/)(.*)$/);
@@ -281,7 +281,7 @@
                 };
             }
 
-            /** @param {DragEvent} event */
+            /** @type {(event: DragEvent) => void} */
             function dragging(event) {
                 var types = array(event.dataTransfer.types);
                 if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
@@ -302,10 +302,7 @@
                 path.value = base + url.substring(prefix.length);
                 onPathChange();
 
-                /**
-                 * @param {string} str1
-                 * @param {string} str2
-                 */
+                /** @type {(str1: string, str2: string) => string} */
                 function commonPrefix(str1, str2) {
                     var res = "";
                     for (var i = 0; i < str1.length && i < str2.length; i++) {
