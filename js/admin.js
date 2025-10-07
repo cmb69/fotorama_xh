@@ -18,7 +18,6 @@
  */
 
 /* jshint strict:global,laxbreak:true */
-// @ts-check
 
 "use strict";
 
