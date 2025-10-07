@@ -84,9 +84,7 @@
                 if (!(event.target instanceof HTMLImageElement)) {
                     return;
                 }
-                var checkbox = /**@type {HTMLInputElement}*/ (
-                    form.querySelector("input.fotorama_hide_details")
-                );
+                var checkbox = self.detailToggle;
                 var li = event.target.parentElement;
                 if (!(li instanceof HTMLLIElement)) throw "assertion failure";
                 var key = event.key;
