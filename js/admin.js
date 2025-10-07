@@ -28,10 +28,6 @@
         return Array.prototype.slice.call(arrayLike);
     }
 
-    array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
-        editor(/**@type {HTMLElement}*/ (article));
-    });
-
     /** @param {HTMLElement} article */
     function editor(article) {
         /** @type {HTMLCanvasElement} */
@@ -300,4 +296,8 @@
             }
         }
     }
+
+    array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
+        editor(/**@type {HTMLElement}*/ (article));
+    });
 })();
