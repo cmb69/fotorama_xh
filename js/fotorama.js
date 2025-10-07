@@ -20,13 +20,13 @@
 /* jshint: strict:implied */
 // @ts-check
 
-document.querySelectorAll("figure.fotorama_gallery").forEach((element) => {
+document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) {
     init(/**@type {HTMLElement}*/ (element));
 });
 
 /** @param {HTMLElement} element */
 function init(element) {
-    const config = JSON.parse(element.dataset.config || "{}");
+    var config = JSON.parse(element.dataset.config || "{}");
     // @ts-expect-error
     if ("jQuery" in window && "fotorama" in jQuery()) {
         // @ts-expect-error

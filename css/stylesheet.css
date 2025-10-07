@@ -160,22 +160,22 @@ article.fotorama_editor .fotorama_images .fotorama_image_details {
     justify-content: space-around;
     flex-grow: 2;
 }
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_image_details,
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_image_controls {
+article.fotorama_editor .fotorama_images ol.fotorama_hide_details .fotorama_image_details,
+article.fotorama_editor .fotorama_images ol.fotorama_hide_details .fotorama_image_controls {
     display: none;
 }
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images ol {
+article.fotorama_editor .fotorama_images ol.fotorama_hide_details {
     display: flex;
     flex-wrap: wrap;
 }
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images li {
+article.fotorama_editor .fotorama_images ol.fotorama_hide_details li {
     display: list-item;
     flex-wrap: wrap;
     padding: 0;
     border: none;
     margin: 0;
 }
-article.fotorama_editor:has(.fotorama_hide_details:checked) .fotorama_images .fotorama_thumb {
+article.fotorama_editor .fotorama_images ol.fotorama_hide_details .fotorama_thumb {
     width: var(--thumb-size, 100px);
     height: var(--thumb-size, 100px);
 }
@@ -205,12 +205,26 @@ article.fotorama_editor .fotorama_images span {
 
 /* filebrowser dialog */
 
+article.fotorama_editor .fotorama_filebrowser_backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 article.fotorama_editor .fotorama_filebrowser {
+    width: 80%;
     width: var(--filebrowser-size, 80%);
+    height: 80%;
     height: var(--filebrowser-size, 80%);
-    margin: auto;
-    border: 0;
-    padding: 0;
+    background-color: white;
+    color: black;
 }
 article.fotorama_editor .fotorama_filebrowser figure {
     margin: 0;
@@ -232,10 +246,24 @@ article.fotorama_editor .fotorama_filebrowser iframe {
 
 /* save progress dialog */
 
+article.fotorama_editor .fotorama_progress_backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 article.fotorama_editor .fotorama_progress {
-    margin: auto;
     padding: 1em;
     width: 30em;
+    background-color: white;
+    color: black;
 }
 article.fotorama_editor .fotorama_progress progress {
     width: 100%;

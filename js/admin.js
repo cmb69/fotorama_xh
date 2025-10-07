@@ -22,82 +22,71 @@
 
 "use strict";
 
-var fotorama = (function () {
-    /**@type {HTMLDialogElement}*/
-    var currentFilebrowser;
-    /**@type {string}*/
-    var currentBaseUrl;
-    /**@type {HTMLInputElement}*/
-    var currentPath;
+(function () {
     /** @type {HTMLCanvasElement} */
     var canvas;
 
-    document.querySelectorAll("article.fotorama_editor").forEach((article) => {
+    array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
-    return {
-        setLink: setLink,
-    };
 
     /** @param {HTMLElement} article */
     function editor(article) {
-        /** @type {NodeListOf<HTMLScriptElement>} */ (
-            article.querySelectorAll("script[type='text/x-template']")
+        /** @type {HTMLScriptElement[]} */ (
+            array(article.querySelectorAll("script[type='text/x-template']"))
         ).forEach(function (script) {
             script.outerHTML = script.text;
         });
-        const form = /**@type {HTMLFormElement}*/ (article.querySelector("form"));
-        const imagesInput = /**@type {HTMLTextAreaElement}*/ (
+        var form = /**@type {HTMLFormElement}*/ (article.querySelector("form"));
+        var imagesInput = /**@type {HTMLTextAreaElement}*/ (
             article.querySelector("textarea[name=gallery_images]")
         );
-        const images = JSON.parse(imagesInput.value);
+        var images = JSON.parse(imagesInput.value);
         imagesInput.parentElement.style.display = "none";
-        const ol = /**@type {HTMLOListElement}*/ (article.querySelector("ol"));
-        const path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
-        let baseUrl = ol.dataset.baseUrl + path.value + "/";
-        const template = /**@type {HTMLTemplateElement}*/ (
-            article.querySelector("template.fotorama_template")
+        var ol = /**@type {HTMLOListElement}*/ (article.querySelector("ol"));
+        var path = /**@type {HTMLInputElement}*/ (form.querySelector("input.fotorama_path"));
+        var baseUrl = ol.dataset.baseUrl + path.value + "/";
+        var template = /**@type {HTMLScriptElement}*/ (
+            article.querySelector("script.fotorama_template")
         );
-        const filebrowser = /**@type {HTMLDialogElement}*/ (
-            article.querySelector("dialog.fotorama_filebrowser")
+        var filebrowser = /**@type {HTMLElement}*/ (
+            article.querySelector("div.fotorama_filebrowser_backdrop")
         );
         images.forEach(image);
-        path.addEventListener("change", () => {
-            baseUrl = ol.dataset.baseUrl + path.value + "/";
-            ol.querySelectorAll("li img.fotorama_thumb").forEach((input) => {
-                const li = input.parentElement;
-                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-                const path = /**@type {HTMLInputElement}*/ (
-                    li.querySelector("input.fotorama_path")
-                );
-                /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
-            });
-        });
-        ol.addEventListener("keydown", (event) => {
+        path.addEventListener("change", onPathChange);
+        var detailToggle = /** @type {HTMLInputElement} */ (
+            article.querySelector(".fotorama_hide_details")
+        );
+        detailToggle.onchange = function () {
+            ol.classList.toggle("fotorama_hide_details");
+        };
+        ol.addEventListener("keydown", function (event) {
             if (!(event.target instanceof HTMLImageElement)) {
                 return;
             }
-            const checkbox = /**@type {HTMLInputElement}*/ (
+            var checkbox = /**@type {HTMLInputElement}*/ (
                 form.querySelector("input.fotorama_hide_details")
             );
-            const li = event.target.parentElement;
+            var li = event.target.parentElement;
             if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-            switch (event.code) {
+            var key = event.key;
+            if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
+                key = "Arrow" + key;
+            }
+            switch (key) {
                 case "ArrowRight":
                 case "ArrowDown":
-                    if (
-                        checkbox.checked ? event.code === "ArrowDown" : event.code === "ArrowRight"
-                    ) {
+                    if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
                         return;
                     }
-                    const reference = li.nextElementSibling
+                    var reference = li.nextElementSibling
                         ? li.nextElementSibling.nextElementSibling
                         : ol.firstElementChild;
                     ol.insertBefore(li, reference);
                     break;
                 case "ArrowLeft":
                 case "ArrowUp":
-                    if (checkbox.checked ? event.code === "ArrowUp" : event.code === "ArrowLeft") {
+                    if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
                         return;
                     }
                     ol.insertBefore(li, li.previousElementSibling);
@@ -107,48 +96,54 @@ var fotorama = (function () {
         });
         ol.addEventListener("dragenter", dragging);
         ol.addEventListener("dragover", dragging);
-        ol.addEventListener("dragleave", (event) => {
+        ol.addEventListener("dragleave", function (event) {
             if (!(event.target instanceof HTMLElement)) return;
-            const li = event.target.closest("li");
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         });
-        ol.addEventListener("dragend", () => {
-            ol.querySelectorAll("li").forEach((li) =>
-                li.classList.remove("fotorama_drag", "fotorama_drop")
-            );
-            canvas.remove();
-            canvas = null;
+        ol.addEventListener("dragend", function () {
+            array(ol.querySelectorAll("li")).forEach(function (li) {
+                li.classList.remove("fotorama_drag");
+                li.classList.remove("fotorama_drop");
+            });
+            if (canvas) {
+                canvas.parentNode.removeChild(canvas);
+                canvas = null;
+            }
         });
-        ol.addEventListener("drop", (event) => {
+        ol.addEventListener("drop", function (event) {
             if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
-            const nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
-            const src = ol.children[nth];
-            const li = event.target.closest("li");
+            var nth = parseInt(event.dataTransfer.getData("text"));
+            var src = ol.children[nth];
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
-            const current = Array.from(ol.children).indexOf(li);
+            var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
+            event.preventDefault();
         });
-        const button = /**@type {HTMLButtonElement}*/ (
+        var button = /**@type {HTMLButtonElement}*/ (
             form.querySelector("button.fotorama_add_image")
         );
-        button.addEventListener("click", () => {
+        button.addEventListener("click", function () {
             image(null);
-            const input = /**@type {HTMLInputElement}*/ (
+            var input = /**@type {HTMLInputElement}*/ (
                 ol.querySelector("li:last-child img.fotorama_thumb")
             );
             input.focus();
         });
-        const progress = /**@type {HTMLDialogElement}*/ (
-            article.querySelector("dialog.fotorama_progress")
+        var progress = /**@type {HTMLElement}*/ (
+            article.querySelector("div.fotorama_progress_backdrop")
         );
-        addEventListener("pagehide", () => {
-            progress.close();
+        addEventListener("pagehide", function () {
+            progress.style.display = "none";
         });
-        form.addEventListener("submit", () => {
-            let records = [];
-            ol.querySelectorAll("li").forEach((li) => {
-                const description =
+        form.addEventListener("submit", function () {
+            var records = [];
+            array(ol.querySelectorAll("li")).forEach(function (li) {
+                var description =
                     /**@type {HTMLTextAreaElement}*/
                     (li.querySelector("textarea.fotorama_description"));
                 records.push({
@@ -161,138 +156,149 @@ var fotorama = (function () {
                 });
             });
             imagesInput.value = JSON.stringify(records);
-            progress.showModal();
+            progress.style.display = "";
         });
-        const closeButton = /**@type {HTMLButtonElement}*/ (
+        var closeButton = /**@type {HTMLButtonElement}*/ (
             filebrowser.querySelector("button.fotorama_close")
         );
-        closeButton.addEventListener("click", () => {
-            filebrowser.close();
-        });
-        const iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
-        iframe.addEventListener("load", () => {
-            const figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
-            const controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
-            const height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
-            iframe.width = (filebrowser.clientWidth - 20).toString();
-            iframe.height = (filebrowser.clientHeight - height - 20).toString();
+        closeButton.addEventListener("click", function () {
+            filebrowser.style.display = "none";
         });
 
+        function onPathChange() {
+            baseUrl = ol.dataset.baseUrl + path.value + "/";
+            array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
+                var li = input.parentElement;
+                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+                var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
+                /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
+            });
+        }
+
         function image(image) {
-            const clone = /**@type {DocumentFragment}*/ (template.content.cloneNode(true));
-            const li = /**@type {HTMLLIElement}*/ (clone.querySelector("li"));
-            const thumb = /**@type {HTMLImageElement}*/ (clone.querySelector("img.fotorama_thumb"));
+            ol.insertAdjacentHTML("beforeend", template.text);
+            var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
+            var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
             thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
-            const path = /**@type {HTMLInputElement}*/ (clone.querySelector("input.fotorama_path"));
+            var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
-            path.addEventListener("change", () => {
+            path.addEventListener("change", function () {
                 thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
             });
-            const caption = /**@type {HTMLTextAreaElement}*/ (
-                clone.querySelector("textarea.fotorama_caption")
+            var caption = /**@type {HTMLTextAreaElement}*/ (
+                li.querySelector("textarea.fotorama_caption")
             );
             caption.value = image ? image.caption : "";
-            const description = /**@type {HTMLTextAreaElement}*/ (
-                clone.querySelector("textarea.fotorama_description")
+            var description = /**@type {HTMLTextAreaElement}*/ (
+                li.querySelector("textarea.fotorama_description")
             );
             description.value = image ? image.description : "";
-            const pickImage = /**@type {HTMLButtonElement}*/ (
-                clone.querySelector("button.fotorama_pick_image")
+            var pickImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_pick_image")
             );
-            pickImage.addEventListener("click", () => {
+            pickImage.addEventListener("click", function () {
                 openFilebrowser(path);
             });
-            const moveImage = /**@type {HTMLButtonElement}*/ (
-                clone.querySelector("button.fotorama_move_image")
+            var moveImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_move_image")
             );
-            moveImage.addEventListener("click", () => {
+            moveImage.addEventListener("click", function () {
                 ol.insertBefore(li, li.previousElementSibling);
             });
-            const deleteImage = /**@type {HTMLButtonElement}*/ (
-                clone.querySelector("button.fotorama_delete_image")
+            var deleteImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_delete_image")
             );
-            deleteImage.addEventListener("click", () => {
-                li.remove();
+            deleteImage.addEventListener("click", function () {
+                li.parentNode.removeChild(li);
             });
-            thumb.addEventListener("dragstart", (event) => {
-                const dt = event.dataTransfer;
+            thumb.addEventListener("dragstart", function (event) {
+                var dt = event.dataTransfer;
                 if (dt === null) return;
-                canvas = document.createElement("canvas");
-                let ratio = thumb.naturalWidth / thumb.naturalHeight;
-                if (ratio >= 1) {
-                    canvas.width = 100;
-                    canvas.height = 100 / ratio;
-                } else {
-                    canvas.width = 100 * ratio;
-                    canvas.height = 100;
+                if ("setDragImage" in dt) {
+                    canvas = document.createElement("canvas");
+                    var ratio = thumb.naturalWidth / thumb.naturalHeight;
+                    if (ratio >= 1) {
+                        canvas.width = 100;
+                        canvas.height = 100 / ratio;
+                    } else {
+                        canvas.width = 100 * ratio;
+                        canvas.height = 100;
+                    }
+                    var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+                    ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
+                    canvas.style.position = "absolute";
+                    canvas.style.left = "-100%";
+                    document.body.appendChild(canvas);
+                    dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 }
-                let ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
-                ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
-                canvas.style.position = "absolute";
-                canvas.style.left = "-100%";
-                document.body.append(canvas);
-                dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
-                dt.setData(
-                    "application/x.fotorama-image",
-                    Array.from(ol.children).indexOf(li).toString()
-                );
+                dt.setData("text", array(ol.children).indexOf(li).toString());
                 dt.effectAllowed = "move";
                 li.classList.add("fotorama_drag");
             });
-            ol.appendChild(clone);
         }
 
         /** @param {HTMLInputElement} path */
         function openFilebrowser(path) {
-            const iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
-            const matches = baseUrl.match(/^(\.+\/)(.*)$/);
+            var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
+            var matches = baseUrl.match(/^(\.+\/)(.*)$/);
             if (matches === null) throw "assertion failure";
-            const p = matches[1];
-            const prefix = encodeURIComponent(matches[1]);
-            const subdir = encodeURIComponent(matches[2].slice(0, -1));
-            const url = `${p}?filebrowser=editorbrowser&editor=fotorama&prefix=${prefix}&type=image&subdir=${subdir}`;
-            iframe.src = url;
-            filebrowser.showModal();
-            currentFilebrowser = filebrowser;
-            currentBaseUrl = baseUrl;
-            currentPath = path;
+            iframe.src =
+                matches[1] +
+                "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
+                encodeURIComponent(matches[1]) +
+                "&type=image&subdir=" +
+                encodeURIComponent(matches[2].slice(0, -1));
+            filebrowser.style.display = "";
+            iframe.onload = function () {
+                var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
+                var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
+                var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
+                var inner = filebrowser.firstElementChild;
+                iframe.width = (inner.clientWidth - 20).toString();
+                iframe.height = (inner.clientHeight - height - 20).toString();
+                // @ts-ignore
+                iframe.contentWindow.setLink = setLink.bind(null, path);
+            };
         }
 
         /** @param {DragEvent} event */
         function dragging(event) {
-            if (
-                event.dataTransfer &&
-                event.dataTransfer.types.indexOf("application/x.fotorama-image") >= 0
-            ) {
+            var types = array(event.dataTransfer.types);
+            if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
                 if (!(event.target instanceof HTMLElement)) return;
-                const li = event.target.closest("li");
+                var li = event.target;
+                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
                 if (li === null) return;
                 event.preventDefault();
                 li.classList.add("fotorama_drop");
             }
         }
+
+        /** @type {(path: HTMLInputElement, url: string) => void} */
+        function setLink(path, url) {
+            filebrowser.style.display = "none";
+            var prefix = commonPrefix(baseUrl, url);
+            var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
+            path.value = base + url.substring(prefix.length);
+            onPathChange();
+
+            /**
+             * @param {string} str1
+             * @param {string} str2
+             */
+            function commonPrefix(str1, str2) {
+                var res = "";
+                for (var i = 0; i < str1.length && i < str2.length; i++) {
+                    if (str1[i] !== str2[i]) break;
+                    res += str1[i];
+                }
+                return res;
+            }
+        }
     }
 
-    /** @param {string} url */
-    function setLink(url) {
-        currentFilebrowser.close();
-        const prefix = commonPrefix(currentBaseUrl, url);
-        const slashes = currentBaseUrl.substring(prefix.length).match(/\//g);
-        currentPath.value =
-            "../".repeat(slashes ? slashes.length : 0) + url.substring(prefix.length);
-        currentPath.dispatchEvent(new Event("change"));
-
-        /**
-         * @param {string} str1
-         * @param {string} str2
-         */
-        function commonPrefix(str1, str2) {
-            let res = "";
-            for (let i = 0; i < str1.length && i < str2.length; i++) {
-                if (str1[i] !== str2[i]) break;
-                res += str1[i];
-            }
-            return res;
-        }
+    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
+    function array(arrayLike) {
+        return Array.prototype.slice.call(arrayLike);
     }
 })();
