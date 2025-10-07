@@ -53,15 +53,7 @@
             article.querySelector("div.fotorama_filebrowser_backdrop")
         );
         images.forEach(image);
-        path.addEventListener("change", function () {
-            baseUrl = ol.dataset.baseUrl + path.value + "/";
-            array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
-                var li = input.parentElement;
-                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-                var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
-                /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
-            });
-        });
+        path.addEventListener("change", onPathChange);
         var detailToggle = /** @type {HTMLInputElement} */ (
             article.querySelector(".fotorama_hide_details")
         );
@@ -172,6 +164,16 @@
             filebrowser.style.display = "none";
         });
 
+        function onPathChange() {
+            baseUrl = ol.dataset.baseUrl + path.value + "/";
+            array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
+                var li = input.parentElement;
+                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+                var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
+                /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
+            });
+        }
+
         function image(image) {
             ol.insertAdjacentHTML("beforeend", template.text);
             var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
@@ -270,27 +272,27 @@
                 li.classList.add("fotorama_drop");
             }
         }
-    }
 
-    /** @type {(filebrowser: HTMLDialogElement, baseUrl: string, path: HTMLInputElement, url: string) => void} */
-    function setLink(filebrowser, baseUrl, path, url) {
-        filebrowser.style.display = "none";
-        var prefix = commonPrefix(baseUrl, url);
-        var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
-        path.value = base + url.substring(prefix.length);
-        path.dispatchEvent(new Event("change"));
+        /** @type {(filebrowser: HTMLDialogElement, baseUrl: string, path: HTMLInputElement, url: string) => void} */
+        function setLink(filebrowser, baseUrl, path, url) {
+            filebrowser.style.display = "none";
+            var prefix = commonPrefix(baseUrl, url);
+            var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
+            path.value = base + url.substring(prefix.length);
+            onPathChange();
 
-        /**
-         * @param {string} str1
-         * @param {string} str2
-         */
-        function commonPrefix(str1, str2) {
-            var res = "";
-            for (var i = 0; i < str1.length && i < str2.length; i++) {
-                if (str1[i] !== str2[i]) break;
-                res += str1[i];
+            /**
+             * @param {string} str1
+             * @param {string} str2
+             */
+            function commonPrefix(str1, str2) {
+                var res = "";
+                for (var i = 0; i < str1.length && i < str2.length; i++) {
+                    if (str1[i] !== str2[i]) break;
+                    res += str1[i];
+                }
+                return res;
             }
-            return res;
         }
     }
 
