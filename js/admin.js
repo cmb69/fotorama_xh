@@ -71,6 +71,10 @@ var fotorama = (function () {
                 /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
             });
         });
+        var detailToggle = /** @type {HTMLInputElement} */ (article.querySelector(".fotorama_hide_details"));
+        detailToggle.onchange = function () {
+            ol.classList.toggle("fotorama_hide_details");
+        };
         ol.addEventListener("keydown", function (event) {
             if (!(event.target instanceof HTMLImageElement)) {
                 return;
