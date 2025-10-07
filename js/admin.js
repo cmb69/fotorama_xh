@@ -79,7 +79,7 @@
         get progress() {
             return this.element.querySelector("div.fotorama_progress_backdrop");
         },
-        /** @type {(article: HTMLElement) => void} */
+        /** @type {() => void} */
         init: function () {
             var self = this;
             /** @type {HTMLCanvasElement} */
