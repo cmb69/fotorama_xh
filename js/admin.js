@@ -23,15 +23,14 @@
 "use strict";
 
 (function () {
-    /** @type {HTMLCanvasElement} */
-    var canvas;
-
     array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
 
     /** @param {HTMLElement} article */
     function editor(article) {
+        /** @type {HTMLCanvasElement} */
+        var canvas;
         /** @type {HTMLScriptElement[]} */ (
             array(article.querySelectorAll("script[type='text/x-template']"))
         ).forEach(function (script) {
