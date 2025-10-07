@@ -120,7 +120,7 @@
                 filebrowser.querySelector("button.fotorama_close")
             );
             closeButton.addEventListener("click", function () {
-                filebrowser.style.display = "none";
+                self.closeFilebrowser();
             });
 
             /** @type {(image: Image) => void} */
@@ -225,7 +225,7 @@
 
             /** @type {(path: HTMLInputElement, url: string) => void} */
             function setLink(path, url) {
-                filebrowser.style.display = "none";
+                self.closeFilebrowser();
                 var baseUrl = self.baseUrl;
                 var prefix = commonPrefix(baseUrl, url);
                 var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
@@ -303,6 +303,9 @@
         /** @type {() => void} */
         toggleDetails: function () {
             this.ol.classList.toggle("fotorama_hide_details");
+        },
+        closeFilebrowser: function () {
+            this.filebrowser.style.display = "none";
         },
         updateThumbUrls: function () {
             var baseUrl = this.baseUrl;
