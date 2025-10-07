@@ -22,22 +22,13 @@
 
 "use strict";
 
-var fotorama = (function () {
-    /**@type {HTMLDialogElement}*/
-    var currentFilebrowser;
-    /**@type {string}*/
-    var currentBaseUrl;
-    /**@type {HTMLInputElement}*/
-    var currentPath;
+(function () {
     /** @type {HTMLCanvasElement} */
     var canvas;
 
     array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
         editor(/**@type {HTMLElement}*/ (article));
     });
-    return {
-        setLink: setLink,
-    };
 
     /** @param {HTMLElement} article */
     function editor(article) {
@@ -180,14 +171,6 @@ var fotorama = (function () {
         closeButton.addEventListener("click", function () {
             filebrowser.close();
         });
-        var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
-        iframe.addEventListener("load", function () {
-            var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
-            var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
-            var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
-            iframe.width = (filebrowser.clientWidth - 20).toString();
-            iframe.height = (filebrowser.clientHeight - height - 20).toString();
-        });
 
         function image(image) {
             ol.insertAdjacentHTML("beforeend", template.text);
@@ -263,9 +246,15 @@ var fotorama = (function () {
                 "&type=image&subdir=" +
                 encodeURIComponent(matches[2].slice(0, -1));
             filebrowser.showModal();
-            currentFilebrowser = filebrowser;
-            currentBaseUrl = baseUrl;
-            currentPath = path;
+            iframe.onload = function () {
+                var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
+                var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
+                var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
+                iframe.width = (filebrowser.clientWidth - 20).toString();
+                iframe.height = (filebrowser.clientHeight - height - 20).toString();
+                // @ts-ignore
+                iframe.contentWindow.setLink = setLink.bind(null, filebrowser, baseUrl, path);
+            };
         }
 
         /** @param {DragEvent} event */
@@ -282,13 +271,13 @@ var fotorama = (function () {
         }
     }
 
-    /** @param {string} url */
-    function setLink(url) {
-        currentFilebrowser.close();
-        var prefix = commonPrefix(currentBaseUrl, url);
-        var base = currentBaseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
-        currentPath.value = base + url.substring(prefix.length);
-        currentPath.dispatchEvent(new Event("change"));
+    /** @type {(filebrowser: HTMLDialogElement, baseUrl: string, path: HTMLInputElement, url: string) => void} */
+    function setLink(filebrowser, baseUrl, path, url) {
+        filebrowser.close();
+        var prefix = commonPrefix(baseUrl, url);
+        var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
+        path.value = base + url.substring(prefix.length);
+        path.dispatchEvent(new Event("change"));
 
         /**
          * @param {string} str1
