@@ -112,8 +112,8 @@
                 }
                 event.target.focus();
             });
-            ol.addEventListener("dragenter", dragging);
-            ol.addEventListener("dragover", dragging);
+            ol.addEventListener("dragenter", this.onDrag.bind(this));
+            ol.addEventListener("dragover", this.onDrag.bind(this));
             ol.addEventListener("dragleave", this.onDragLeave.bind(this));
             ol.addEventListener("dragend", function () {
                 array(ol.querySelectorAll("li")).forEach(function (li) {
@@ -245,19 +245,6 @@
                 };
             }
 
-            /** @type {(event: DragEvent) => void} */
-            function dragging(event) {
-                var types = array(event.dataTransfer.types);
-                if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
-                    if (!(event.target instanceof HTMLElement)) return;
-                    var li = event.target;
-                    while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
-                    if (li === null) return;
-                    event.preventDefault();
-                    li.classList.add("fotorama_drop");
-                }
-            }
-
             /** @type {(path: HTMLInputElement, url: string) => void} */
             function setLink(path, url) {
                 filebrowser.style.display = "none";
@@ -275,6 +262,18 @@
                     }
                     return res;
                 }
+            }
+        },
+        /** @type {(event: DragEvent) => void} */
+        onDrag: function (event) {
+            var types = array(event.dataTransfer.types);
+            if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
+                if (!(event.target instanceof HTMLElement)) return;
+                var li = event.target;
+                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+                if (li === null) return;
+                event.preventDefault();
+                li.classList.add("fotorama_drop");
             }
         },
         /** @type {(event: DragEvent) => void} */
