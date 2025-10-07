@@ -210,7 +210,7 @@ var fotorama = (function () {
                 li.querySelector("button.fotorama_delete_image")
             );
             deleteImage.addEventListener("click", function () {
-                li.remove();
+                li.parentNode.removeChild(li);
             });
             thumb.addEventListener("dragstart", function (event) {
                 var dt = event.dataTransfer;
