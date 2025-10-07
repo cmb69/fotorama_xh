@@ -125,27 +125,7 @@
                     canvas = null;
                 }
             });
-            ol.addEventListener("drop", function (event) {
-                if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
-                var nth = parseInt(event.dataTransfer.getData("text"));
-                var src = ol.children[nth];
-                var li = event.target;
-                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
-                if (li === null) return;
-                var current = array(ol.children).indexOf(li);
-                ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
-                event.preventDefault();
-            });
-            var button = /**@type {HTMLButtonElement}*/ (
-                form.querySelector("button.fotorama_add_image")
-            );
-            button.addEventListener("click", function () {
-                image(null);
-                var input = /**@type {HTMLInputElement}*/ (
-                    ol.querySelector("li:last-child img.fotorama_thumb")
-                );
-                input.focus();
-            });
+            ol.addEventListener("drop", this.onDrop.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.addEventListener("submit", this.dehydrateImages.bind(this));
             var closeButton = /**@type {HTMLButtonElement}*/ (
@@ -299,6 +279,19 @@
             while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             li.classList.remove("fotorama_drop");
+        },
+        /** @type {(event: DragEvent) => void} */
+        onDrop: function (event) {
+            if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
+            var ol = this.ol;
+            var nth = parseInt(event.dataTransfer.getData("text"));
+            var src = ol.children[nth];
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            if (li === null) return;
+            var current = array(ol.children).indexOf(li);
+            ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
+            event.preventDefault();
         },
         /** @type {() => void} */
         toggleDetails: function () {
