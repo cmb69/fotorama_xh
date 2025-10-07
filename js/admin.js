@@ -51,9 +51,13 @@
         get imagesInput() {
             return this.element.querySelector("textarea[name=gallery_images]");
         },
-        /**@type {HTMLInputElement}*/
+        /** @type {HTMLInputElement}*/
         get path() {
             return this.element.querySelector("input.fotorama_path");
+        },
+        /** @type {string} */
+        get baseUrl() {
+            return this.ol.dataset.baseUrl + this.path.value + "/";
         },
         /**@type {HTMLOListElement}*/
         get ol() {
@@ -87,7 +91,6 @@
             imagesInput.parentElement.style.display = "none";
             var ol = this.ol;
             var path = this.path;
-            var baseUrl = ol.dataset.baseUrl + path.value + "/";
             var filebrowser = /**@type {HTMLElement}*/ (
                 this.element.querySelector("div.fotorama_filebrowser_backdrop")
             );
@@ -119,7 +122,7 @@
             });
 
             function onPathChange() {
-                baseUrl = ol.dataset.baseUrl + path.value + "/";
+                var baseUrl = self.baseUrl;
                 array(ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
                     var li = input.parentElement;
                     if (!(li instanceof HTMLLIElement)) throw "assertion failure";
@@ -135,11 +138,11 @@
                 ol.insertAdjacentHTML("beforeend", self.template.text);
                 var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
                 var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
-                thumb.src = image ? (!image.path.match(/:\/\//) ? baseUrl : "") + image.path : "";
+                thumb.src = image ? (!image.path.match(/:\/\//) ? self.baseUrl : "") + image.path : "";
                 var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
                 path.value = image ? image.path : "";
                 path.addEventListener("change", function () {
-                    thumb.src = (!path.value.match(/:\/\//) ? baseUrl : "") + path.value;
+                    thumb.src = (!path.value.match(/:\/\//) ? self.baseUrl : "") + path.value;
                 });
                 var caption = /**@type {HTMLTextAreaElement}*/ (
                     li.querySelector("textarea.fotorama_caption")
@@ -201,7 +204,7 @@
             /** @type {(path: HTMLInputElement) => void} */
             function openFilebrowser(path) {
                 var iframe = /**@type {HTMLIFrameElement}*/ (filebrowser.querySelector("iframe"));
-                var matches = baseUrl.match(/^(\.+\/)(.*)$/);
+                var matches = self.baseUrl.match(/^(\.+\/)(.*)$/);
                 if (matches === null) throw "assertion failure";
                 iframe.src =
                     matches[1] +
@@ -231,6 +234,7 @@
             /** @type {(path: HTMLInputElement, url: string) => void} */
             function setLink(path, url) {
                 filebrowser.style.display = "none";
+                var baseUrl = self.baseUrl;
                 var prefix = commonPrefix(baseUrl, url);
                 var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
                 path.value = base + url.substring(prefix.length);
