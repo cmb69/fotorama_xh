@@ -34,6 +34,16 @@
         return Array.prototype.slice.call(arrayLike);
     }
 
+    /** @type {(str1: string, str2: string) => string} */
+    function commonPrefix(str1, str2) {
+        var res = "";
+        for (var i = 0; i < str1.length && i < str2.length; i++) {
+            if (str1[i] !== str2[i]) break;
+            res += str1[i];
+        }
+        return res;
+    }
+
     var editor = Object.freeze({
         /** @type {HTMLElement} */
         element: undefined,
@@ -221,16 +231,6 @@
                 var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
                 path.value = base + url.substring(prefix.length);
                 onPathChange();
-
-                /** @type {(str1: string, str2: string) => string} */
-                function commonPrefix(str1, str2) {
-                    var res = "";
-                    for (var i = 0; i < str1.length && i < str2.length; i++) {
-                        if (str1[i] !== str2[i]) break;
-                        res += str1[i];
-                    }
-                    return res;
-                }
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
