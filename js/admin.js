@@ -236,7 +236,7 @@ var fotorama = (function () {
                 ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
                 canvas.style.position = "absolute";
                 canvas.style.left = "-100%";
-                document.body.append(canvas);
+                document.body.appendChild(canvas);
                 dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 dt.setData(
                     "application/x.fotorama-image",
