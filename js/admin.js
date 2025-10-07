@@ -115,7 +115,8 @@ var fotorama = (function () {
         ol.addEventListener("dragover", dragging);
         ol.addEventListener("dragleave", function (event) {
             if (!(event.target instanceof HTMLElement)) return;
-            var li = event.target.closest("li");
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         });
@@ -132,7 +133,8 @@ var fotorama = (function () {
             if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
             var nth = parseInt(event.dataTransfer.getData("application/x.fotorama-image"));
             var src = ol.children[nth];
-            var li = event.target.closest("li");
+            var li = event.target;
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
@@ -275,7 +277,8 @@ var fotorama = (function () {
                 array(event.dataTransfer.types).indexOf("application/x.fotorama-image") >= 0
             ) {
                 if (!(event.target instanceof HTMLElement)) return;
-                var li = event.target.closest("li");
+                var li = event.target;
+                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
                 if (li === null) return;
                 event.preventDefault();
                 li.classList.add("fotorama_drop");
