@@ -122,7 +122,8 @@ var fotorama = (function () {
         });
         ol.addEventListener("dragend", function () {
             array(ol.querySelectorAll("li")).forEach(function (li) {
-                li.classList.remove("fotorama_drag", "fotorama_drop");
+                li.classList.remove("fotorama_drag");
+                li.classList.remove("fotorama_drop");
             });
             if (canvas) {
                 canvas.parentNode.removeChild(canvas);
