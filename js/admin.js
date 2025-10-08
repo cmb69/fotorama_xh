@@ -319,14 +319,18 @@
             var self = this;
             var records = /** @type {Image[]} */ ([]);
             array(this.ol.querySelectorAll("li")).forEach(function (li) {
-                records.push({
-                    path: self.imagePath(li).value,
-                    caption: self.imageCaption(li).value,
-                    description: self.imageDescription(li).value,
-                });
+                records.push(self.image(li));
             });
             this.imagesInput.value = JSON.stringify(records);
             this.showProgress();
+        },
+        /** @type {(li: HTMLLIElement) => Image} */
+        image: function (li) {
+            return {
+                path: this.imagePath(li).value,
+                caption: this.imageCaption(li).value,
+                description: this.imageDescription(li).value,
+            };
         },
         /** @type {(li: HTMLLIElement) => HTMLInputElement} */
         imagePath: function (li) {
