@@ -337,6 +337,10 @@
                 });
             });
             this.imagesInput.value = JSON.stringify(records);
+            this.showProgress();
+        },
+        /** @type {() => void} */
+        showProgress: function () {
             this.progress.style.display = "";
         },
         /** @type {() => void} */
