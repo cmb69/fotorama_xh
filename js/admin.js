@@ -163,17 +163,7 @@
                 deleteImage.addEventListener("click", function () {
                     li.parentNode.removeChild(li);
                 });
-                thumb.addEventListener("dragstart", function (event) {
-                    var dt = event.dataTransfer;
-                    if (dt === null) return;
-                    if ("setDragImage" in dt) {
-                        var canvas = self.createDragImage(thumb);
-                        dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
-                    }
-                    dt.setData("text", array(ol.children).indexOf(li).toString());
-                    dt.effectAllowed = "move";
-                    li.classList.add("fotorama_drag");
-                });
+                thumb.addEventListener("dragstart", self.onDragStart.bind(self));
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -209,6 +199,21 @@
                     break;
             }
             event.target.focus();
+        },
+        /** @type {(event: DragEvent) => void} */
+        onDragStart: function (event) {
+            var dt = event.dataTransfer;
+            if (dt === null) return;
+            var thumb = /** @type {HTMLImageElement} */ (event.currentTarget);
+            var li = /** @type {HTMLElement} */ (thumb);
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            if ("setDragImage" in dt) {
+                var canvas = this.createDragImage(thumb);
+                dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+            }
+            dt.setData("text", array(this.ol.children).indexOf(li).toString());
+            dt.effectAllowed = "move";
+            li.classList.add("fotorama_drag");
         },
         /** @type {(event: DragEvent) => void} */
         onDrag: function (event) {
