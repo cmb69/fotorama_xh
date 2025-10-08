@@ -85,7 +85,6 @@
         },
         /** @type {() => void} */
         init: function () {
-            var self = this;
             /** @type {HTMLScriptElement[]} */ (
                 array(this.element.querySelectorAll("script[type='text/x-template']"))
             ).forEach(function (script) {
@@ -120,9 +119,7 @@
             var closeButton = /**@type {HTMLButtonElement}*/ (
                 filebrowser.querySelector("button.fotorama_close")
             );
-            closeButton.addEventListener("click", function () {
-                self.closeFilebrowser();
-            });
+            closeButton.addEventListener("click", this.closeFilebrowser.bind(this));
         },
         /** @type {(event: KeyboardEvent) => void} */
         onKeydown: function (event) {
@@ -157,6 +154,14 @@
                     break;
             }
             event.target.focus();
+        },
+        /** @type {(event: Event) => void} */
+        onPathChange: function (event) {
+            var path = /** @type {HTMLInputElement} */ (event.currentTarget);
+            var li = /** @type {HTMLElement} */ (path);
+            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            var thumb = /** @type {HTMLImageElement} */ (li.querySelector(".fotorama_thumb"));
+            thumb.src = (!path.value.match(/:\/\//) ? this.baseUrl : "") + path.value;
         },
         /** @type {(event: DragEvent) => void} */
         onDragStart: function (event) {
@@ -208,7 +213,6 @@
         },
         /** @type {(image: Image) => void} */
         addImage: function (image) {
-            var self = this;
             var ol = this.ol;
             ol.insertAdjacentHTML("beforeend", this.template.text);
             var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
@@ -216,9 +220,7 @@
             thumb.src = image ? (!image.path.match(/:\/\//) ? this.baseUrl : "") + image.path : "";
             var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
             path.value = image ? image.path : "";
-            path.addEventListener("change", function () {
-                thumb.src = (!path.value.match(/:\/\//) ? self.baseUrl : "") + path.value;
-            });
+            path.addEventListener("change", this.onPathChange.bind(this));
             var caption = /**@type {HTMLTextAreaElement}*/ (
                 li.querySelector("textarea.fotorama_caption")
             );
@@ -230,9 +232,7 @@
             var pickImage = /**@type {HTMLButtonElement}*/ (
                 li.querySelector("button.fotorama_pick_image")
             );
-            pickImage.addEventListener("click", function () {
-                self.openFilebrowser(path);
-            });
+            pickImage.addEventListener("click", this.openFilebrowser.bind(this, path));
             var moveImage = /**@type {HTMLButtonElement}*/ (
                 li.querySelector("button.fotorama_move_image")
             );
