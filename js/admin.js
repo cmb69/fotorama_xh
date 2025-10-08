@@ -167,33 +167,13 @@
                     var dt = event.dataTransfer;
                     if (dt === null) return;
                     if ("setDragImage" in dt) {
-                        var canvas = createDragImage(thumb);
+                        var canvas = self.createDragImage(thumb);
                         dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                     }
                     dt.setData("text", array(ol.children).indexOf(li).toString());
                     dt.effectAllowed = "move";
                     li.classList.add("fotorama_drag");
                 });
-
-                /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
-                function createDragImage(thumb) {
-                    var canvas = document.createElement("canvas");
-                    canvas.className = "fotorama_drag_image";
-                    var ratio = thumb.naturalWidth / thumb.naturalHeight;
-                    if (ratio >= 1) {
-                        canvas.width = 100;
-                        canvas.height = 100 / ratio;
-                    } else {
-                        canvas.width = 100 * ratio;
-                        canvas.height = 100;
-                    }
-                    var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
-                    ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
-                    canvas.style.position = "absolute";
-                    canvas.style.left = "-100%";
-                    document.body.appendChild(canvas);
-                    return canvas;
-                }
             }
         },
         /** @type {(event: KeyboardEvent) => void} */
@@ -262,6 +242,25 @@
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
             event.preventDefault();
+        },
+        /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
+        createDragImage: function (thumb) {
+            var canvas = document.createElement("canvas");
+            canvas.className = "fotorama_drag_image";
+            var ratio = thumb.naturalWidth / thumb.naturalHeight;
+            if (ratio >= 1) {
+                canvas.width = 100;
+                canvas.height = 100 / ratio;
+            } else {
+                canvas.width = 100 * ratio;
+                canvas.height = 100;
+            }
+            var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+            ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
+            canvas.style.position = "absolute";
+            canvas.style.left = "-100%";
+            document.body.appendChild(canvas);
+            return canvas;
         },
         /** @type {() => void} */
         toggleDetails: function () {
