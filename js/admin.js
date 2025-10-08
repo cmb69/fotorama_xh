@@ -220,17 +220,11 @@
             var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
             var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
             thumb.src = image ? (!image.path.match(/:\/\//) ? this.baseUrl : "") + image.path : "";
-            var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
+            var path = this.imagePath(li);
             path.value = image ? image.path : "";
             path.addEventListener("change", this.onPathChange.bind(this));
-            var caption = /**@type {HTMLTextAreaElement}*/ (
-                li.querySelector("textarea.fotorama_caption")
-            );
-            caption.value = image ? image.caption : "";
-            var description = /**@type {HTMLTextAreaElement}*/ (
-                li.querySelector("textarea.fotorama_description")
-            );
-            description.value = image ? image.description : "";
+            this.imageCaption(li).value = image ? image.caption : "";
+            this.imageDescription(li).value = image ? image.description : "";
             var pickImage = /**@type {HTMLButtonElement}*/ (
                 li.querySelector("button.fotorama_pick_image")
             );
@@ -322,22 +316,29 @@
         },
         /** @type {() => void} */
         dehydrateImages: function () {
+            var self = this;
             var records = /** @type {Image[]} */ ([]);
             array(this.ol.querySelectorAll("li")).forEach(function (li) {
-                var description =
-                    /**@type {HTMLTextAreaElement}*/
-                    (li.querySelector("textarea.fotorama_description"));
                 records.push({
-                    path: /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"))
-                        .value,
-                    caption: /**@type {HTMLTextAreaElement}*/ (
-                        li.querySelector("textarea.fotorama_caption")
-                    ).value,
-                    description: description.value,
+                    path: self.imagePath(li).value,
+                    caption: self.imageCaption(li).value,
+                    description: self.imageDescription(li).value,
                 });
             });
             this.imagesInput.value = JSON.stringify(records);
             this.showProgress();
+        },
+        /** @type {(li: HTMLLIElement) => HTMLInputElement} */
+        imagePath: function (li) {
+            return li.querySelector("input.fotorama_path");
+        },
+        /** @type {(li: HTMLLIElement) => HTMLTextAreaElement} */
+        imageCaption: function (li) {
+            return li.querySelector("textarea.fotorama_caption");
+        },
+        /** @type {(li: HTMLLIElement) => HTMLTextAreaElement} */
+        imageDescription: function (li) {
+            return li.querySelector("textarea.fotorama_description");
         },
         /** @type {() => void} */
         showProgress: function () {
