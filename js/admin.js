@@ -225,20 +225,11 @@
             path.addEventListener("change", this.onPathChange.bind(this));
             this.imageCaption(li).value = image ? image.caption : "";
             this.imageDescription(li).value = image ? image.description : "";
-            var pickImage = /**@type {HTMLButtonElement}*/ (
-                li.querySelector("button.fotorama_pick_image")
-            );
-            pickImage.addEventListener("click", this.openFilebrowser.bind(this, path));
-            var moveImage = /**@type {HTMLButtonElement}*/ (
-                li.querySelector("button.fotorama_move_image")
-            );
-            moveImage.addEventListener("click", function () {
+            this.pickImageButton(li).addEventListener("click", this.openFilebrowser.bind(this, path));
+            this.moveImageButton(li).addEventListener("click", function () {
                 ol.insertBefore(li, li.previousElementSibling);
             });
-            var deleteImage = /**@type {HTMLButtonElement}*/ (
-                li.querySelector("button.fotorama_delete_image")
-            );
-            deleteImage.addEventListener("click", function () {
+            this.deleteImageButton(li).addEventListener("click", function () {
                 li.parentNode.removeChild(li);
             });
             thumb.addEventListener("dragstart", this.onDragStart.bind(this));
@@ -339,6 +330,18 @@
         /** @type {(li: HTMLLIElement) => HTMLTextAreaElement} */
         imageDescription: function (li) {
             return li.querySelector("textarea.fotorama_description");
+        },
+        /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
+        pickImageButton: function (li) {
+            return li.querySelector("button.fotorama_pick_image");
+        },
+        /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
+        moveImageButton: function (li) {
+            return li.querySelector("button.fotorama_move_image");
+        },
+        /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
+        deleteImageButton: function (li) {
+            return li.querySelector("button.fotorama_delete_image");
         },
         /** @type {() => void} */
         showProgress: function () {
