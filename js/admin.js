@@ -104,15 +104,7 @@
             ol.addEventListener("dragenter", this.onDrag.bind(this));
             ol.addEventListener("dragover", this.onDrag.bind(this));
             ol.addEventListener("dragleave", this.onDragLeave.bind(this));
-            ol.addEventListener("dragend", function () {
-                array(ol.querySelectorAll("li")).forEach(function (li) {
-                    li.classList.remove("fotorama_drag");
-                    li.classList.remove("fotorama_drop");
-                });
-                array(document.querySelectorAll(".fotorama_drag_image")).forEach(function (canvas) {
-                    canvas.parentNode.removeChild(canvas);
-                });
-            });
+            ol.addEventListener("dragend", this.onDragEnd.bind(this));
             ol.addEventListener("drop", this.onDrop.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.addEventListener("submit", this.dehydrateImages.bind(this));
@@ -210,6 +202,16 @@
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
             event.preventDefault();
+        },
+        /** @type {() => void} */
+        onDragEnd: function () {
+            array(this.ol.querySelectorAll("li")).forEach(function (li) {
+                li.classList.remove("fotorama_drag");
+                li.classList.remove("fotorama_drop");
+            });
+            array(document.querySelectorAll(".fotorama_drag_image")).forEach(function (canvas) {
+                canvas.parentNode.removeChild(canvas);
+            });
         },
         /** @type {(image: Image) => void} */
         addImage: function (image) {
