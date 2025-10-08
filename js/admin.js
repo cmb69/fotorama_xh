@@ -316,11 +316,7 @@
         },
         /** @type {() => void} */
         dehydrateImages: function () {
-            var self = this;
-            var records = /** @type {Image[]} */ ([]);
-            array(this.ol.querySelectorAll("li")).forEach(function (li) {
-                records.push(self.image(li));
-            });
+            var records = array(this.ol.querySelectorAll("li")).map(this.image.bind(this));
             this.imagesInput.value = JSON.stringify(records);
             this.showProgress();
         },
