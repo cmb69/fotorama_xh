@@ -86,8 +86,6 @@
         /** @type {() => void} */
         init: function () {
             var self = this;
-            /** @type {HTMLCanvasElement} */
-            var canvas;
             /** @type {HTMLScriptElement[]} */ (
                 array(this.element.querySelectorAll("script[type='text/x-template']"))
             ).forEach(function (script) {
@@ -112,10 +110,9 @@
                     li.classList.remove("fotorama_drag");
                     li.classList.remove("fotorama_drop");
                 });
-                if (canvas) {
+                array(document.querySelectorAll(".fotorama_drag_image")).forEach(function (canvas) {
                     canvas.parentNode.removeChild(canvas);
-                    canvas = null;
-                }
+                });
             });
             ol.addEventListener("drop", this.onDrop.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
@@ -170,7 +167,7 @@
                     var dt = event.dataTransfer;
                     if (dt === null) return;
                     if ("setDragImage" in dt) {
-                        createDragImage(thumb);
+                        var canvas = createDragImage(thumb);
                         dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                     }
                     dt.setData("text", array(ol.children).indexOf(li).toString());
@@ -178,9 +175,10 @@
                     li.classList.add("fotorama_drag");
                 });
 
-                /** @type {(thumb: HTMLImageElement) => void} */
+                /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
                 function createDragImage(thumb) {
-                    canvas = document.createElement("canvas");
+                    var canvas = document.createElement("canvas");
+                    canvas.className = "fotorama_drag_image";
                     var ratio = thumb.naturalWidth / thumb.naturalHeight;
                     if (ratio >= 1) {
                         canvas.width = 100;
@@ -194,6 +192,7 @@
                     canvas.style.position = "absolute";
                     canvas.style.left = "-100%";
                     document.body.appendChild(canvas);
+                    return canvas;
                 }
             }
         },
