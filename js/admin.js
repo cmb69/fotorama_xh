@@ -98,7 +98,7 @@
             var ol = this.ol;
             var path = this.path;
             var filebrowser = this.filebrowser;
-            images.forEach(image);
+            images.forEach(this.addImage.bind(this));
             path.addEventListener("change", this.updateThumbUrls.bind(this));
             this.detailToggle.onchange = this.toggleDetails.bind(this);
             ol.addEventListener("keydown", this.onKeydown.bind(this));
@@ -123,48 +123,6 @@
             closeButton.addEventListener("click", function () {
                 self.closeFilebrowser();
             });
-
-            /** @type {(image: Image) => void} */
-            function image(image) {
-                ol.insertAdjacentHTML("beforeend", self.template.text);
-                var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
-                var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
-                thumb.src = image
-                    ? (!image.path.match(/:\/\//) ? self.baseUrl : "") + image.path
-                    : "";
-                var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
-                path.value = image ? image.path : "";
-                path.addEventListener("change", function () {
-                    thumb.src = (!path.value.match(/:\/\//) ? self.baseUrl : "") + path.value;
-                });
-                var caption = /**@type {HTMLTextAreaElement}*/ (
-                    li.querySelector("textarea.fotorama_caption")
-                );
-                caption.value = image ? image.caption : "";
-                var description = /**@type {HTMLTextAreaElement}*/ (
-                    li.querySelector("textarea.fotorama_description")
-                );
-                description.value = image ? image.description : "";
-                var pickImage = /**@type {HTMLButtonElement}*/ (
-                    li.querySelector("button.fotorama_pick_image")
-                );
-                pickImage.addEventListener("click", function () {
-                    self.openFilebrowser(path);
-                });
-                var moveImage = /**@type {HTMLButtonElement}*/ (
-                    li.querySelector("button.fotorama_move_image")
-                );
-                moveImage.addEventListener("click", function () {
-                    ol.insertBefore(li, li.previousElementSibling);
-                });
-                var deleteImage = /**@type {HTMLButtonElement}*/ (
-                    li.querySelector("button.fotorama_delete_image")
-                );
-                deleteImage.addEventListener("click", function () {
-                    li.parentNode.removeChild(li);
-                });
-                thumb.addEventListener("dragstart", self.onDragStart.bind(self));
-            }
         },
         /** @type {(event: KeyboardEvent) => void} */
         onKeydown: function (event) {
@@ -247,6 +205,47 @@
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
             event.preventDefault();
+        },
+        /** @type {(image: Image) => void} */
+        addImage: function (image) {
+            var self = this;
+            var ol = this.ol;
+            ol.insertAdjacentHTML("beforeend", this.template.text);
+            var li = /**@type {HTMLLIElement}*/ (ol.querySelector("li:last-child"));
+            var thumb = /**@type {HTMLImageElement}*/ (li.querySelector("img.fotorama_thumb"));
+            thumb.src = image ? (!image.path.match(/:\/\//) ? this.baseUrl : "") + image.path : "";
+            var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
+            path.value = image ? image.path : "";
+            path.addEventListener("change", function () {
+                thumb.src = (!path.value.match(/:\/\//) ? self.baseUrl : "") + path.value;
+            });
+            var caption = /**@type {HTMLTextAreaElement}*/ (
+                li.querySelector("textarea.fotorama_caption")
+            );
+            caption.value = image ? image.caption : "";
+            var description = /**@type {HTMLTextAreaElement}*/ (
+                li.querySelector("textarea.fotorama_description")
+            );
+            description.value = image ? image.description : "";
+            var pickImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_pick_image")
+            );
+            pickImage.addEventListener("click", function () {
+                self.openFilebrowser(path);
+            });
+            var moveImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_move_image")
+            );
+            moveImage.addEventListener("click", function () {
+                ol.insertBefore(li, li.previousElementSibling);
+            });
+            var deleteImage = /**@type {HTMLButtonElement}*/ (
+                li.querySelector("button.fotorama_delete_image")
+            );
+            deleteImage.addEventListener("click", function () {
+                li.parentNode.removeChild(li);
+            });
+            thumb.addEventListener("dragstart", this.onDragStart.bind(this));
         },
         /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
         createDragImage: function (thumb) {
