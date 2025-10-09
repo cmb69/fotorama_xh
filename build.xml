@@ -111,6 +111,7 @@
         <exclude name=".phive/**"/>
         <exclude name="tests/**"/>
         <exclude name="help/template.htm"/>
+        <exclude name="js/types.d.ts"/>
         <exclude name="README*.md"/>
         <exclude name="build.xml"/>
         <exclude name="composer.json"/>

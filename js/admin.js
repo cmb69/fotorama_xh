@@ -279,7 +279,6 @@
             var iframe = this.iframe;
             iframe.width = (inner.clientWidth - 20).toString();
             iframe.height = (inner.clientHeight - height - 20).toString();
-            // @ts-ignore
             iframe.contentWindow.setLink = this.setImagePath.bind(this, path);
         },
         closeFilebrowser: function () {

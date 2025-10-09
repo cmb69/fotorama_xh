@@ -32,13 +32,10 @@
     /** @param {HTMLElement} element */
     function init(element) {
         var config = JSON.parse(element.dataset.config || "{}");
-        // @ts-expect-error
-        if ("jQuery" in window && "fotorama" in jQuery()) {
-            // @ts-expect-error
+        if ("jQuery" in window && "fn" in jQuery && "fotorama" in jQuery.fn) {
             jQuery(".fotorama", element).fotorama(config);
         }
         if ("SimpleLightbox" in window) {
-            // @ts-expect-error
             new SimpleLightbox(element.querySelectorAll(".fotorama_lightbox a"), {
                 uniqueImages: false,
                 scaleImageToRatio: true,
