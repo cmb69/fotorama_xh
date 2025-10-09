@@ -118,28 +118,14 @@
             if (!(event.target instanceof HTMLImageElement)) {
                 return;
             }
-            var checkbox = this.detailToggle;
             var li = event.target.parentElement;
             if (!(li instanceof HTMLLIElement)) throw "assertion failure";
-            var key = event.key;
-            if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
-                key = "Arrow" + key;
-            }
-            switch (key) {
-                case "ArrowRight":
-                case "ArrowDown":
-                    if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
-                        return;
-                    }
-                    this.moveImageDown(li);
-                    break;
-                case "ArrowLeft":
-                case "ArrowUp":
-                    if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
-                        return;
-                    }
-                    this.moveImageUp(li);
-                    break;
+            var vertical = !this.detailToggle.checked;
+            var key = event.key.replace(/^Arrow/, "");
+            if ((vertical && key === "Down") || (!vertical && key === "Right")) {
+                this.moveImageDown(li);
+            } else if ((vertical && key === "Up") || (!vertical && key === "Left")) {
+                this.moveImageUp(li);
             }
             event.target.focus();
         },
