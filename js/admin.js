@@ -115,19 +115,18 @@
         },
         /** @type {(event: KeyboardEvent) => void} */
         onKeydown: function (event) {
-            if (!(event.target instanceof HTMLImageElement)) {
-                return;
-            }
-            var li = event.target.parentElement;
-            if (!(li instanceof HTMLLIElement)) throw "assertion failure";
+            var target = /** @type {Element} */ (event.target);
+            if (!target.classList.contains("fotorama_thumb")) return;
+            var li = target.parentElement;
+            while (li && li.tagName !== "LI") li = li.parentElement;
             var vertical = !this.detailToggle.checked;
             var key = event.key.replace(/^Arrow/, "");
             if ((vertical && key === "Down") || (!vertical && key === "Right")) {
-                this.moveImageDown(li);
+                this.moveImageDown(/** @type {HTMLLIElement} */ (li));
             } else if ((vertical && key === "Up") || (!vertical && key === "Left")) {
-                this.moveImageUp(li);
+                this.moveImageUp(/** @type {HTMLLIElement} */ (li));
             }
-            event.target.focus();
+            /** @type {HTMLImageElement} */ (target).focus();
         },
         /** @type {(event: Event) => void} */
         onPathChange: function (event) {
@@ -156,8 +155,7 @@
         onDrag: function (event) {
             var types = array(event.dataTransfer.types);
             if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
-                if (!(event.target instanceof HTMLElement)) return;
-                var li = event.target;
+                var li = /** @type {Element} */ (event.target);
                 while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
                 if (li === null) return;
                 event.preventDefault();
@@ -166,19 +164,17 @@
         },
         /** @type {(event: DragEvent) => void} */
         onDragLeave: function (event) {
-            if (!(event.target instanceof HTMLElement)) return;
-            var li = event.target;
+            var li = /** @type {Element} */ (event.target);
             while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         },
         /** @type {(event: DragEvent) => void} */
         onDrop: function (event) {
-            if (event.dataTransfer === null || !(event.target instanceof HTMLElement)) return;
             var ol = this.ol;
             var nth = parseInt(event.dataTransfer.getData("text"));
             var src = ol.children[nth];
-            var li = event.target;
+            var li = /** @type {Element} */ (event.target);
             while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
             if (li === null) return;
             var current = array(ol.children).indexOf(li);
@@ -283,7 +279,6 @@
             var baseUrl = this.baseUrl;
             array(this.ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
                 var li = input.parentElement;
-                if (!(li instanceof HTMLLIElement)) throw "assertion failure";
                 var path = /**@type {HTMLInputElement}*/ (li.querySelector("input.fotorama_path"));
                 /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
             });
