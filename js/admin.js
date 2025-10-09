@@ -93,11 +93,7 @@
         },
         /** @type {() => void} */
         init: function () {
-            /** @type {HTMLScriptElement[]} */ (
-                array(this.element.querySelectorAll("script[type='text/x-template']"))
-            ).forEach(function (script) {
-                script.outerHTML = script.text;
-            });
+            this.instantiateTemplates();
             var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
             var imagesInput = this.imagesInput;
             var images = JSON.parse(imagesInput.value);
@@ -116,6 +112,14 @@
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.onsubmit = this.dehydrateImages.bind(this);
             this.closeFilebrowserButton.onclick = this.closeFilebrowser.bind(this);
+        },
+        /** @type {() => void} */
+        instantiateTemplates: function () {
+            /** @type {HTMLScriptElement[]} */ (
+                array(this.element.querySelectorAll("script[type='text/x-template']"))
+            ).forEach(function (script) {
+                script.outerHTML = script.text;
+            });
         },
         /** @type {() => void} */
         onAddImageClick: function () {
