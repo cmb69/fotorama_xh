@@ -28,8 +28,8 @@
     /** @type {HTMLElement[]} */ (
         array(document.querySelectorAll("figure.fotorama_gallery"))
     ).forEach(function (element) {
-        var config = JSON.parse(element.dataset.config || "{}");
         if ("jQuery" in window && "fn" in jQuery && "fotorama" in jQuery.fn) {
+            var config = JSON.parse(element.dataset.config || "{}");
             jQuery(".fotorama", element).fotorama(config);
         } else if ("SimpleLightbox" in window) {
             new SimpleLightbox(element.querySelectorAll(".fotorama_lightbox a"), {
