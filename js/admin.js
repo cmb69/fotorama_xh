@@ -106,12 +106,24 @@
             ol.addEventListener("dragleave", this.onDragLeave.bind(this));
             ol.addEventListener("dragend", this.onDragEnd.bind(this));
             ol.addEventListener("drop", this.onDrop.bind(this));
+            var button = /**@type {HTMLButtonElement}*/ (
+                form.querySelector("button.fotorama_add_image")
+            );
+            button.addEventListener("click", this.onAddImageClick.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.addEventListener("submit", this.dehydrateImages.bind(this));
             var closeButton = /**@type {HTMLButtonElement}*/ (
                 filebrowser.querySelector("button.fotorama_close")
             );
             closeButton.addEventListener("click", this.closeFilebrowser.bind(this));
+        },
+        /** @type {() => void} */
+        onAddImageClick: function () {
+            this.addImage(null);
+            var input = /**@type {HTMLInputElement}*/ (
+                this.ol.querySelector("li:last-child img.fotorama_thumb")
+            );
+            input.focus();
         },
         /** @type {(event: KeyboardEvent) => void} */
         onKeydown: function (event) {
