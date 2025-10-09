@@ -249,13 +249,14 @@
         openFilebrowser: function (path) {
             var iframe = this.iframe;
             var matches = this.baseUrl.match(/^(\.+\/)(.*)$/);
-            if (matches === null) throw "assertion failure";
+            var prefix = matches[1];
+            var suffix = matches[2].slice(0, -1);
             iframe.src =
-                matches[1] +
+                prefix +
                 "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
-                encodeURIComponent(matches[1]) +
+                encodeURIComponent(prefix) +
                 "&type=image&subdir=" +
-                encodeURIComponent(matches[2].slice(0, -1));
+                encodeURIComponent(suffix);
             this.filebrowser.style.display = "";
             iframe.onload = this.initFilebrowser.bind(this, path);
         },
