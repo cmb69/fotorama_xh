@@ -20,7 +20,12 @@
 (function () {
     "use strict";
 
-    document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) {
+    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
+    function array(arrayLike) {
+        return Array.prototype.slice.call(arrayLike);
+    }
+
+    array(document.querySelectorAll("figure.fotorama_gallery")).forEach(function (element) {
         init(/**@type {HTMLElement}*/ (element));
     });
 
