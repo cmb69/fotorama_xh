@@ -355,8 +355,10 @@
     });
 
     array(document.querySelectorAll("article.fotorama_editor")).forEach(function (article) {
-        Object.create(editor, {
-            element: { value: article },
-        }).init();
+        /** @type {typeof editor} */ (
+            Object.create(editor, {
+                element: { value: article },
+            })
+        ).init();
     });
 })();
