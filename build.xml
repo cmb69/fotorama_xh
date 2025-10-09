@@ -2,6 +2,8 @@
 
 <project name="Fotorama" default="help">
 
+  <property name="dir" value="${project.basedir}"/>
+
   <target name="help" description="lists available targets">
     <exec executable="phing" outputProperty="help">
       <arg line="-l"/>
@@ -58,6 +60,15 @@
     </exec>
   </target>
 
+  <target name="minify" description="minifies JS">
+    <exec executable="uglifyjs" checkreturn="true" dir="${dir}">
+      <arg line="js/admin.js --toplevel --compress --mangle --output js/admin.min.js"/>
+    </exec>
+    <exec executable="uglifyjs" checkreturn="true" dir="${dir}">
+      <arg line="js/fotorama.js --toplevel --compress --mangle --output js/fotorama.min.js"/>
+    </exec>
+  </target>
+
   <target name="gen-help" description="builds help.htm from README.md">
     <exec executable="pandoc" passthru="true" checkreturn="true">
       <arg value="-s"/>
@@ -89,12 +100,9 @@
     </exec>
     <unzip file="export.zip" todir="export"/>
     <delete file="export.zip"/>
-    <jsMin targetDir="dist/js" suffix=".min" failonerror="true">
-      <fileset dir="export/js">
-        <include name="admin.js"/>
-        <include name="fotorama.js"/>
-      </fileset>
-    </jsMin>
+    <phingcall target="minify">
+      <property name="dir" value="export/"/>
+    </phingcall>
     <move todir="dist">
       <fileset dir="export">
         <include name="views/*.php"/>
