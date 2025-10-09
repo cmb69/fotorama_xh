@@ -118,7 +118,7 @@
             var target = /** @type {Element} */ (event.target);
             if (!target.classList.contains("fotorama_thumb")) return;
             var li = target.parentElement;
-            while (li && li.tagName !== "LI") li = li.parentElement;
+            while (li && li.localName !== "li") li = li.parentElement;
             var vertical = !this.detailToggle.checked;
             var key = event.key.replace(/^Arrow/, "");
             if ((vertical && key === "Down") || (!vertical && key === "Right")) {
@@ -132,7 +132,7 @@
         onPathChange: function (event) {
             var path = /** @type {HTMLInputElement} */ (event.currentTarget);
             var li = /** @type {HTMLElement} */ (path);
-            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            while (li && li.localName !== "li") li = li.parentElement;
             var thumb = /** @type {HTMLImageElement} */ (li.querySelector(".fotorama_thumb"));
             thumb.src = (!path.value.match(/:\/\//) ? this.baseUrl : "") + path.value;
         },
@@ -142,7 +142,7 @@
             if (dt === null) return;
             var thumb = /** @type {HTMLImageElement} */ (event.currentTarget);
             var li = /** @type {HTMLElement} */ (thumb);
-            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            while (li && li.localName !== "li") li = li.parentElement;
             if ("setDragImage" in dt) {
                 var canvas = this.createDragImage(thumb);
                 dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
@@ -156,7 +156,7 @@
             var types = array(event.dataTransfer.types);
             if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
                 var li = /** @type {Element} */ (event.target);
-                while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+                while (li && li.localName !== "li") li = li.parentElement;
                 if (li === null) return;
                 event.preventDefault();
                 li.classList.add("fotorama_drop");
@@ -165,7 +165,7 @@
         /** @type {(event: DragEvent) => void} */
         onDragLeave: function (event) {
             var li = /** @type {Element} */ (event.target);
-            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            while (li && li.localName !== "li") li = li.parentElement;
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         },
@@ -175,7 +175,7 @@
             var nth = parseInt(event.dataTransfer.getData("text"));
             var src = ol.children[nth];
             var li = /** @type {Element} */ (event.target);
-            while (li && li.tagName.toLowerCase() !== "li") li = li.parentElement;
+            while (li && li.localName !== "li") li = li.parentElement;
             if (li === null) return;
             var current = array(ol.children).indexOf(li);
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
