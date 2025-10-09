@@ -94,24 +94,24 @@
         /** @type {() => void} */
         init: function () {
             this.instantiateTemplates();
-            var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
             var imagesInput = this.imagesInput;
-            var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
-            var ol = this.ol;
+            var images = JSON.parse(imagesInput.value);
             images.forEach(this.addImage.bind(this));
             this.path.onchange = this.updateThumbUrls.bind(this);
             this.detailToggle.onchange = this.toggleDetails.bind(this);
+            this.addImageButton.onclick = this.onAddImageClick.bind(this);
+            var ol = this.ol;
             ol.onkeydown = this.onKeydown.bind(this);
             ol.ondragenter = this.onDrag.bind(this);
             ol.ondragover = this.onDrag.bind(this);
             ol.ondragleave = this.onDragLeave.bind(this);
             ol.ondragend = this.onDragEnd.bind(this);
             ol.ondrop = this.onDrop.bind(this);
-            this.addImageButton.onclick = this.onAddImageClick.bind(this);
             addEventListener("pagehide", this.hideProgress.bind(this));
-            form.onsubmit = this.dehydrateImages.bind(this);
             this.closeFilebrowserButton.onclick = this.closeFilebrowser.bind(this);
+            var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
+            form.onsubmit = this.dehydrateImages.bind(this);
         },
         /** @type {() => void} */
         instantiateTemplates: function () {
