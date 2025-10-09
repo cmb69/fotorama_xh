@@ -79,6 +79,10 @@
         get filebrowser() {
             return this.element.querySelector("div.fotorama_filebrowser_backdrop");
         },
+        /** @type {HTMLButtonElement} */
+        get closeFilebrowserButton() {
+            return this.filebrowser.querySelector("button.fotorama_close");
+        },
         /** @type {HTMLIFrameElement} */
         get iframe() {
             return this.filebrowser.querySelector("iframe");
@@ -100,7 +104,6 @@
             imagesInput.parentElement.style.display = "none";
             var ol = this.ol;
             var path = this.path;
-            var filebrowser = this.filebrowser;
             images.forEach(this.addImage.bind(this));
             path.onchange = this.updateThumbUrls.bind(this);
             this.detailToggle.onchange = this.toggleDetails.bind(this);
@@ -113,10 +116,7 @@
             this.addImageButton.addEventListener("click", this.onAddImageClick.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.onsubmit = this.dehydrateImages.bind(this);
-            var closeButton = /**@type {HTMLButtonElement}*/ (
-                filebrowser.querySelector("button.fotorama_close")
-            );
-            closeButton.onclick = this.closeFilebrowser.bind(this);
+            this.closeFilebrowserButton.onclick = this.closeFilebrowser.bind(this);
         },
         /** @type {() => void} */
         onAddImageClick: function () {
