@@ -25,12 +25,9 @@
         return Array.prototype.slice.call(arrayLike);
     }
 
-    array(document.querySelectorAll("figure.fotorama_gallery")).forEach(function (element) {
-        init(/**@type {HTMLElement}*/ (element));
-    });
-
-    /** @param {HTMLElement} element */
-    function init(element) {
+    /** @type {HTMLElement[]} */ (
+        array(document.querySelectorAll("figure.fotorama_gallery"))
+    ).forEach(function (element) {
         var config = JSON.parse(element.dataset.config || "{}");
         if ("jQuery" in window && "fn" in jQuery && "fotorama" in jQuery.fn) {
             jQuery(".fotorama", element).fotorama(config);
@@ -43,5 +40,5 @@
                 alertError: false,
             });
         }
-    }
+    });
 })();
