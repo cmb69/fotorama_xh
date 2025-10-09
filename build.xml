@@ -112,6 +112,7 @@
         <exclude name="tests/**"/>
         <exclude name="help/template.htm"/>
         <exclude name="js/types.d.ts"/>
+        <exclude name=".jshintrc"/>
         <exclude name="README*.md"/>
         <exclude name="build.xml"/>
         <exclude name="composer.json"/>
@@ -119,6 +120,7 @@
         <exclude name="phpstan*.*"/>
         <exclude name="phpunit.xml"/>
         <exclude name="teplad.xml"/>
+        <exclude name="tsconfig.json"/>
       </fileset>
     </move>
     <delete dir="export"/>
