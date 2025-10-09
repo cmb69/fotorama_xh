@@ -45,7 +45,7 @@
     }
 
     var editor = Object.freeze({
-        /** @type {HTMLElement} */
+        /** @readonly @type {HTMLElement} */
         element: undefined,
         /** @type {HTMLTextAreaElement} */
         get imagesInput() {
