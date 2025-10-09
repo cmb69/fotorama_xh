@@ -67,6 +67,10 @@
         get detailToggle() {
             return this.element.querySelector(".fotorama_hide_details");
         },
+        /** @type {HTMLButtonElement} */
+        get addImageButton() {
+            return this.element.querySelector("button.fotorama_add_image");
+        },
         /**@type {HTMLScriptElement}*/
         get template() {
             return this.element.querySelector("script.fotorama_template");
@@ -106,10 +110,7 @@
             ol.ondragleave = this.onDragLeave.bind(this);
             ol.ondragend = this.onDragEnd.bind(this);
             ol.ondrop = this.onDrop.bind(this);
-            var button = /**@type {HTMLButtonElement}*/ (
-                form.querySelector("button.fotorama_add_image")
-            );
-            button.addEventListener("click", this.onAddImageClick.bind(this));
+            this.addImageButton.addEventListener("click", this.onAddImageClick.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.onsubmit = this.dehydrateImages.bind(this);
             var closeButton = /**@type {HTMLButtonElement}*/ (
