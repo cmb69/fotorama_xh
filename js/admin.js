@@ -112,7 +112,7 @@
             ol.ondragleave = this.onDragLeave.bind(this);
             ol.ondragend = this.onDragEnd.bind(this);
             ol.ondrop = this.onDrop.bind(this);
-            this.addImageButton.addEventListener("click", this.onAddImageClick.bind(this));
+            this.addImageButton.onclick = this.onAddImageClick.bind(this);
             addEventListener("pagehide", this.hideProgress.bind(this));
             form.onsubmit = this.dehydrateImages.bind(this);
             this.closeFilebrowserButton.onclick = this.closeFilebrowser.bind(this);
