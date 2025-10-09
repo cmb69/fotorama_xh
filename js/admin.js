@@ -103,9 +103,8 @@
             var images = JSON.parse(imagesInput.value);
             imagesInput.parentElement.style.display = "none";
             var ol = this.ol;
-            var path = this.path;
             images.forEach(this.addImage.bind(this));
-            path.onchange = this.updateThumbUrls.bind(this);
+            this.path.onchange = this.updateThumbUrls.bind(this);
             this.detailToggle.onchange = this.toggleDetails.bind(this);
             ol.onkeydown = this.onKeydown.bind(this);
             ol.ondragenter = this.onDrag.bind(this);
