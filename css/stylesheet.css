@@ -202,6 +202,10 @@ article.fotorama_editor .fotorama_images label {
 article.fotorama_editor .fotorama_images span {
     display: var(--display-image-labels, block);
 }
+body canvas.fotorama_drag_image {
+    position: absolute;
+    left: -100%;
+}
 
 /* filebrowser dialog */
 

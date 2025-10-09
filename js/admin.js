@@ -236,8 +236,6 @@
             }
             var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
             ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
-            canvas.style.position = "absolute";
-            canvas.style.left = "-100%";
             document.body.appendChild(canvas);
             return canvas;
         },
