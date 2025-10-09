@@ -98,24 +98,24 @@
             var path = this.path;
             var filebrowser = this.filebrowser;
             images.forEach(this.addImage.bind(this));
-            path.addEventListener("change", this.updateThumbUrls.bind(this));
+            path.onchange = this.updateThumbUrls.bind(this);
             this.detailToggle.onchange = this.toggleDetails.bind(this);
-            ol.addEventListener("keydown", this.onKeydown.bind(this));
-            ol.addEventListener("dragenter", this.onDrag.bind(this));
-            ol.addEventListener("dragover", this.onDrag.bind(this));
-            ol.addEventListener("dragleave", this.onDragLeave.bind(this));
-            ol.addEventListener("dragend", this.onDragEnd.bind(this));
-            ol.addEventListener("drop", this.onDrop.bind(this));
+            ol.onkeydown = this.onKeydown.bind(this);
+            ol.ondragenter = this.onDrag.bind(this);
+            ol.ondragover = this.onDrag.bind(this);
+            ol.ondragleave = this.onDragLeave.bind(this);
+            ol.ondragend = this.onDragEnd.bind(this);
+            ol.ondrop = this.onDrop.bind(this);
             var button = /**@type {HTMLButtonElement}*/ (
                 form.querySelector("button.fotorama_add_image")
             );
             button.addEventListener("click", this.onAddImageClick.bind(this));
             addEventListener("pagehide", this.hideProgress.bind(this));
-            form.addEventListener("submit", this.dehydrateImages.bind(this));
+            form.onsubmit = this.dehydrateImages.bind(this);
             var closeButton = /**@type {HTMLButtonElement}*/ (
                 filebrowser.querySelector("button.fotorama_close")
             );
-            closeButton.addEventListener("click", this.closeFilebrowser.bind(this));
+            closeButton.onclick = this.closeFilebrowser.bind(this);
         },
         /** @type {() => void} */
         onAddImageClick: function () {
@@ -212,18 +212,15 @@
             thumb.src = image ? (!image.path.match(/:\/\//) ? this.baseUrl : "") + image.path : "";
             var path = this.imagePath(li);
             path.value = image ? image.path : "";
-            path.addEventListener("change", this.onPathChange.bind(this));
+            path.onchange = this.onPathChange.bind(this);
             this.imageCaption(li).value = image ? image.caption : "";
             this.imageDescription(li).value = image ? image.description : "";
-            this.pickImageButton(li).addEventListener(
-                "click",
-                this.openFilebrowser.bind(this, path)
-            );
-            this.moveImageButton(li).addEventListener("click", this.moveImageUp.bind(this, li));
-            this.deleteImageButton(li).addEventListener("click", function () {
+            this.pickImageButton(li).onclick = this.openFilebrowser.bind(this, path);
+            this.moveImageButton(li).onclick = this.moveImageUp.bind(this, li);
+            this.deleteImageButton(li).onclick = function () {
                 li.parentNode.removeChild(li);
-            });
-            thumb.addEventListener("dragstart", this.onDragStart.bind(this));
+            };
+            thumb.ondragstart = this.onDragStart.bind(this);
         },
         /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
         createDragImage: function (thumb) {
