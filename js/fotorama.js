@@ -31,8 +31,7 @@
         var config = JSON.parse(element.dataset.config || "{}");
         if ("jQuery" in window && "fn" in jQuery && "fotorama" in jQuery.fn) {
             jQuery(".fotorama", element).fotorama(config);
-        }
-        if ("SimpleLightbox" in window) {
+        } else if ("SimpleLightbox" in window) {
             new SimpleLightbox(element.querySelectorAll(".fotorama_lightbox a"), {
                 uniqueImages: false,
                 scaleImageToRatio: true,
