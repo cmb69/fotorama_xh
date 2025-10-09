@@ -23,7 +23,7 @@ Nutzerschnittstelle.
 Fotorama_XH ist ein Plugin für [CMSimple_XH](https://cmsimple-xh.org/de/).
 Es benötigt PHP ≥ 7.4.0 mit der dom Erweiterung, und CMSimple_XH ≥ 1.7.0.
 Um Vorschaubilder zu erzeugen, werden die PHP Erweiterungen gd und exif empfohlen.
-Fotorama_XH benötigt weiterhin [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.10;
+Fotorama_XH benötigt weiterhin [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.12;
 ist dieses noch nicht installiert (siehe `Einstellungen` → `Info`),
 laden Sie das [aktuelle Release](https://github.com/cmb69/plib_xh/releases/latest)
 herunter, und installieren Sie es.

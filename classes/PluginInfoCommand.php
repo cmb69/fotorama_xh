@@ -61,7 +61,7 @@ class PluginInfoCommand
             $this->checkGdFeature("AVIF", false),
             $this->checkExtension("exif", false),
             $this->checkXHVersion("1.7.0"),
-            $this->checkPlibVersion("1.11"),
+            $this->checkPlibVersion("1.12"),
             $this->checkWritability($this->pluginFolder . "cache/"),
             $this->checkWritability($this->pluginFolder . "config/"),
             $this->checkWritability($this->pluginFolder . "css/"),

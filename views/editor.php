@@ -7,7 +7,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
- * @var string $script
  * @var string $error
  * @var string $name
  * @var string $action
@@ -18,7 +17,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<script src="<?=$this->esc($script)?>" defer></script>
 <article class="fotorama_editor">
   <h1>Fotorama – <?=$this->esc($name)?></h1>
 <?if ($error):?>

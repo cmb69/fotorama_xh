@@ -8,7 +8,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 /**
  * @var View $this
  * @var string $lightbox_script
- * @var string $script
  * @var string $stylesheet
  * @var string $rel
  * @var string $caption
@@ -18,8 +17,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<script type="module" src="<?=$this->esc($lightbox_script)?>"></script>
-<script type="module" src="<?=$this->esc($script)?>"></script>
 <link rel="stylesheet" type="text/css" href="<?=$this->esc($stylesheet)?>">
 <figure class="fotorama_gallery">
 <?if ($caption):?>

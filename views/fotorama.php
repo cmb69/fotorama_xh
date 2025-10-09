@@ -7,7 +7,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
- * @var string $script
  * @var string $stylesheet
  * @var string $caption
  * @var array<string,mixed> $config
@@ -16,7 +15,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<script type="module" src="<?=$this->esc($script)?>"></script>
 <link rel="stylesheet" type="text/css" href="<?=$this->esc($stylesheet)?>">
 <figure class="fotorama_gallery" data-config='<?=$this->json($config)?>'>
 <?if ($caption):?>

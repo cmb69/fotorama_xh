@@ -8,6 +8,7 @@ require_once "../../cmsimple/functions.php";
 require_once "../plib/classes/CsrfProtector.php";
 require_once "../plib/classes/Document2.php";
 require_once "../plib/classes/DocumentStore2.php";
+require_once "../plib/classes/JavaScript.php";
 require_once "../plib/classes/Jquery.php";
 require_once "../plib/classes/Request.php";
 require_once "../plib/classes/Response.php";

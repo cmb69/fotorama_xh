@@ -10,6 +10,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\FakeRequest;
+use Plib\JavaScript;
 use Plib\Jquery;
 use Plib\View;
 
@@ -23,6 +24,8 @@ class GalleryCommandTest extends TestCase
     private $thumbnailService;
     /** @var Jquery&MockObject */
     private $jquery;
+    /** @var JavaScript&MockObject */
+    private $javaScript;
     private View $view;
 
     protected function setUp(): void
@@ -33,6 +36,7 @@ class GalleryCommandTest extends TestCase
         $this->imageFinder->method("filename")->willReturnArgument(0);
         $this->thumbnailService = $this->createStub(ThumbnailService::class);
         $this->jquery = $this->createMock(Jquery::class);
+        $this->javaScript = $this->createMock(JavaScript::class);
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
     }
 
@@ -45,6 +49,7 @@ class GalleryCommandTest extends TestCase
             $this->imageFinder,
             $this->thumbnailService,
             $this->jquery,
+            $this->javaScript,
             $this->view
         );
     }
@@ -60,6 +65,7 @@ class GalleryCommandTest extends TestCase
     public function testRendersFotoramaGallery(): void
     {
         $this->conf["gallery_frontend"] = "fotorama";
+        $this->javaScript->expects($this->once())->method("include")->with("./plugins/fotorama/js/fotorama");
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");
         Approvals::verifyHtml($response->output());

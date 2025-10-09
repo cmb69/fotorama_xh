@@ -25,6 +25,7 @@ use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
+use Plib\JavaScript;
 use Plib\Jquery;
 use Plib\SystemChecker;
 use Plib\View;
@@ -43,6 +44,7 @@ class Plugin
             self::imageFinder(),
             self::thumbnailService(),
             new Jquery($pth["folder"]["plugins"] . "jquery/"),
+            new JavaScript(),
             self::view()
         );
     }
@@ -57,6 +59,7 @@ class Plugin
             self::thumbnailService(),
             self::store(),
             new CsrfProtector(),
+            new JavaScript(),
             self::view()
         );
     }

@@ -27,6 +27,7 @@ use Fotorama\Model\Gallery;
 use Fotorama\Model\ImageFinder;
 use Fotorama\Model\ThumbnailService;
 use Plib\DocumentStore2 as DocumentStore;
+use Plib\JavaScript;
 use Plib\Jquery;
 use Plib\Request;
 use Plib\Response;
@@ -41,6 +42,7 @@ class GalleryCommand
     private ImageFinder $imageFinder;
     private ThumbnailService $thumbnailService;
     private Jquery $jquery;
+    private JavaScript $javaScript;
     private View $view;
 
     /** @param array<string,string> $conf */
@@ -51,6 +53,7 @@ class GalleryCommand
         ImageFinder $imageFinder,
         ThumbnailService $thumbnailService,
         Jquery $jquery,
+        JavaScript $javaScript,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
@@ -59,6 +62,7 @@ class GalleryCommand
         $this->imageFinder = $imageFinder;
         $this->thumbnailService = $thumbnailService;
         $this->jquery = $jquery;
+        $this->javaScript = $javaScript;
         $this->view = $view;
     }
 
@@ -70,10 +74,11 @@ class GalleryCommand
         if ($this->conf["gallery_frontend"] === "fotorama") {
             $this->jquery->include();
             $this->jquery->includePlugin("fotorama", $this->pluginFolder . "lib/fotorama/fotorama.js");
+        } else {
+            $this->javaScript->include($this->pluginFolder . "lib/simple-lightbox/simple-lightbox");
         }
+        $this->javaScript->include($this->pluginFolder . "js/fotorama");
         return Response::create($this->view->render($this->conf["gallery_frontend"], [
-            "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
-            "lightbox_script" => $this->lightboxScript(),
             "stylesheet" => $this->stylesheet(),
             "rel" => "fotorama-" . $name,
             "caption" => $gallery->caption() ?? "",
@@ -81,29 +86,6 @@ class GalleryCommand
             "images" => $this->pictureDtos($request, $gallery),
             "thumbnails" => $gallery->thumbs(),
         ]));
-    }
-
-    private function lightboxScript(): ?string
-    {
-        switch ($this->conf["gallery_frontend"]) {
-            case "fotorama":
-                return null;
-            case "lightbox":
-                if (is_file($this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.js")) {
-                    return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.min.js";
-                }
-                return $this->pluginFolder . "lib/simple-lightbox/simple-lightbox.js";
-            default:
-                throw new Exception("unsupported lightbox");
-        }
-    }
-
-    private function script(): string
-    {
-        if (is_file($this->pluginFolder . "js/fotorama.min.js")) {
-            return $this->pluginFolder . "js/fotorama.min.js";
-        }
-        return $this->pluginFolder . "js/fotorama.js";
     }
 
     private function stylesheet(): string

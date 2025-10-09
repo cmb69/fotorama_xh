@@ -29,6 +29,7 @@ use Fotorama\Model\ThumbnailService;
 use LibXMLError;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
+use Plib\JavaScript;
 use Plib\Request;
 use Plib\Response;
 use Plib\View;
@@ -42,6 +43,7 @@ class GalleryAdminCommand
     private ThumbnailService $thumbnailService;
     private DocumentStore $store;
     private CsrfProtector $csrfProtector;
+    private JavaScript $javaScript;
     private View $view;
 
     /** @param array<string,string> $conf */
@@ -52,6 +54,7 @@ class GalleryAdminCommand
         ThumbnailService $thumbnailService,
         DocumentStore $store,
         CsrfProtector $csrfProtector,
+        JavaScript $javaScript,
         View $view
     ) {
         $this->pluginFolder = $pluginFolder;
@@ -60,6 +63,7 @@ class GalleryAdminCommand
         $this->thumbnailService = $thumbnailService;
         $this->store = $store;
         $this->csrfProtector = $csrfProtector;
+        $this->javaScript = $javaScript;
         $this->view = $view;
     }
 
@@ -224,8 +228,8 @@ class GalleryAdminCommand
 
     private function renderEditor(Request $request, Gallery $gallery, string $name, string $error): string
     {
+        $this->javaScript->include($this->pluginFolder . "js/admin");
         return $this->view->render("editor", [
-            "script" => $request->url()->path($this->script())->with("v", Plugin::VERSION)->relative(),
             "error" => $error,
             "name" => $name,
             "action" => $request->url()->relative(),
@@ -234,14 +238,6 @@ class GalleryAdminCommand
             "fotorama_frontend" => $this->conf["gallery_frontend"] === "fotorama",
             "gallery" => $this->galleryDto($request, $gallery),
         ]);
-    }
-
-    private function script(): string
-    {
-        if (is_file($this->pluginFolder . "js/admin.min.js")) {
-            return $this->pluginFolder . "js/admin.min.js";
-        }
-        return $this->pluginFolder . "js/admin.js";
     }
 
     private function galleryDto(Request $request, Gallery $gallery): GalleryDto

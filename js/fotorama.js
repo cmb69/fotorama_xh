@@ -17,28 +17,29 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* jshint: strict:implied */
-// @ts-check
+(function () {
+    "use strict";
 
-document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) {
-    init(/**@type {HTMLElement}*/ (element));
-});
+    document.querySelectorAll("figure.fotorama_gallery").forEach(function (element) {
+        init(/**@type {HTMLElement}*/ (element));
+    });
 
-/** @param {HTMLElement} element */
-function init(element) {
-    var config = JSON.parse(element.dataset.config || "{}");
-    // @ts-expect-error
-    if ("jQuery" in window && "fotorama" in jQuery()) {
+    /** @param {HTMLElement} element */
+    function init(element) {
+        var config = JSON.parse(element.dataset.config || "{}");
         // @ts-expect-error
-        jQuery(".fotorama", element).fotorama(config);
+        if ("jQuery" in window && "fotorama" in jQuery()) {
+            // @ts-expect-error
+            jQuery(".fotorama", element).fotorama(config);
+        }
+        if ("SimpleLightbox" in window) {
+            // @ts-expect-error
+            new SimpleLightbox(element.querySelectorAll(".fotorama_lightbox a"), {
+                uniqueImages: false,
+                scaleImageToRatio: true,
+                captionHTML: false,
+                alertError: false,
+            });
+        }
     }
-    if ("SimpleLightbox" in window) {
-        // @ts-expect-error
-        new SimpleLightbox(element.querySelectorAll(".fotorama_lightbox a"), {
-            uniqueImages: false,
-            scaleImageToRatio: true,
-            captionHTML: false,
-            alertError: false,
-        });
-    }
-}
+})();

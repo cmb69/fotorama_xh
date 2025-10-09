@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Plib\CsrfProtector;
 use Plib\DocumentStore2 as DocumentStore;
 use Plib\FakeRequest;
+use Plib\JavaScript;
 use Plib\View;
 
 class GalleryAdminCommandTest extends TestCase
@@ -26,6 +27,8 @@ class GalleryAdminCommandTest extends TestCase
     private DocumentStore $store;
     /** @var CsrfProtector&Stub */
     private $csrfProtector;
+    /** @var JavaScript&MockObject */
+    private $javaScript;
     private View $view;
 
     protected function setUp(): void
@@ -37,6 +40,7 @@ class GalleryAdminCommandTest extends TestCase
         $this->store = new DocumentStore(vfsStream::url("root/"));
         $this->csrfProtector = $this->createStub(CsrfProtector::class);
         $this->csrfProtector->method("token")->willReturn("1234");
+        $this->javaScript = $this->createMock(JavaScript::class);
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["fotorama"]);
     }
 
@@ -49,6 +53,7 @@ class GalleryAdminCommandTest extends TestCase
             $this->thumbnailService,
             $this->store,
             $this->csrfProtector,
+            $this->javaScript,
             $this->view
         );
     }
@@ -196,6 +201,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         Gallery::create("test", "test", $this->store);
         $this->store->commit();
+        $this->javaScript->expects($this->once())->method("include")->with("./plugins/fotorama/js/admin");
         $request = new FakeRequest(["url" => "http://example.com/?&action=update&fotorama_gallery=test"]);
         $response = $this->sut()($request);
         $this->assertSame("Fotorama – test", $response->title());

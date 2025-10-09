@@ -17,11 +17,9 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* jshint strict:global */
-
-"use strict";
-
 (function () {
+    "use strict";
+
     /**
      * @typedef {object} Image
      * @prop {string} path
