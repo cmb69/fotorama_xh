@@ -17,7 +17,7 @@
  * along with Fotorama_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* jshint strict:global,laxbreak:true */
+/* jshint strict:global */
 
 "use strict";
 
@@ -125,24 +125,20 @@
             if (["Up", "Right", "Down", "Left"].indexOf(key) >= 0) {
                 key = "Arrow" + key;
             }
-            var ol = this.ol;
             switch (key) {
                 case "ArrowRight":
                 case "ArrowDown":
                     if (checkbox.checked ? key === "ArrowDown" : key === "ArrowRight") {
                         return;
                     }
-                    var reference = li.nextElementSibling
-                        ? li.nextElementSibling.nextElementSibling
-                        : ol.firstElementChild;
-                    ol.insertBefore(li, reference);
+                    this.moveImageDown(li);
                     break;
                 case "ArrowLeft":
                 case "ArrowUp":
                     if (checkbox.checked ? key === "ArrowUp" : key === "ArrowLeft") {
                         return;
                     }
-                    ol.insertBefore(li, li.previousElementSibling);
+                    this.moveImageUp(li);
                     break;
             }
             event.target.focus();
@@ -225,10 +221,11 @@
             path.addEventListener("change", this.onPathChange.bind(this));
             this.imageCaption(li).value = image ? image.caption : "";
             this.imageDescription(li).value = image ? image.description : "";
-            this.pickImageButton(li).addEventListener("click", this.openFilebrowser.bind(this, path));
-            this.moveImageButton(li).addEventListener("click", function () {
-                ol.insertBefore(li, li.previousElementSibling);
-            });
+            this.pickImageButton(li).addEventListener(
+                "click",
+                this.openFilebrowser.bind(this, path)
+            );
+            this.moveImageButton(li).addEventListener("click", this.moveImageUp.bind(this, li));
             this.deleteImageButton(li).addEventListener("click", function () {
                 li.parentNode.removeChild(li);
             });
@@ -342,6 +339,17 @@
         /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
         deleteImageButton: function (li) {
             return li.querySelector("button.fotorama_delete_image");
+        },
+        /** @type {(li: HTMLLIElement) => void} */
+        moveImageUp: function (li) {
+            li.parentNode.insertBefore(li, li.previousElementSibling);
+        },
+        /** @type {(li: HTMLLIElement) => void} */
+        moveImageDown: function (li) {
+            var ol = li.parentElement;
+            var next = li.nextElementSibling;
+            var reference = next ? next.nextElementSibling : ol.firstElementChild;
+            ol.insertBefore(li, reference);
         },
         /** @type {() => void} */
         showProgress: function () {
