@@ -86,13 +86,21 @@ class ThumbnailService
     /** @return ?GdImage */
     private function loadGdImage(string $filename)
     {
-        if (($source = imagecreatefromjpeg($filename)) !== false) {
-            return $source;
+        if (($info = getimagesize($filename)) === false) {
+            return null;
         }
-        if (function_exists("imagecreatefromwebp") && ($source = imagecreatefromwebp($filename)) !== false) {
+        $mime = $info["mime"];
+        if ($mime === "image/jpeg" && ($source = imagecreatefromjpeg($filename)) !== false) {
             return $source;
-        }
-        if (function_exists("imagecreatefromavif") && ($source = imagecreatefromavif($filename)) !== false) {
+        } elseif (
+            $mime === "image/webp" && function_exists("imagecreatefromwebp")
+            && ($source = imagecreatefromwebp($filename)) !== false
+        ) {
+            return $source;
+        } elseif (
+            $mime === "image/avif" && function_exists("imagecreatefromavif")
+            && ($source = imagecreatefromavif($filename)) !== false
+        ) {
             return $source;
         }
         return null;
