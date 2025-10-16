@@ -86,8 +86,8 @@
             return this.filebrowser.querySelector("iframe");
         },
         /**@type {HTMLElement}*/
-        get progress() {
-            return this.element.querySelector("div.fotorama_progress_backdrop");
+        get progressBar() {
+            return this.element.querySelector("div.fotorama_progress");
         },
         /** @type {() => void} */
         init: function () {
@@ -343,11 +343,13 @@
         },
         /** @type {() => void} */
         showProgress: function () {
-            this.progress.style.display = "";
+            var progressBar = this.progressBar;
+            progressBar.style.display = "";
+            progressBar.scrollIntoView(false);
         },
         /** @type {() => void} */
         hideProgress: function () {
-            this.progress.style.display = "none";
+            this.progressBar.style.display = "none";
         },
     });
 

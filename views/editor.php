@@ -91,6 +91,12 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
       <button name="fotorama_do"><?=$this->text("label_save")?></button>
     </p>
     <script type="text/x-template">
+      <div role="status">
+        <div class="fotorama_progress" style="display: none">
+          <p class="xh_info"><?=$this->text("message_save_progress")?></p>
+          <progress></progress>
+        </div>
+      </div>
       <fieldset class="fotorama_images">
         <legend><?=$this->text("label_images")?></legend>
         <p class="fotorama_controls">
@@ -148,12 +154,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
           </p>
           <iframe src="" loading="lazy"></iframe>
         </figure>
-      </div>
-    </div>
-    <div class="fotorama_progress_backdrop" style="display:none">
-      <div class="fotorama_progress">
-        <p class="xh_info"><?=$this->text("message_save_progress")?></p>
-        <progress></progress>
       </div>
     </div>
   </script>

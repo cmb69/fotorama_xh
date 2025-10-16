@@ -23,6 +23,10 @@
       <button name="fotorama_do">Save</button>
     </p>
     <script type="text/x-template">
+      <div role="status" class="fotorama_progress" style="display: none">
+        <p class="xh_info">Saving may take a while, because thumbnails may need to be created. Please be patient!</p>
+        <progress></progress>
+      </div>
       <fieldset class="fotorama_images">
         <legend>Images</legend>
         <p class="fotorama_controls">
@@ -80,12 +84,6 @@
           </p>
           <iframe src="" loading="lazy"></iframe>
         </figure>
-      </div>
-    </div>
-    <div class="fotorama_progress_backdrop" style="display:none">
-      <div class="fotorama_progress">
-        <p class="xh_info">Saving may take a while, because thumbnails may need to be created. Please be patient!</p>
-        <progress></progress>
       </div>
     </div>
   </script>
