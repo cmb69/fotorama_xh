@@ -9,7 +9,6 @@ article.fotorama_editor {
     --general-columns: 1fr 1fr; /* 3 columns: 1fr 1fr 1fr */
     --thumb-size: 100px;
     --display-image-labels: block; /* block or none */
-    --filebrowser-size: 80%;
 }
 
 /* gallery */
