@@ -45,40 +45,50 @@
     var editor = Object.seal({
         /** @readonly @type {HTMLElement} */
         element: undefined,
+
         /**@type {Window}*/
         filebrowser: undefined,
+
         /** @type {HTMLTextAreaElement} */
         get imagesInput() {
             return this.element.querySelector("textarea[name=gallery_images]");
         },
+
         /** @type {HTMLInputElement}*/
         get path() {
             return this.element.querySelector("input.fotorama_path");
         },
+
         /** @type {string} */
         get baseUrl() {
             return this.ol.dataset.baseUrl + this.path.value + "/";
         },
+
         /**@type {HTMLOListElement}*/
         get ol() {
             return this.element.querySelector("ol");
         },
+
         /** @type {HTMLInputElement} */
         get detailToggle() {
             return this.element.querySelector(".fotorama_hide_details");
         },
+
         /** @type {HTMLButtonElement} */
         get addImageButton() {
             return this.element.querySelector("button.fotorama_add_image");
         },
+
         /**@type {HTMLScriptElement}*/
         get template() {
             return this.element.querySelector("script.fotorama_template");
         },
+
         /**@type {HTMLElement}*/
         get progressBar() {
             return this.element.querySelector("div.fotorama_progress");
         },
+
         /** @type {() => void} */
         init: function () {
             this.instantiateTemplates();
@@ -100,6 +110,7 @@
             var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
             form.onsubmit = this.dehydrateImages.bind(this);
         },
+
         /** @type {() => void} */
         instantiateTemplates: function () {
             /** @type {HTMLScriptElement[]} */ (
@@ -108,6 +119,7 @@
                 script.outerHTML = script.text;
             });
         },
+
         /** @type {() => void} */
         onAddImageClick: function () {
             this.addImage(null);
@@ -116,6 +128,7 @@
             );
             input.focus();
         },
+
         /** @type {(event: KeyboardEvent) => void} */
         onKeydown: function (event) {
             var target = /** @type {Element} */ (event.target);
@@ -131,6 +144,7 @@
             }
             /** @type {HTMLImageElement} */ (target).focus();
         },
+
         /** @type {(event: Event) => void} */
         onPathChange: function (event) {
             var path = /** @type {HTMLInputElement} */ (event.currentTarget);
@@ -139,6 +153,7 @@
             var thumb = /** @type {HTMLImageElement} */ (li.querySelector(".fotorama_thumb"));
             thumb.src = (!path.value.match(/:\/\//) ? this.baseUrl : "") + path.value;
         },
+
         /** @type {(event: DragEvent) => void} */
         onDragStart: function (event) {
             var dt = event.dataTransfer;
@@ -154,6 +169,7 @@
             dt.effectAllowed = "move";
             li.classList.add("fotorama_drag");
         },
+
         /** @type {(event: DragEvent) => void} */
         onDrag: function (event) {
             var types = array(event.dataTransfer.types);
@@ -165,6 +181,7 @@
                 li.classList.add("fotorama_drop");
             }
         },
+
         /** @type {(event: DragEvent) => void} */
         onDragLeave: function (event) {
             var li = /** @type {Element} */ (event.target);
@@ -172,6 +189,7 @@
             if (li === null) return;
             li.classList.remove("fotorama_drop");
         },
+
         /** @type {(event: DragEvent) => void} */
         onDrop: function (event) {
             var ol = this.ol;
@@ -184,6 +202,7 @@
             ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
             event.preventDefault();
         },
+
         /** @type {() => void} */
         onDragEnd: function () {
             array(this.ol.querySelectorAll("li")).forEach(function (li) {
@@ -194,6 +213,7 @@
                 canvas.parentNode.removeChild(canvas);
             });
         },
+
         /** @type {(image: Image) => void} */
         addImage: function (image) {
             var ol = this.ol;
@@ -213,6 +233,7 @@
             };
             thumb.ondragstart = this.onDragStart.bind(this);
         },
+
         /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
         createDragImage: function (thumb) {
             var canvas = document.createElement("canvas");
@@ -230,10 +251,12 @@
             document.body.appendChild(canvas);
             return canvas;
         },
+
         /** @type {() => void} */
         toggleDetails: function () {
             this.ol.classList.toggle("fotorama_hide_details");
         },
+
         /** @type {(path: HTMLInputElement, url: string) => void} */
         setImagePath: function (path, url) {
             this.filebrowser.close();
@@ -243,6 +266,7 @@
             path.value = base + url.substring(prefix.length);
             this.updateThumbUrls();
         },
+
         /** @type {(path: HTMLInputElement) => void} */
         openFilebrowser: function (path) {
             var matches = this.baseUrl.match(/^(\.+\/)(.*)$/);
@@ -259,6 +283,8 @@
                 setLink: this.setImagePath.bind(this, path),
             };
         },
+
+        /** @type {() => void} */
         updateThumbUrls: function () {
             var baseUrl = this.baseUrl;
             array(this.ol.querySelectorAll("li img.fotorama_thumb")).forEach(function (input) {
@@ -267,12 +293,14 @@
                 /**@type {HTMLInputElement}*/ (input).src = baseUrl + path.value;
             });
         },
+
         /** @type {() => void} */
         dehydrateImages: function () {
             var records = array(this.ol.querySelectorAll("li")).map(this.image.bind(this));
             this.imagesInput.value = JSON.stringify(records);
             this.showProgress();
         },
+
         /** @type {(li: HTMLLIElement) => Image} */
         image: function (li) {
             return {
@@ -281,34 +309,42 @@
                 description: this.imageDescription(li).value,
             };
         },
+
         /** @type {(li: HTMLLIElement) => HTMLInputElement} */
         imagePath: function (li) {
             return li.querySelector("input.fotorama_path");
         },
+
         /** @type {(li: HTMLLIElement) => HTMLTextAreaElement} */
         imageCaption: function (li) {
             return li.querySelector("textarea.fotorama_caption");
         },
+
         /** @type {(li: HTMLLIElement) => HTMLTextAreaElement} */
         imageDescription: function (li) {
             return li.querySelector("textarea.fotorama_description");
         },
+
         /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
         pickImageButton: function (li) {
             return li.querySelector("button.fotorama_pick_image");
         },
+
         /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
         moveImageButton: function (li) {
             return li.querySelector("button.fotorama_move_image");
         },
+
         /** @type {(li: HTMLLIElement) => HTMLButtonElement} */
         deleteImageButton: function (li) {
             return li.querySelector("button.fotorama_delete_image");
         },
+
         /** @type {(li: HTMLLIElement) => void} */
         moveImageUp: function (li) {
             li.parentNode.insertBefore(li, li.previousElementSibling);
         },
+
         /** @type {(li: HTMLLIElement) => void} */
         moveImageDown: function (li) {
             var ol = li.parentElement;
@@ -316,12 +352,14 @@
             var reference = next ? next.nextElementSibling : ol.firstElementChild;
             ol.insertBefore(li, reference);
         },
+
         /** @type {() => void} */
         showProgress: function () {
             var progressBar = this.progressBar;
             progressBar.style.display = "";
             progressBar.scrollIntoView(false);
         },
+
         /** @type {() => void} */
         hideProgress: function () {
             this.progressBar.style.display = "none";
