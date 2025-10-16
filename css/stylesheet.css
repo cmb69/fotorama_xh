@@ -22,25 +22,35 @@ figure.fotorama_gallery figcaption {
 /* lightbox */
 
 div.fotorama_lightbox {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-div.fotorama_lightbox a {
-    height: 150px;
-    height: var(--thumb-height, 150px);
-    flex-grow: 1;
-    flex-grow: var(--flex-grow, 1);
-    border: none;
+    text-align: center;
 }
 div.fotorama_lightbox img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 150px;
+    margin: 3px;
 }
-div.fotorama_lightbox img[src$="/external.svg"] {
-    object-fit: fill;
+@supports (display: flex) and (object-fit: cover) {
+    div.fotorama_lightbox {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    div.fotorama_lightbox a {
+        height: 150px;
+        height: var(--thumb-height, 150px);
+        flex-grow: 1;
+        flex-grow: var(--flex-grow, 1);
+        border: none;
+    }
+    div.fotorama_lightbox img {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        object-fit: cover;
+    }
+    div.fotorama_lightbox img[src$="/external.svg"] {
+        object-fit: fill;
+    }
 }
 
 /* overview */
