@@ -9,5 +9,5 @@ declare class SimpleLightbox {
 }
 
 interface Window {
-    setLink(url: string): void;
+    fotorama: {setLink(url: string): void};
 }

@@ -42,9 +42,11 @@
         return res;
     }
 
-    var editor = Object.freeze({
+    var editor = Object.seal({
         /** @readonly @type {HTMLElement} */
         element: undefined,
+        /**@type {Window}*/
+        filebrowser: undefined,
         /** @type {HTMLTextAreaElement} */
         get imagesInput() {
             return this.element.querySelector("textarea[name=gallery_images]");
@@ -74,18 +76,6 @@
             return this.element.querySelector("script.fotorama_template");
         },
         /**@type {HTMLElement}*/
-        get filebrowser() {
-            return this.element.querySelector("div.fotorama_filebrowser_backdrop");
-        },
-        /** @type {HTMLButtonElement} */
-        get closeFilebrowserButton() {
-            return this.filebrowser.querySelector("button.fotorama_close");
-        },
-        /** @type {HTMLIFrameElement} */
-        get iframe() {
-            return this.filebrowser.querySelector("iframe");
-        },
-        /**@type {HTMLElement}*/
         get progressBar() {
             return this.element.querySelector("div.fotorama_progress");
         },
@@ -107,7 +97,6 @@
             ol.ondragend = this.onDragEnd.bind(this);
             ol.ondrop = this.onDrop.bind(this);
             addEventListener("pagehide", this.hideProgress.bind(this));
-            this.closeFilebrowserButton.onclick = this.closeFilebrowser.bind(this);
             var form = /**@type {HTMLFormElement}*/ (this.element.querySelector("form"));
             form.onsubmit = this.dehydrateImages.bind(this);
         },
@@ -247,7 +236,7 @@
         },
         /** @type {(path: HTMLInputElement, url: string) => void} */
         setImagePath: function (path, url) {
-            this.closeFilebrowser();
+            this.filebrowser.close();
             var baseUrl = this.baseUrl;
             var prefix = commonPrefix(baseUrl, url);
             var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
@@ -256,33 +245,19 @@
         },
         /** @type {(path: HTMLInputElement) => void} */
         openFilebrowser: function (path) {
-            var iframe = this.iframe;
             var matches = this.baseUrl.match(/^(\.+\/)(.*)$/);
             var prefix = matches[1];
             var suffix = matches[2].slice(0, -1);
-            iframe.src =
+            var url =
                 prefix +
                 "?filebrowser=editorbrowser&editor=fotorama&prefix=" +
                 encodeURIComponent(prefix) +
                 "&type=image&subdir=" +
                 encodeURIComponent(suffix);
-            this.filebrowser.style.display = "";
-            iframe.onload = this.initFilebrowser.bind(this, path);
-        },
-        /** @type {(path: HTMLInputElement) => void} */
-        initFilebrowser: function (path) {
-            var filebrowser = this.filebrowser;
-            var figcaption = /**@type {HTMLElement}*/ (filebrowser.querySelector("figcaption"));
-            var controls = /**@type {HTMLParagraphElement}*/ (filebrowser.querySelector("p"));
-            var height = Math.ceil(Math.max(figcaption.scrollHeight, controls.scrollHeight));
-            var inner = filebrowser.firstElementChild;
-            var iframe = this.iframe;
-            iframe.width = (inner.clientWidth - 20).toString();
-            iframe.height = (inner.clientHeight - height - 20).toString();
-            iframe.contentWindow.setLink = this.setImagePath.bind(this, path);
-        },
-        closeFilebrowser: function () {
-            this.filebrowser.style.display = "none";
+            this.filebrowser = open(url, "fotorama_filebrowser");
+            window.fotorama = {
+                setLink: this.setImagePath.bind(this, path),
+            };
         },
         updateThumbUrls: function () {
             var baseUrl = this.baseUrl;
