@@ -62,10 +62,10 @@
 
   <target name="minify" description="minifies JS">
     <exec executable="uglifyjs" checkreturn="true" dir="${dir}">
-      <arg line="js/admin.js --toplevel --compress --mangle --output js/admin.min.js"/>
+      <arg line="js/admin.js --no-module --compress --mangle --output js/admin.min.js"/>
     </exec>
     <exec executable="uglifyjs" checkreturn="true" dir="${dir}">
-      <arg line="js/fotorama.js --toplevel --compress --mangle --output js/fotorama.min.js"/>
+      <arg line="js/fotorama.js --no-module --compress --mangle --output js/fotorama.min.js"/>
     </exec>
   </target>
 
