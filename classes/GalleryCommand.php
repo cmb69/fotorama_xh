@@ -77,6 +77,7 @@ class GalleryCommand
         } else {
             $this->javaScript->include($this->pluginFolder . "lib/simple-lightbox/simple-lightbox.legacy");
         }
+        $this->javaScript->includePolyfills();
         $this->javaScript->include($this->pluginFolder . "js/fotorama");
         return Response::create($this->view->render($this->conf["gallery_frontend"], [
             "stylesheet" => $this->stylesheet(),

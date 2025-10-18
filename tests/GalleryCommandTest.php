@@ -57,6 +57,11 @@ class GalleryCommandTest extends TestCase
     public function testRendersLightboxGallery(): void
     {
         $this->conf["gallery_frontend"] = "lightbox";
+        $this->javaScript->expects($this->once())->method("includePolyfills");
+        $this->javaScript->expects($this->any())->method("include")->withConsecutive(
+            ["./plugins/fotorama/lib/simple-lightbox/simple-lightbox.legacy"],
+            ["./plugins/fotorama/js/fotorama"],
+        );
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");
         Approvals::verifyHtml($response->output());
@@ -65,6 +70,7 @@ class GalleryCommandTest extends TestCase
     public function testRendersFotoramaGallery(): void
     {
         $this->conf["gallery_frontend"] = "fotorama";
+        $this->javaScript->expects($this->once())->method("includePolyfills");
         $this->javaScript->expects($this->once())->method("include")->with("./plugins/fotorama/js/fotorama");
         $request = new FakeRequest();
         $response = $this->sut()($request, "test");
