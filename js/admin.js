@@ -27,11 +27,6 @@
      * @prop {string} description
      */
 
-    /** @type {<T>(arrayLike: ArrayLike<T>) => T[]} */
-    function array(arrayLike) {
-        return Array.prototype.slice.call(arrayLike);
-    }
-
     /** @type {(str1: string, str2: string) => string} */
     function commonPrefix(str1, str2) {
         var res = "";
@@ -159,7 +154,7 @@
                 var src = ol.children[nth];
                 var li = /** @type {Element} */ (event.target).closest("li");
                 if (li === null) return;
-                var current = array(ol.children).indexOf(li);
+                var current = Array.prototype.indexOf.call(ol.children, li);
                 ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
                 event.preventDefault();
             }
@@ -189,7 +184,7 @@
                     var canvas = createDragImage(thumb);
                     dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
                 }
-                dt.setData("text", array(ol.children).indexOf(li).toString());
+                dt.setData("text", Array.prototype.indexOf.call(ol.children, li).toString());
                 dt.effectAllowed = "move";
                 li.classList.add("fotorama_drag");
                 ol.ondragenter = onDrag;
@@ -262,7 +257,10 @@
 
         /** @type {() => void} */
         function dehydrateImages() {
-            var records = array(ol.querySelectorAll("li")).map(image);
+            var records = /** @type {Image[]} */ ([]);
+            ol.querySelectorAll("li").forEach(function (li) {
+                records.push(image(li));
+            });
             imagesInput.value = JSON.stringify(records);
             showProgress();
         }
