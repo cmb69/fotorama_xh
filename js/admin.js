@@ -27,16 +27,6 @@
      * @prop {string} description
      */
 
-    /** @type {(str1: string, str2: string) => string} */
-    function commonPrefix(str1, str2) {
-        var res = "";
-        for (var i = 0; i < str1.length && i < str2.length; i++) {
-            if (str1[i] !== str2[i]) break;
-            res += str1[i];
-        }
-        return res;
-    }
-
     /** @type {(element: HTMLElement) => void} */
     function editor(element) {
         /**@type {Window}*/
@@ -221,6 +211,16 @@
 
         /** @type {(path: HTMLInputElement, url: string) => void} */
         function setImagePath(path, url) {
+            /** @type {(str1: string, str2: string) => string} */
+            function commonPrefix(str1, str2) {
+                var res = "";
+                for (var i = 0; i < str1.length && i < str2.length; i++) {
+                    if (str1[i] !== str2[i]) break;
+                    res += str1[i];
+                }
+                return res;
+            }
+
             filebrowser.close();
             var prefix = commonPrefix(baseUrl, url);
             var base = baseUrl.substring(prefix.length).replace(/[^\/]+\//g, "../");
