@@ -228,6 +228,7 @@ class GalleryAdminCommand
 
     private function renderEditor(Request $request, Gallery $gallery, string $name, string $error): string
     {
+        $this->javaScript->includePolyfills();
         $this->javaScript->include($this->pluginFolder . "js/admin");
         return $this->view->render("editor", [
             "error" => $error,

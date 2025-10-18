@@ -201,6 +201,7 @@ class GalleryAdminCommandTest extends TestCase
     {
         Gallery::create("test", "test", $this->store);
         $this->store->commit();
+        $this->javaScript->expects($this->once())->method("includePolyfills");
         $this->javaScript->expects($this->once())->method("include")->with("./plugins/fotorama/js/admin");
         $request = new FakeRequest(["url" => "http://example.com/?&action=update&fotorama_gallery=test"]);
         $response = $this->sut()($request);
