@@ -72,11 +72,6 @@
             detailToggle.onchange = toggleDetails;
             addImageButton.onclick = onAddImageClick;
             ol.onkeydown = onKeydown;
-            ol.ondragenter = onDrag;
-            ol.ondragover = onDrag;
-            ol.ondragleave = onDragLeave;
-            ol.ondragend = onDragEnd;
-            ol.ondrop = onDrop;
             addEventListener("pagehide", hideProgress);
             var form = /**@type {HTMLFormElement}*/ (element.querySelector("form"));
             form.onsubmit = dehydrateImages;
@@ -127,61 +122,88 @@
 
         /** @type {(event: DragEvent) => void} */
         function onDragStart(event) {
-            var dt = event.dataTransfer;
-            if (dt === null) return;
-            var thumb = /** @type {HTMLImageElement} */ (event.currentTarget);
-            var li = /** @type {HTMLElement} */ (thumb);
-            while (li && li.localName !== "li") li = li.parentElement;
-            if ("setDragImage" in dt) {
-                var canvas = createDragImage(thumb);
-                dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+            /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
+            function createDragImage(thumb) {
+                var canvas = document.createElement("canvas");
+                canvas.className = "fotorama_drag_image";
+                var ratio = thumb.naturalWidth / thumb.naturalHeight;
+                if (ratio >= 1) {
+                    canvas.width = 100;
+                    canvas.height = 100 / ratio;
+                } else {
+                    canvas.width = 100 * ratio;
+                    canvas.height = 100;
+                }
+                var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
+                ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
+                document.body.appendChild(canvas);
+                return canvas;
             }
-            dt.setData("text", array(ol.children).indexOf(li).toString());
-            dt.effectAllowed = "move";
-            li.classList.add("fotorama_drag");
-        }
 
-        /** @type {(event: DragEvent) => void} */
-        function onDrag(event) {
-            var types = array(event.dataTransfer.types);
-            if (types.indexOf("text/plain") >= 0 || types.indexOf("Text") >= 0) {
+            /** @type {(event: DragEvent) => void} */
+            function onDrag(event) {
                 var li = /** @type {Element} */ (event.target);
                 while (li && li.localName !== "li") li = li.parentElement;
                 if (li === null) return;
                 event.preventDefault();
                 li.classList.add("fotorama_drop");
             }
-        }
 
-        /** @type {(event: DragEvent) => void} */
-        function onDragLeave(event) {
-            var li = /** @type {Element} */ (event.target);
-            while (li && li.localName !== "li") li = li.parentElement;
-            if (li === null) return;
-            li.classList.remove("fotorama_drop");
-        }
-
-        /** @type {(event: DragEvent) => void} */
-        function onDrop(event) {
-            var nth = parseInt(event.dataTransfer.getData("text"));
-            var src = ol.children[nth];
-            var li = /** @type {Element} */ (event.target);
-            while (li && li.localName !== "li") li = li.parentElement;
-            if (li === null) return;
-            var current = array(ol.children).indexOf(li);
-            ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
-            event.preventDefault();
-        }
-
-        /** @type {() => void} */
-        function onDragEnd() {
-            array(ol.querySelectorAll("li")).forEach(function (li) {
-                li.classList.remove("fotorama_drag");
+            /** @type {(event: DragEvent) => void} */
+            function onDragLeave(event) {
+                var li = /** @type {Element} */ (event.target);
+                while (li && li.localName !== "li") li = li.parentElement;
+                if (li === null) return;
                 li.classList.remove("fotorama_drop");
-            });
-            array(document.querySelectorAll(".fotorama_drag_image")).forEach(function (canvas) {
-                canvas.parentNode.removeChild(canvas);
-            });
+            }
+
+            /** @type {(event: DragEvent) => void} */
+            function onDrop(event) {
+                var nth = parseInt(event.dataTransfer.getData("text"));
+                var src = ol.children[nth];
+                var li = /** @type {Element} */ (event.target);
+                while (li && li.localName !== "li") li = li.parentElement;
+                if (li === null) return;
+                var current = array(ol.children).indexOf(li);
+                ol.insertBefore(src, current > nth ? li.nextElementSibling : li);
+                event.preventDefault();
+            }
+
+            /** @type {() => void} */
+            function onDragEnd() {
+                ol.ondragenter = null;
+                ol.ondragover = null;
+                ol.ondragleave = null;
+                ol.ondrop = null;
+                ol.ondragend = null;
+                array(ol.querySelectorAll("li")).forEach(function (li) {
+                    li.classList.remove("fotorama_drag");
+                    li.classList.remove("fotorama_drop");
+                });
+                array(document.querySelectorAll(".fotorama_drag_image")).forEach(function (canvas) {
+                    canvas.parentNode.removeChild(canvas);
+                });
+            }
+
+            (function () {
+                var dt = event.dataTransfer;
+                if (dt === null) return;
+                var thumb = /** @type {HTMLImageElement} */ (event.currentTarget);
+                var li = /** @type {HTMLElement} */ (thumb);
+                while (li && li.localName !== "li") li = li.parentElement;
+                if ("setDragImage" in dt) {
+                    var canvas = createDragImage(thumb);
+                    dt.setDragImage(canvas, canvas.width / 2, canvas.height / 2);
+                }
+                dt.setData("text", array(ol.children).indexOf(li).toString());
+                dt.effectAllowed = "move";
+                li.classList.add("fotorama_drag");
+                ol.ondragenter = onDrag;
+                ol.ondragover = onDrag;
+                ol.ondragleave = onDragLeave;
+                ol.ondrop = onDrop;
+                ol.ondragend = onDragEnd;
+            })();
         }
 
         /** @type {(image: Image) => void} */
@@ -201,24 +223,6 @@
                 li.parentNode.removeChild(li);
             };
             thumb.ondragstart = onDragStart;
-        }
-
-        /** @type {(thumb: HTMLImageElement) => HTMLCanvasElement} */
-        function createDragImage(thumb) {
-            var canvas = document.createElement("canvas");
-            canvas.className = "fotorama_drag_image";
-            var ratio = thumb.naturalWidth / thumb.naturalHeight;
-            if (ratio >= 1) {
-                canvas.width = 100;
-                canvas.height = 100 / ratio;
-            } else {
-                canvas.width = 100 * ratio;
-                canvas.height = 100;
-            }
-            var ctx = /** @type {CanvasRenderingContext2D} */ (canvas.getContext("2d"));
-            ctx.drawImage(thumb, 0, 0, canvas.width, canvas.height);
-            document.body.appendChild(canvas);
-            return canvas;
         }
 
         /** @type {() => void} */
